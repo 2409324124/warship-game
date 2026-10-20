@@ -68,6 +68,11 @@ const G = {
 const views = new Map<number, ShipView>();
 const aim = { yaw: 0, range: 9000, pYaw: 0, pRange: 0, sens: 1 };
 const keys: Record<string, boolean> = {};
+// The telescope follows whichever of Shift / right mouse button is down, so a key can never get
+// stuck on if the window loses focus mid-press.
+let shiftHeld = false;
+let rmbHeld = false;
+let zoomCmd: number | null = null;
 let spots: { text: string; x: number; z: number; t: number }[] = [];
 let salvos: SalvoRec[] = [];
 
@@ -327,6 +332,7 @@ function exitLock(): void {
 
 addEventListener('keydown', (e) => {
   keys[e.code] = true;
+  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') shiftHeld = true;
   if (e.code === 'Escape') {
     if (G.mode === 'play') pause(true);
     else if (G.mode === 'paused') pause(false);
@@ -346,6 +352,12 @@ addEventListener('keydown', (e) => {
 });
 addEventListener('keyup', (e) => {
   keys[e.code] = false;
+  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') shiftHeld = false;
+});
+addEventListener('blur', () => {
+  shiftHeld = false;
+  rmbHeld = false;
+  for (const k in keys) keys[k] = false;
 });
 
 function throttleStep(d: number): void {
@@ -374,10 +386,10 @@ $<HTMLCanvasElement>('gl').addEventListener('mousedown', (e) => {
     if (G.weapon === 'guns') playerFire(G.world!, P, P.aimX, P.aimZ);
     else playerTorpedo(G.world!, P, P.aimX, P.aimZ);
   }
-  if (e.button === 2) G.zoomWant = 1;
+  if (e.button === 2) rmbHeld = true;
 });
 addEventListener('mouseup', (e) => {
-  if (e.button === 2) G.zoomWant = 0;
+  if (e.button === 2) rmbHeld = false;
 });
 addEventListener('contextmenu', (e) => e.preventDefault());
 addEventListener('wheel', (e) => {
@@ -435,6 +447,7 @@ function frame(now: number): void {
   const dt = Math.min(0.05, Math.max(0.0005, raw));
   lastDt = raw;
   G.time += dt;
+  G.zoomWant = zoomCmd !== null ? zoomCmd : shiftHeld || rmbHeld ? 1 : 0;
   G.shake = Math.max(0, G.shake - dt * 2.2);
 
   const world = G.world;
@@ -740,7 +753,7 @@ let lastDt = 0.016;
     }
   },
   zoom: (v: number) => {
-    G.zoomWant = v;
+    zoomCmd = v > 0 ? 1 : 0;
   },
   cam: (v: number) => {
     G.camMode = v ? 'bridge' : 'chase';

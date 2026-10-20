@@ -47,10 +47,11 @@ await page.screenshot({ path: `${OUT}/02-chase.png` });
 // point the guns at the nearest destroyer and fire a full broadside
 await page.evaluate(() => window.__cmd?.aimAtNearest());
 await wait(400);
-await page.evaluate(() => window.__cmd?.zoom(1));
-await wait(700);
+// hold Shift - that is the telescope binding now
+await page.keyboard.down('Shift');
+await wait(900);
 await page.screenshot({ path: `${OUT}/03-sight.png` });
-await page.evaluate(() => window.__cmd?.zoom(0));
+await page.keyboard.up('Shift');
 await page.evaluate(() => window.__cmd?.fire());
 await wait(1200);
 await page.screenshot({ path: `${OUT}/04-firing.png` });
@@ -66,9 +67,9 @@ await page.evaluate(() => window.__cmd?.splash(406));
 await wait(400);
 await page.screenshot({ path: `${OUT}/05c-splash-close.png` });
 
-// probe the sight while the binoculars are up
-await page.evaluate(() => window.__cmd?.zoom(1));
-await wait(1200);
+// probe the sight while the binoculars are up (via the real Shift key)
+await page.keyboard.down('Shift');
+await wait(1400);
 await page.screenshot({ path: `${OUT}/03b-sight-zoom.png` });
 const probeSight = await page.evaluate(() => {
   const cv = document.getElementById('overlay');
@@ -102,7 +103,7 @@ const probeSight = await page.evaluate(() => {
 const sightState = await page.evaluate(() => window.__debug?.().overlay);
 console.log('--- sight probe ---');
 console.log(JSON.stringify(probeSight), JSON.stringify(sightState));
-await page.evaluate(() => window.__cmd?.zoom(0));
+await page.keyboard.up('Shift');
 await wait(600);
 
 // bridge view for a while so the AI can close
