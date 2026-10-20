@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>铁底湾 1942 · 战舰炮战</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23081017'/%3E%3Cpath d='M4 20h24l-3 6H7z' fill='%23f0b54a'/%3E%3Crect x='14' y='8' width='4' height='12' fill='%23e8edf2'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="gl"></canvas>
+      <canvas id="overlay"></canvas>
+      <div id="vignette"></div>
+
+      <div id="hud" hidden>
+        <div class="hud-tl">
+          <div class="wave"><b id="hWave">第 1 波</b><span id="hWaveName">铁底湾 · 1942</span></div>
+          <div class="counts"><span class="foe">敌舰 <b id="hFoe">0</b></span><span class="friend">我舰 <b id="hFriend">1</b></span></div>
+        </div>
+
+        <div class="hud-tr">
+          <div class="score"><b id="hTons">0</b><small>吨 · 击沉</small></div>
+          <div class="clock" id="hClock">00:00</div>
+          <ul id="feed" class="feed"></ul>
+        </div>
+
+        <div id="banner" class="banner" hidden><div class="b1"></div><div class="b2"></div></div>
+        <div id="torpWarn" class="torp-warn" hidden>鱼雷接近</div>
+        <div id="hint" class="hint"></div>
+        <div id="lockHint" class="lock-hint" hidden>点击画面锁定鼠标 · 左键开火 · Esc 暂停</div>
+
+        <div class="hud-bl panel">
+          <div class="ship-name"><b id="hName">—</b><span id="hNo">—</span></div>
+          <div class="ship-type" id="hType">—</div>
+          <div class="hp">
+            <div class="hp-row"><span>耐久</span><b id="hHp">0 / 0</b></div>
+            <div class="bar"><i id="hHpBar" style="width:100%"></i></div>
+          </div>
+          <div class="nav">
+            <canvas id="tele" width="150" height="80" aria-label="车钟"></canvas>
+            <div class="nav-read">
+              <div>航速<b id="hSpd">0<small>kn</small></b></div>
+              <div>航向<b id="hCrs">000<small>°</small></b></div>
+            </div>
+          </div>
+          <div class="rudder">
+            <div class="rr"><span>舵</span><span id="hRud">正舵</span></div>
+            <div class="track"><div class="fill" id="hRudFill"></div></div>
+          </div>
+        </div>
+
+        <div class="hud-bc">
+          <div class="wpn sel" id="wGun">
+            <div class="wpn-h"><kbd>1</kbd><b>主炮</b><span id="wGunName">16"/45</span></div>
+            <div class="pips" id="wGunPips"></div>
+            <div class="sub" id="wGunSub">就绪</div>
+          </div>
+          <div class="wpn" id="wTorp">
+            <div class="wpn-h"><kbd>2</kbd><b>鱼雷</b><span id="wTorpName">—</span></div>
+            <div class="pips" id="wTorpPips"></div>
+            <div class="sub" id="wTorpSub">—</div>
+          </div>
+          <div class="wpn" id="wDc">
+            <div class="wpn-h"><kbd>R</kbd><b>损管</b><span id="wDcN">2</span></div>
+            <div class="pips" id="wDcPips"></div>
+            <div class="sub" id="wDcSub">就绪</div>
+          </div>
+        </div>
+
+        <div class="hud-br panel">
+          <canvas id="mini" aria-label="海图"></canvas>
+        </div>
+
+        <div class="keys-strip">
+          <kbd>W/S</kbd>车钟<kbd>A/D</kbd>转舵<kbd>鼠标</kbd>瞄准<kbd>左键</kbd>齐射<kbd>右键</kbd>望远镜<kbd>C</kbd>视角<kbd>R</kbd>损管<kbd>Esc</kbd>暂停
+        </div>
+
+        <div id="debug" class="debug" hidden></div>
+      </div>
+
+      <div id="home" class="screen">
+        <div class="sheet wide">
+          <p class="eyebrow">所罗门群岛 · 瓜达尔卡纳尔 · 1942 年 11 月</p>
+          <h1 class="title">铁底湾<span class="yr">1942</span></h1>
+          <p class="en">IRONBOTTOM SOUND · NIGHT ACTION</p>
+          <p class="brief" id="homeBrief">
+            三艘日本驱逐舰借着夜色从萨沃岛西侧南下。你指挥一艘美军战列舰横在海峡里：主炮十公里外的落弹要飞十一秒，
+            副炮会自己找目标开火。别让她们进到鱼雷射程。
+          </p>
+
+          <div class="pick-row">
+            <div class="side-seg" id="sideSeg">
+              <button data-s="US" class="on" type="button">美军<small>北卡罗来纳级 战列舰</small></button>
+              <button data-s="JP" type="button">日军<small>金刚级 战列舰</small></button>
+            </div>
+            <div class="diff-seg" id="diffSeg">
+              <button data-d="cadet" type="button">见习</button>
+              <button data-d="captain" class="on" type="button">舰长</button>
+              <button data-d="admiral" type="button">提督</button>
+            </div>
+          </div>
+
+          <div class="go-row">
+            <button id="startBtn" class="primary" type="button">起锚出击</button>
+            <button id="guideBtn" class="ghost" type="button">操作说明</button>
+            <button id="soundBtn" class="ghost" type="button">声音：开</button>
+            <button id="debugBtn" class="ghost" type="button">弹道面板</button>
+          </div>
+          <p class="best" id="homeBest"></p>
+        </div>
+      </div>
+
+      <div id="pause" class="screen dim" hidden>
+        <div class="sheet">
+          <p class="eyebrow">战斗暂停</p>
+          <h2>海峡里还有敌舰</h2>
+          <dl class="keys">
+            <div><dt>W / S</dt><dd>车钟加减</dd></div>
+            <div><dt>A / D</dt><dd>转舵</dd></div>
+            <div><dt>鼠标</dt><dd>方位与距离</dd></div>
+            <div><dt>左键</dt><dd>主炮齐射</dd></div>
+            <div><dt>右键 / Shift</dt><dd>望远镜</dd></div>
+            <div><dt>C</dt><dd>切换舰桥 / 跟随视角</dd></div>
+            <div><dt>1 / 2</dt><dd>主炮 / 鱼雷</dd></div>
+            <div><dt>R</dt><dd>损管：灭火并抢修</dd></div>
+            <div><dt>F3</dt><dd>弹道调试面板</dd></div>
+          </dl>
+          <div class="btns">
+            <button class="primary" id="resumeBtn" type="button">继续战斗</button>
+            <button class="ghost" id="quitBtn" type="button">返回港口</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="end" class="screen dim" hidden>
+        <div class="sheet">
+          <p class="eyebrow" id="endEyebrow"></p>
+          <h2 id="endTitle"></h2>
+          <p id="endLine"></p>
+          <dl class="stats" id="endStats"></dl>
+          <div class="btns">
+            <button class="primary" id="againBtn" type="button">再战一次</button>
+            <button class="ghost" id="portBtn" type="button">返回港口</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="guide" class="screen dim" hidden>
+        <div class="sheet">
+          <p class="eyebrow">CONTROLS</p>
+          <h2>操作说明</h2>
+          <p class="brief">
+            鼠标左右定方位，上下定距离刻度。屏幕中央的十字是炮口指向，海面上的琥珀色椭圆是这一距离上一个 σ 的散布范围：
+            长轴顺着射向，短轴横跨射向。齐射后看着水柱修正——偏前就把距离刻度往回压，偏后就往上加。
+          </p>
+          <p class="brief">
+            副炮由舰上自己指挥：只要敌舰进入五千米，十座 5 英寸炮会自己选目标、算提前量并开火，你不用管它们。
+            主炮十公里落弹十一秒，所以打驱逐舰要算她在这十一秒里跑去的五百米。
+          </p>
+          <div class="btns"><button class="primary" id="guideClose" type="button">关闭</button></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
