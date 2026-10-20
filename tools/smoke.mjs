@@ -47,11 +47,10 @@ await page.screenshot({ path: `${OUT}/02-chase.png` });
 // point the guns at the nearest destroyer and fire a full broadside
 await page.evaluate(() => window.__cmd?.aimAtNearest());
 await wait(400);
-// hold Shift - that is the telescope binding now
-await page.keyboard.down('Shift');
+// Shift is a toggle now: one press puts the binoculars up and leaves them up
+await page.keyboard.press('Shift');
 await wait(900);
 await page.screenshot({ path: `${OUT}/03-sight.png` });
-await page.keyboard.up('Shift');
 await page.evaluate(() => window.__cmd?.fire());
 await wait(1200);
 await page.screenshot({ path: `${OUT}/04-firing.png` });
@@ -67,8 +66,22 @@ await page.evaluate(() => window.__cmd?.splash(406));
 await wait(400);
 await page.screenshot({ path: `${OUT}/05c-splash-close.png` });
 
-// probe the sight while the binoculars are up (via the real Shift key)
-await page.keyboard.down('Shift');
+// Aim direction check: turning right must swing the world to the LEFT on screen (FPS convention).
+// A landmark 3 km due north of the ship, sampled before and after a rightward mouse move.
+const dirCheck = await page.evaluate(async () => {
+  const P = window.__debug().player;
+  const before = window.__cmd.screenOf(P.x, 30, P.z + 3000);
+  window.__cmd.turn(180, 0); // 180 px of mouse to the right
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const after = window.__cmd.screenOf(P.x, 30, P.z + 3000);
+  window.__cmd.turn(-180, 0); // and back
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  return { beforeX: Math.round(before[0]), afterX: Math.round(after[0]), moved: Math.round(after[0] - before[0]) };
+});
+console.log('--- aim direction (mouse right -> world should move LEFT, i.e. moved < 0) ---');
+console.log(JSON.stringify(dirCheck));
+
+// the binoculars are still up from the single press above - that is the point of a toggle
 await wait(1400);
 await page.screenshot({ path: `${OUT}/03b-sight-zoom.png` });
 const probeSight = await page.evaluate(() => {
@@ -103,8 +116,11 @@ const probeSight = await page.evaluate(() => {
 const sightState = await page.evaluate(() => window.__debug?.().overlay);
 console.log('--- sight probe ---');
 console.log(JSON.stringify(probeSight), JSON.stringify(sightState));
-await page.keyboard.up('Shift');
-await wait(600);
+// and a second press must put them away again
+await page.keyboard.press('Shift');
+await wait(800);
+const zoomAfterSecondPress = await page.evaluate(() => window.__debug().overlay.zoom);
+console.log('--- zoom after the second Shift press (expect ~0) ---', JSON.stringify(zoomAfterSecondPress));
 
 // bridge view for a while so the AI can close
 await page.evaluate(() => window.__cmd?.cam(1));

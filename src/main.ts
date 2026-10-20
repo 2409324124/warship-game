@@ -66,11 +66,11 @@ const G = {
 };
 
 const views = new Map<number, ShipView>();
-const aim = { yaw: 0, range: 9000, pYaw: 0, pRange: 0, sens: 1 };
+const aim = { yaw: 0, range: 9000, sens: 1 };
 const keys: Record<string, boolean> = {};
-// The telescope follows whichever of Shift / right mouse button is down, so a key can never get
-// stuck on if the window loses focus mid-press.
-let shiftHeld = false;
+// Shift toggles the telescope (press once to stay in, press again to come out). The right mouse
+// button still works as a hold-to-look. Neither can stick on if the window loses focus.
+let zoomToggle = false;
 let rmbHeld = false;
 let zoomCmd: number | null = null;
 let spots: { text: string; x: number; z: number; t: number }[] = [];
@@ -332,7 +332,7 @@ function exitLock(): void {
 
 addEventListener('keydown', (e) => {
   keys[e.code] = true;
-  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') shiftHeld = true;
+  if ((e.code === 'ShiftLeft' || e.code === 'ShiftRight') && !e.repeat) zoomToggle = !zoomToggle;
   if (e.code === 'Escape') {
     if (G.mode === 'play') pause(true);
     else if (G.mode === 'paused') pause(false);
@@ -352,10 +352,9 @@ addEventListener('keydown', (e) => {
 });
 addEventListener('keyup', (e) => {
   keys[e.code] = false;
-  if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') shiftHeld = false;
 });
 addEventListener('blur', () => {
-  shiftHeld = false;
+  zoomToggle = false;
   rmbHeld = false;
   for (const k in keys) keys[k] = false;
 });
@@ -366,13 +365,36 @@ function throttleStep(d: number): void {
   P.throttle = clamp(P.throttle + d, 0, 6);
 }
 
-addEventListener('mousemove', (e) => {
-  if (document.pointerLockElement !== $<HTMLCanvasElement>('gl')) return;
+// FPS-style: the mouse turns the guns and the view together, one to one, with no inertia. The
+// crosshair sits at the centre of the screen and the world swings past it, which is how aiming
+// feels in World of Warships.
+//
+// The sign matters and is easy to get backwards. Our bearing is a compass bearing: yaw grows from
+// north (+z) toward east (+x). The camera's screen-right vector in world space is (-cos yaw, sin
+// yaw), while d(aim point)/d(yaw) is (cos yaw, -sin yaw) - exactly the negative of screen-right.
+// So turning the view right means *decreasing* the bearing, hence the minus below.
+const YAW_PER_PX = 0.0022;
+
+function aimDelta(dx: number, dy: number): void {
   if (G.mode !== 'play') return;
   const f = (camera.fov / 55) * aim.sens;
-  aim.pYaw += e.movementX * 0.0022 * f;
-  aim.pRange -= e.movementY * clamp(aim.range * 0.004, 14, 90) * f;
+  aim.yaw -= dx * YAW_PER_PX * f;
+  aim.range -= dy * clamp(aim.range * 0.004, 14, 90) * f;
+  clampAim();
+}
+
+addEventListener('mousemove', (e) => {
+  if (document.pointerLockElement !== $<HTMLCanvasElement>('gl')) return;
+  aimDelta(e.movementX, e.movementY);
 });
+
+function clampAim(): void {
+  const P = G.P;
+  const maxR = (P?.gun.range || 22000) * 1.08;
+  aim.range = clamp(aim.range, 250, maxR);
+  if (aim.yaw > Math.PI) aim.yaw -= Math.PI * 2;
+  if (aim.yaw < -Math.PI) aim.yaw += Math.PI * 2;
+}
 
 $<HTMLCanvasElement>('gl').addEventListener('mousedown', (e) => {
   if (G.mode !== 'play') return;
@@ -394,7 +416,8 @@ addEventListener('mouseup', (e) => {
 addEventListener('contextmenu', (e) => e.preventDefault());
 addEventListener('wheel', (e) => {
   if (G.mode !== 'play') return;
-  aim.pRange -= e.deltaY * clamp(aim.range * 0.004, 14, 90);
+  aim.range -= e.deltaY * clamp(aim.range * 0.004, 14, 90);
+  clampAim();
 });
 
 // ------------------------------------------------------------------ menu wiring
@@ -447,7 +470,7 @@ function frame(now: number): void {
   const dt = Math.min(0.05, Math.max(0.0005, raw));
   lastDt = raw;
   G.time += dt;
-  G.zoomWant = zoomCmd !== null ? zoomCmd : shiftHeld || rmbHeld ? 1 : 0;
+  G.zoomWant = zoomCmd !== null ? zoomCmd : zoomToggle || rmbHeld ? 1 : 0;
   G.shake = Math.max(0, G.shake - dt * 2.2);
 
   const world = G.world;
@@ -461,12 +484,7 @@ function frame(now: number): void {
         const right = keys.KeyD || keys.ArrowRight;
         P.rudderCmd = (right ? 1 : 0) - (left ? 1 : 0);
       }
-      // aim easing
-      const k = 1 - Math.exp(-dt / 0.05);
-      aim.yaw += (aim.pYaw || 0) * k;
-      aim.range = clamp(aim.range + (aim.pRange || 0) * k, 250, (P?.gun.range || 22000) * 1.08);
-      aim.pYaw *= 1 - k;
-      aim.pRange *= 1 - k;
+      // the guns and the camera are both driven straight off the mouse; no easing, no lag
       if (P) {
         P.aimX = P.x + Math.sin(aim.yaw) * aim.range;
         P.aimZ = P.z + Math.cos(aim.yaw) * aim.range;
@@ -754,6 +772,15 @@ let lastDt = 0.016;
   },
   zoom: (v: number) => {
     zoomCmd = v > 0 ? 1 : 0;
+  },
+  /** Same code path as the mouse: dx > 0 must swing the view to the right. */
+  turn: (dx: number, dy: number) => {
+    aimDelta(dx, dy);
+  },
+  /** Where a world point lands on screen, for checking the aim feels the right way round. */
+  screenOf: (x: number, y: number, z: number) => {
+    tmpV.set(x, y, z).project(camera);
+    return [((tmpV.x + 1) / 2) * window.innerWidth, ((1 - tmpV.y) / 2) * window.innerHeight, tmpV.z];
   },
   cam: (v: number) => {
     G.camMode = v ? 'bridge' : 'chase';
