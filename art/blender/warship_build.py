@@ -805,14 +805,25 @@ def build_ship(key, ref=True, extras=True):
     if ref:
         build_hull_ref(key, rc)
     buf = Buf()
-    for p in spec['parts']:
-        try:
-            build_part(buf, spec, p)
-        except Exception as e:
-            raise RuntimeError('part failed: %s %s z=%s' % (key,p.get('k'),p.get('z'))) from e
-    if extras:
-        add_extras(buf, spec)
+    if key == 'us_bb':
+        # Art-only layout: historical Washington photographs, not stacked sim proxy blocks.
+        namespace = {}
+        source = r'D:\warship-game\art\blender\washington_super.py'
+        exec(compile(open(source).read(), source, 'exec'), namespace)
+        global WASHINGTON_AUDIT
+        WASHINGTON_AUDIT = namespace['build_washington'](buf, spec, globals())
+    else:
+        for p in spec['parts']:
+            try:
+                build_part(buf, spec, p)
+            except Exception as e:
+                raise RuntimeError('part failed: %s %s z=%s' % (key,p.get('k'),p.get('z'))) from e
+        if extras:
+            add_extras(buf, spec)
     ob = make_obj('super_' + key, buf, coll=c)
+    if key == 'us_bb':
+        ob['visual_profile'] = 'USS Washington BB-56, August 1942 photo-based interpretation'
+        ob['component_bounds'] = json.dumps(WASHINGTON_AUDIT)
     print(key, 'verts', len(buf.v), 'faces', len(buf.f))
     return ob
 
@@ -1325,6 +1336,14 @@ def validate_geometry():
     """Check generated positions and preview matrices, not merely input parameters."""
     from mathutils import Vector, Matrix
     count = 0
+    if 'WASHINGTON_AUDIT' in globals():
+        tower = WASHINGTON_AUDIT['continuous_tower']
+        assert 24 < tower['bow'][0] < 27, tower
+        assert 33 < tower['bow'][1] < 36, tower
+        assert abs((tower['x'][0]+tower['x'][1])/2) < .01, tower
+        assert tower['height'][1] > 34, tower
+        assert WASHINGTON_AUDIT['upper_platform_and_director']['height'][1] < 45
+        print('WASHINGTON: actual continuous tower and director bounds passed')
     for key, spec in SHIPS.items():
         for p in spec['parts']:
             if p['k'] != 'b':

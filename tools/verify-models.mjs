@@ -121,6 +121,17 @@ try {
       check(!!base && !!barrel, `${name}: GLB must contain exact base/barrel node names`);
       check(!!base?.parent && base.parent === barrel?.parent, `${name}: base/barrel must be siblings`);
       check(meshCount(base) > 0 && meshCount(barrel) > 0, `${name}: base/barrel must contain meshes`);
+      if (base && barrel) {
+        check(base.position.length() < 0.0001, `${name}: base origin is not ring centre`);
+        check(Math.abs(barrel.rotation.x) + Math.abs(barrel.rotation.y) + Math.abs(barrel.rotation.z) < 0.0001,
+          `${name}: barrel has an unbaked rest rotation`);
+        const origin = barrel.position.clone();
+        const probe = barrel.clone(true);
+        probe.rotation.x = -Math.PI / 6;
+        const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(probe.quaternion);
+        check(forward.y > 0.49 && probe.position.distanceTo(origin) < 0.0001,
+          `${name}: positive elevation must raise the bore without moving its trunnion`);
+      }
     }
     const ships = entries.map(({ key, ship, view, originalChildren, originalBarrels }) => {
       check(view.group.parent === scene, `${key}: ShipView missing from independent scene`);
