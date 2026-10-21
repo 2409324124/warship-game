@@ -103,7 +103,7 @@ Cp 弹射器  Cr 起重机        Gm 固定炮座  Dc 深弹架   Tu 炮塔（�
 主炮/副炮配置有 `test/ships.test.ts` 的数据测试锁着（3 座三联 16 寸、10 座双联 5 寸左右各五等），
 改配置会红——**这是故意的**，改之前先确认资料。
 
-### 接口（当前是" dormant"）
+### 接口（当前只支持 props / landmarks，舰岛与炮塔的覆盖尚未接线）
 
 `src/render/assets.ts`：
 
@@ -116,11 +116,18 @@ mountProps(parent, props, deckAt)     // 按 { model, z, y?, x?, ry?, scale? } �
 - GLTFLoader 是懒加载的，只在第一次真正加载时才拉进来
 - 文件缺失 → 静默跳过，游戏照常跑
 
-**接线步骤（等有 .glb 了再做，现在不用动）**：
-1. `src/sim/ships.ts` 的 `ShipSpec` 加一个可选字段 `props?: { model; z; y?; x?; ry?; scale? }[]`
-2. `src/render/shipView.ts` 构造末尾调用 `mountProps(this.group, spec.props, z => deckY(spec, z))`
-3. 舰船数据里加 `props: [...]` 一行
-4. 地标：在 `src/main.ts` 里遍历一份地标数组，`loadModel` 后 `scene.add`
+已经就位的：`loadModel()` / `mountProps()` 能加载任意 .glb 并按船体局部坐标挂载，
+文件缺失时静默跳过。**舰岛与炮塔的"覆盖"逻辑还没接**——需要：
+
+1. `render/shipView.ts`：
+   - 舰岛：若 `ships/<key>_super.glb` 存在，加载后加入 `group`，并**隐藏**程序化的
+     `struct` / `dark` 两个 mesh（保留 hull / deck / foam）
+   - 炮塔：若 `guns/<kind>.glb` 存在，用它的 `base` / `barrel` 替换程序化炮塔几何，
+     挂到现有 pivot 上（`barrel` 节点继续吃 `elev`）
+2. 缺失时什么都不做，程序化几何照常显示（回退）
+3. 舰船数据不需要改——按 key 和 turret kind 自动匹配文件名
+
+这一步属于**接口实现**，不是建模；要不要现在做取决于你想先定文档还是先通管线。
 
 ### 命中盒
 
@@ -131,18 +138,65 @@ mountProps(parent, props, deckAt)     // 按 { model, z, y?, x?, ry?, scale? } �
 
 ## 三、要做什么
 
-### 分工原则（先想清楚再动手）
+### 分工原则
 
-- **程序化就能做好的，不要在 Blender 里做**：烟囱数量/位置、舰桥层数与收分、副炮数量与型号、
-  炮塔尺寸与炮管粗细——这些是数据行 + `TS` 表，改完命中盒自动同步、能立刻跑测试。
-- **Blender 只做代码很难表达的有机/异形件**：
-  - 水上侦察机 + 浮筒（曲面机身、机翼）
-  - 舰桥圆弧围壁与舷窗带
-  - 格子桅 / 宝塔桁架
-  - 烟囱帽喇叭口、排烟管
-  - 救生艇 / 小艇的曲面船壳
-  - 螺旋桨、锚、系缆桩
-  - 岛屿地标：灯塔、椰树、栈桥、沉船
+**Blender 负责所有舰岛与所有舰炮。** 程序化只保留船体、甲板、水线与命中盒。
+
+Blender 做：
+
+- **舰岛（上层建筑）全套**：塔式/宝塔式舰桥、舰桥围壁与舷窗带、烟囱与烟囱帽、
+  桅杆与桁架（含格子桅、金刚的宝塔桁架）、探照灯平台、指挥仪、雷达、测距仪、
+  吊艇架与救生艇、弹射器、起重机、机炮座、舷侧走道与栏杆
+- **舰炮全套**：主炮塔（塔体、炮盾、炮管、炮口、测距仪耳）、副炮塔/炮廓炮、鱼雷发射管
+- **有机/异形件**：水上侦察机 + 浮筒、螺旋桨、锚、系缆桩
+- **岛屿地标**：灯塔、椰树、栈桥、沉船
+
+程序化保留：
+
+- 船体蒙皮与甲板（`src/sim/hull.ts` 站位放样）
+- 水线泡沫、尾流等特效
+- **命中盒**（见下）
+
+### 关键后果：视觉与命中盒必须分离
+
+现在 `sim/ships.ts` 的 `parts` 一份数据同时喂**渲染**和**命中盒**（`segHitShip` 用的是
+`spec.L / B / F / top` 的大盒体，其实不依赖 `parts`，但视觉上它们是一体的）。
+舰岛和舰炮交给 Blender 之后，这条链要断开：
+
+- **外观**：来自 `public/models/` 下的 .glb
+- **命中**：仍由 `sim/ships.ts` 的数据决定（盒体 + `parts` 作为可选的细化体积）
+- `parts` 里的方块**不再需要长得好看了**——它们退化为"碰撞体积"描述，
+  可以保留、简化，甚至在接口就绪后删除；改它们不会改变玩家看到的东西
+- 炮塔的**方位转动与俯仰仍由 `updateTurrets()` 驱动**，Blender 的炮塔模型挂到同一个
+  pivot 上即可，不需要在 Blender 里做动画
+
+**回退规则（重要）**：任何 .glb 缺失时，游戏必须仍然用程序化几何正常运行。
+Blender 是"覆盖"而不是"替换"——`没有文件 → 用代码生成的`，这样才能边建模边跑。
+
+### 炮塔模型的节点约定
+
+炮塔 .glb 里放两个**同级**节点，靠名字识别：
+
+| 节点名 | 内容 | 运动 |
+| --- | --- | --- |
+| `base` | 炮塔座圈与塔体（不含炮管） | 随 `pivot.rotation.y` 做方位转动 |
+| `barrel` | 炮管 + 炮盾 + 炮尾 | 绕自身 X 轴俯仰（`barrel.rotation.x = -elev`） |
+
+- 原点：`base` 的原点 = **炮塔座圈中心（甲板面高度）**
+- 朝向：炮管朝 **−Y**（导出后即世界 +Z 船首）
+- 枢轴：`barrel` 的原点放在**耳轴**位置（大约在塔体中部、炮管根处）
+- 单位米，1:1
+
+### 文件清单与命名
+
+| 类型 | 路径 | 说明 |
+| --- | --- | --- |
+| 舰岛 | `public/models/ships/<舰key>_super.glb` | 整舰上层建筑，原点船体中心水线，朝 −Y |
+| 炮塔 | `public/models/guns/<TS 里的 kind>.glb` | 如 `us16t.glb`、`us5d.glb`、`jp14d.glb` |
+| 挂船小件 | `public/models/props/<舰key>_<部件>.glb` | 可选，舰岛已包含的不用单独做 |
+| 岛屿地标 | `public/models/landmarks/<类型>.glb` | |
+
+`TS` 里现有的 kind：`us5s us5d us6t us8t us16t jp5d jp5s jp55 jp8d jp14d jp6c`
 
 ### 优先级建议（按第一关出镜频率）
 
@@ -179,11 +233,14 @@ mountProps(parent, props, deckAt)     // 按 { model, z, y?, x?, ry?, scale? } �
 ```bash
 # 1. 在 Blender 里建模，工作文件存
 #    art/blender/<名字>.blend
-# 2. 朝 −Y 建模，1 单位 = 1 米，原点水线/船体中心
+# 2. 朝 −Y 建模，1 单位 = 1 米
+#    舰岛原点 = 船体中心水线；炮塔原点 = 座圈中心（甲板面）
 # 3. 导出 glTF Binary (.glb)，+Y up，Apply Transform
-#    → public/models/props/<舰key>_<部件>.glb
-#    → public/models/landmarks/<类型>.glb
-# 4. 接线（见上文"接线步骤"），在舰船数据里加 props 一行
+#    → public/models/ships/<舰key>_super.glb      舰岛
+#    → public/models/guns/<turret kind>.glb       炮塔（内含 base / barrel 两个节点）
+#    → public/models/props/<舰key>_<部件>.glb     可选小件
+#    → public/models/landmarks/<类型>.glb         地标
+# 4. 文件一落地，游戏下次刷新就会用它（覆盖逻辑接好之后）
 ```
 
 游戏跑起来：`npm run dev` → http://127.0.0.1:5173
