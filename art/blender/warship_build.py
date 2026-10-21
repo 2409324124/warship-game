@@ -822,6 +822,7 @@ def add_extras(buf, spec):
     rnd = random.Random(spec['key'])
     key = spec['key']
     B = spec['B']
+    add_fixed_barbettes(buf, spec)
     # ventilator cowls along the biggest deckhouse
     for p in spec['parts']:
         if p['k'] == 'b' and p.get('len', 0) >= 30 and p.get('w', 0) >= B * 0.6:
@@ -844,6 +845,40 @@ def add_extras(buf, spec):
         yy = deck_y(spec, zz) - 1.6
         hw = (spec['B'] / 2) * half_w(zz / spec['L'] + 0.5)
         buf.emit(*p_box(sx * (hw - 0.5), yy, zz, 0.5, 0.5, 1.6), col=DARK, y0=yy, span=2, lo=0.8)
+
+
+def add_fixed_barbettes(buf, spec):
+    """Raised mounts need non-rotating structure down to the real deck.
+
+    Shared gun GLBs cannot know the height of a particular mounting station. Their short
+    ring is only the turret interface, not a magically suspended full-height foundation.
+    """
+    for t in spec['tur']:
+        if t.get('sec') or t['y'] <= 0.1:
+            continue
+        shape = TS[t['kind']]
+        deck = deck_y(spec, t['z'])
+        mount = deck + t['y']
+        r = shape['w'] * 0.44
+        buf.emit(*p_cyl(t['x'], deck - 0.35, t['z'], r, r, t['y'] + 0.35,
+                       seg=24), col=STEEL, y0=deck, span=max(2, t['y']), lo=0.72)
+        # Upper fixed bearing shoulder; the gun's ring overlaps this rather than floating.
+        buf.emit(*p_cyl(t['x'], mount - 0.45, t['z'], r * 1.025, r * 1.025, 0.22,
+                       seg=24), col=(0.54,0.58,0.62), y0=None)
+    if spec['key'] == 'us_bb':
+        # No.2's raised working deck extends from the forward deckhouse into the barbette.
+        t = spec['tur'][1]
+        rear = 34.0  # overlap existing deckhouse's forward end at z=35
+        front = t['z']
+        center = (rear + front) / 2
+        width = TS[t['kind']]['w'] * 0.96
+        plan = [(x, z + center) for x,z in plan_poly(front-rear, width, 0.18, 0.12)]
+        y0 = min(deck_y(spec,rear), deck_y(spec,front)) - 0.3
+        y1 = deck_y(spec,front) + t['y'] - 0.50
+        buf.emit(*p_prism(plan,plan,y0,y1,cap_top=True,cap_bot=True),
+                 col=STEEL,y0=y0,span=y1-y0,lo=0.72)
+        buf.emit(*p_prism(plan,plan,y1,y1+0.10,cap_top=True,cap_bot=False),
+                 col=(0.48,0.51,0.54),y0=None)
 
 
 # ---------------------------------------------------------------- turrets
