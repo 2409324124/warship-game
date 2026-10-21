@@ -332,6 +332,9 @@ export const SPECS: Record<string, ShipSpec> = {
     hp: 42000,
     tons: 9950,
     gun: 'us203',
+    // eight 5-inch dual-purpose guns in four twin mounts on the beam. The spec marks them as
+    // secondaries, so she needs a secondary gun defined or the ship cannot be built at all.
+    sec: 'sec127',
     torp: null,
     prefRange: 7000,
     aiErr: 85,

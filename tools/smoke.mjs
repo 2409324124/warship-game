@@ -81,6 +81,24 @@ const dirCheck = await page.evaluate(async () => {
 console.log('--- aim direction (mouse right -> world should move LEFT, i.e. moved < 0) ---');
 console.log(JSON.stringify(dirCheck));
 
+// Target lock: aim at a destroyer, press X, and check she is held and the rangefinder converges
+await page.evaluate(() => window.__cmd?.aimAtNearest());
+await wait(300);
+await page.keyboard.press('KeyX');
+await wait(1500);
+const lockA = await page.evaluate(() => window.__debug().lock);
+await wait(4000);
+const lockB = await page.evaluate(() => window.__debug().lock);
+await page.screenshot({ path: `${OUT}/10-locked.png` });
+// a big trim must break the lock and hand the guns back
+await page.evaluate(() => window.__cmd?.turn(400, 0));
+await wait(600);
+const lockC = await page.evaluate(() => window.__debug().lock);
+console.log('--- target lock ---');
+console.log('locked:', JSON.stringify(lockA));
+console.log('after 4s:', JSON.stringify(lockB));
+console.log('after a 50deg trim:', JSON.stringify(lockC));
+
 // the binoculars are still up from the single press above - that is the point of a toggle
 await wait(1400);
 await page.screenshot({ path: `${OUT}/03b-sight-zoom.png` });

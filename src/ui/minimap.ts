@@ -27,8 +27,8 @@ export class Minimap {
     const img = c.createImageData(N, N);
     for (let j = 0; j < N; j++) {
       for (let i = 0; i < N; i++) {
-        const x = ((i / N) * 2 - 1) * MM;
-        const z = ((j / N) * 2 - 1) * MM;
+        const x = MM - ((i / N) * 2 - 1) * MM;
+        const z = MM - ((j / N) * 2 - 1) * MM;
         const h = terrainH(x, z);
         const o = (j * N + i) * 4;
         const above = h > 0;
@@ -43,7 +43,13 @@ export class Minimap {
     this.land = cv;
   }
 
-  draw(world: World, P: Ship | null, torps: Torpedo[], aim: { x: number; z: number } | null): void {
+  draw(
+    world: World,
+    P: Ship | null,
+    torps: Torpedo[],
+    aim: { x: number; z: number } | null,
+    locked: Ship | null = null,
+  ): void {
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const size = this.cv.clientWidth || 176;
     if (this.cv.width !== Math.floor(size * dpr)) {
@@ -54,8 +60,13 @@ export class Minimap {
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.clearRect(0, 0, size, size);
     const k = size / (2 * MM);
-    const X = (x: number) => (x + MM) * k;
-    const Y = (z: number) => (z + MM) * k;
+    // Chart orientation. World +z is north and world +x is WEST (a right-handed world with +y up:
+    // (+x) x (+z) = -y, so +x cannot be east). For a north-up chart that is consistent with what
+    // the captain sees - facing north, her starboard (-x, east) is on the right of the screen -
+    // both axes have to be negated. Negating only one would mirror the chart and hand her a
+    // left-handed world.
+    const X = (x: number) => (MM - x) * k;
+    const Y = (z: number) => (MM - z) * k;
 
     if (this.land) c.drawImage(this.land, 0, 0, size, size);
 
@@ -108,6 +119,18 @@ export class Minimap {
         c.beginPath();
         c.arc(x, y, 3.2, 0, TAU);
         c.fill();
+      }
+      if (locked === s) {
+        c.strokeStyle = '#9affbe';
+        c.lineWidth = 1.6;
+        c.beginPath();
+        c.arc(x, y, 9, 0, TAU);
+        c.stroke();
+        c.beginPath();
+        c.arc(x, y, 13, 0, TAU);
+        c.globalAlpha = 0.4;
+        c.stroke();
+        c.globalAlpha = 1;
       }
     }
 

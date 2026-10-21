@@ -18,6 +18,8 @@ export class AI {
   salvoGap = 0;
   side: 1 | -1 = 1;
   evade = 0;
+  /** Off for deterministic tests: stops her swapping broadsides at random. */
+  wander = true;
 
   constructor(w: World, s: Ship) {
     this.w = w;
@@ -105,7 +107,8 @@ export class AI {
       if (Math.abs(rel) < 0.9) desired = s.heading + (rel > 0 ? -0.8 : 0.8);
     }
 
-    s.rudderCmd = clamp(angDiff(s.heading, desired) * 1.6, -1, 1);
+    // rudder > 0 is starboard, and starboard is a *decreasing* heading - see the note in ship.ts
+    s.rudderCmd = -clamp(angDiff(s.heading, desired) * 1.6, -1, 1);
     const wantSpeed = this.evade > 0 ? 6 : errR > 0.05 ? 6 : errR < -0.15 ? 4 : 5;
     s.throttle = clamp(wantSpeed, 2, 6);
 
@@ -164,8 +167,11 @@ export class AI {
       }
     }
 
-    // a little wander so a formation does not move like one rigid body
-    if (Math.random() < dt * 0.05) this.side = Math.random() < 0.5 ? 1 : -1;
+    // A little wander so a formation does not move like one rigid body. Only swap sides once she
+    // is settled, though: changing sides mid-turn asks her to swing through 180 degrees.
+    if (this.wander && Math.abs(s.rudderCmd) < 0.3 && Math.random() < dt * 0.05) {
+      this.side = Math.random() < 0.5 ? 1 : -1;
+    }
     if (Math.random() < dt * 0.02) this.salvos = Math.max(0, this.salvos - 1);
   }
 }

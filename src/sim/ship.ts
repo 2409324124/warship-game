@@ -204,7 +204,11 @@ export class Ship {
       this.rudder *= 1 - dt;
     }
     const eff = clamp((Math.abs(this.speed) / this.maxV) * 1.1 + 0.12, 0, 1) * Math.sign(this.speed || 1);
-    this.heading = wrapA(this.heading + spec.turn * DEG * this.rudder * eff * dt);
+    // RUDDER SIGN. `heading` is a mathematical bearing, atan2(x, z): it grows from +z (north)
+    // toward +x. In a right-handed world with +y up, (+x) x (+z) = -y, so +x is WEST - the bearing
+    // grows anticlockwise on a north-up chart, which means *increasing* it swings the bow to PORT.
+    // We want rudder > 0 to mean starboard (right rudder, turns right), so it subtracts.
+    this.heading = wrapA(this.heading - spec.turn * DEG * this.rudder * eff * dt);
     this.speed *= 1 - Math.abs(this.rudder) * 0.07 * dt;
 
     const s = Math.sin(this.heading),

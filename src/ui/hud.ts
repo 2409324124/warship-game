@@ -89,6 +89,7 @@ export class Hud {
       if (this.hintT <= 0) this.el.hint.classList.remove('on');
     }
     this.el.torpWarn.hidden = !torpWarn;
+    this.lastP = { x: P.x, z: P.z };
 
     const foes = world.ships.filter((s) => s.team !== P.team && s.alive).length;
     const friends = world.ships.filter((s) => s.team === P.team && s.alive).length;
@@ -112,7 +113,10 @@ export class Hud {
       frac > 0.55 ? 'linear-gradient(90deg,#4f9d6a,#7ec99a)' : frac > 0.25 ? 'linear-gradient(90deg,#c98b32,#f0b54a)' : 'linear-gradient(90deg,#a33a2a,#ef5a40)';
 
     this.el.spd.innerHTML = `${Math.round(P.knots)}<small>kn</small>`;
-    const crs = ((Math.atan2(Math.sin(P.heading), Math.cos(P.heading)) * 180) / Math.PI + 360) % 360;
+    // True compass bearing. `heading` is a mathematical bearing that grows toward +x, and in a
+    // right-handed world with +y up, +x is west - so it grows anticlockwise on a north-up chart.
+    // Starboard (east) is a *decreasing* heading, hence the negation.
+    const crs = ((((-P.heading * 180) / Math.PI) % 360) + 360) % 360;
     this.el.crs.innerHTML = `${String(Math.round(crs)).padStart(3, '0')}<small>°</small>`;
     const r = P.rudder;
     this.el.rud.textContent = Math.abs(r) < 0.05 ? '正舵' : `${r > 0 ? '右' : '左'} ${Math.round(Math.abs(r) * 100)}%`;
@@ -169,6 +173,41 @@ export class Hud {
 
     this.el.wGun.classList.toggle('sel', weapon === 'guns');
     this.el.wTorp.classList.toggle('sel', weapon === 'torps');
+  }
+
+  /** The locked target's card: who she is, what she is doing, and how well we have her ranged. */
+  updateTarget(t: Ship | null, converged: number, flight: number): void {
+    const el = this.targetEl();
+    if (!t || !t.alive) {
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    const d = Math.hypot(t.x - (this.lastP?.x ?? 0), t.z - (this.lastP?.z ?? 0));
+    const brg = ((((-t.heading * 180) / Math.PI) % 360) + 360) % 360;
+    const spd = Math.abs(t.knots);
+    const pct = Math.round(converged * 100);
+    el.innerHTML = `
+      <div class="tg-head"><b>${t.name}</b><span>${t.spec.name}</span></div>
+      <div class="tg-row"><span>距离</span><b>${(d / 1000).toFixed(2)} km</b></div>
+      <div class="tg-row"><span>航向 / 航速</span><b>${String(Math.round(brg)).padStart(3, '0')}° · ${spd.toFixed(0)} kn</b></div>
+      <div class="tg-row"><span>飞行时间</span><b>${flight.toFixed(1)} s</b></div>
+      <div class="tg-row"><span>测距</span><b class="${pct >= 98 ? 'ok' : ''}">${pct}%</b></div>
+      <div class="tg-bar"><i style="width:${pct}%"></i></div>
+      <div class="tg-tip">${converged < 0.98 ? '测距收敛中 · 散布偏大' : '测距完成 · 可放心齐射'}</div>`;
+  }
+
+  private lastP: { x: number; z: number } | null = null;
+
+  private targetEl(): HTMLElement {
+    let el = document.getElementById('targetCard');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'targetCard';
+      el.className = 'target-card panel';
+      document.getElementById('hud')!.appendChild(el);
+    }
+    return el;
   }
 
   setDebug(text: string | null): void {

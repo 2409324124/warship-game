@@ -107,7 +107,11 @@ export class World {
 
 // ------------------------------------------------------------------ the captain's orders
 
-export function playerFire(w: World, P: Ship, ax: number, az: number): void {
+/**
+ * Fire the main battery. `err` is the extra 1-sigma spread in metres from an unsettled rangefinder;
+ * a well-converged solution passes 0.
+ */
+export function playerFire(w: World, P: Ship, ax: number, az: number, err = 0): void {
   if (!P.alive) return;
   const say = (msg: string) => w.emit('hint', { id: P.id, msg });
   const ready = P.mainTurrets.filter((t) => t.reload <= 0);
@@ -116,7 +120,7 @@ export function playerFire(w: World, P: Ship, ax: number, az: number): void {
     say(!ready.length ? '主炮装填中' : P.mainTurrets.some((t) => t.inArc) ? '炮塔转向中' : '目标不在射界内');
     return;
   }
-  for (const t of aimed) fireTurret(w, P, t, ax, az, 0);
+  for (const t of aimed) fireTurret(w, P, t, ax, az, err);
   if (Math.hypot(ax - P.x, az - P.z) > P.gun.range) say('超出射程，已按最大射程发射');
 }
 

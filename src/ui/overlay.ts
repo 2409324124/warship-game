@@ -23,6 +23,11 @@ export interface OverlayState {
   /** Spotter text and where to put it. */
   spots: { text: string; x: number; z: number; t: number }[];
   time: number;
+  /** The locked target, if any. */
+  lock: Ship | null;
+  /** Where the lock's lead point is, and how well the rangefinder has settled. */
+  lead: { x: number; z: number } | null;
+  converged: number;
 }
 
 const FOE = '#ef5a40';
@@ -111,25 +116,13 @@ export class Overlay {
       // through the binoculars only the nearest target keeps its label: the rest is clutter on
       // top of the fall-of-shot ellipse
       const labelled = s.zoom < 0.35 || taken.length < 1;
-      this.drawShipMarker(c, sp[0], sp[1], sh, foe, d, s.time, taken, labelled);
-      if (foe && s.showLead && s.weapon === 'guns') {
-        const [lx, lz] = leadPoint(P.x, P.z, sh, P.gun);
-        const lp = s.project(lx, 4, lz);
-        if (lp) {
-          c.strokeStyle = 'rgba(150,255,190,0.75)';
-          c.lineWidth = 1;
-          c.beginPath();
-          c.moveTo(lp[0] - 6, lp[1]);
-          c.lineTo(lp[0], lp[1] - 6);
-          c.lineTo(lp[0] + 6, lp[1]);
-          c.lineTo(lp[0], lp[1] + 6);
-          c.closePath();
-          c.stroke();
-          c.fillStyle = 'rgba(150,255,190,0.55)';
-          c.font = '10px monospace';
-          c.textAlign = 'left';
-          c.fillText(`提前 ${Math.round(Math.hypot(lx - sh.x, lz - sh.z))}m`, lp[0] + 9, lp[1] + 3);
-        }
+      const isLock = sh === s.lock;
+      this.drawShipMarker(c, sp[0], sp[1], sh, foe, d, s.time, taken, labelled, isLock);
+      // Lead marker. Locked: a solid diamond you can lay the crosshair on. Otherwise a hollow one
+      // for the nearest enemy, if the captain wants the help.
+      if (foe && s.weapon === 'guns' && (isLock || (s.showLead && taken.length === 1))) {
+        const [lx, lz] = isLock && s.lead ? [s.lead.x, s.lead.z] : leadPoint(P.x, P.z, sh, P.gun);
+        this.drawLeadMarker(c, s, sh, lx, lz, isLock, s.converged);
       }
     }
 
@@ -361,6 +354,80 @@ export class Overlay {
     c.fillText(label, W / 2, fy);
   }
 
+  /**
+   * The War Thunder style lead marker: the point the guns must be laid on for the shell to arrive
+   * where the target will be. Solid when locked, hollow otherwise; it fades in as the rangefinder
+   * converges, because until then it is only a guess.
+   */
+  private drawLeadMarker(
+    c: CanvasRenderingContext2D,
+    s: OverlayState,
+    sh: Ship,
+    lx: number,
+    lz: number,
+    locked: boolean,
+    converged: number,
+  ): void {
+    const lp = s.project(lx, 4, lz);
+    if (!lp) return;
+    const r = locked ? 9 : 7;
+    c.save();
+
+    // A target coming straight at you leads along the line of fire, not across it, so the offset
+    // can be only a few pixels even when it is 300 m. Draw the tie line and quote the number.
+    const sp = s.project(sh.x, 4, sh.z);
+    const lead = Math.hypot(lx - sh.x, lz - sh.z);
+    if (sp && lead > 8) {
+      c.strokeStyle = locked ? 'rgba(154,255,190,0.8)' : 'rgba(150,255,190,0.5)';
+      c.lineWidth = locked ? 1.6 : 1;
+      c.setLineDash([4, 3]);
+      c.beginPath();
+      c.moveTo(sp[0], sp[1]);
+      c.lineTo(lp[0], lp[1]);
+      c.stroke();
+      c.setLineDash([]);
+    }
+    c.globalAlpha = locked ? 0.55 + 0.45 * converged : 0.5;
+    c.beginPath();
+    c.moveTo(lp[0], lp[1] - r);
+    c.lineTo(lp[0] + r * 0.72, lp[1]);
+    c.lineTo(lp[0], lp[1] + r);
+    c.lineTo(lp[0] - r * 0.72, lp[1]);
+    c.closePath();
+    if (locked) {
+      c.fillStyle = 'rgba(150,255,190,0.35)';
+      c.fill();
+      c.lineWidth = 2;
+      c.strokeStyle = '#9affbe';
+      c.stroke();
+      // cross hairs through it, so you can see exactly where the centre is
+      c.lineWidth = 1;
+      c.beginPath();
+      c.moveTo(lp[0] - r - 5, lp[1]);
+      c.lineTo(lp[0] + r + 5, lp[1]);
+      c.moveTo(lp[0], lp[1] - r - 5);
+      c.lineTo(lp[0], lp[1] + r + 5);
+      c.stroke();
+    } else {
+      c.lineWidth = 1.4;
+      c.strokeStyle = 'rgba(150,255,190,0.8)';
+      c.stroke();
+    }
+    c.globalAlpha = 1;
+    if (locked) {
+      const label =
+        converged > 0.98 ? `提前点 ${Math.round(lead)}m` : `提前点 ${Math.round(lead)}m · 测距 ${Math.round(converged * 100)}%`;
+      c.font = '600 11px monospace';
+      c.textAlign = 'center';
+      c.lineWidth = 3;
+      c.strokeStyle = 'rgba(8,10,12,0.8)';
+      c.strokeText(label, lp[0], lp[1] - r - 9);
+      c.fillStyle = '#9affbe';
+      c.fillText(label, lp[0], lp[1] - r - 9);
+    }
+    c.restore();
+  }
+
   private drawShipMarker(
     c: CanvasRenderingContext2D,
     x: number,
@@ -371,13 +438,14 @@ export class Overlay {
     time: number,
     taken: { x0: number; y0: number; x1: number; y1: number }[],
     labelled = true,
+    locked = false,
   ): void {
-    const col = foe ? FOE : FRIEND;
-    const w = clamp(1600 / Math.max(240, d), 14, 46);
+    const col = locked ? '#9affbe' : foe ? FOE : FRIEND;
+    const w = clamp(1600 / Math.max(240, d), 14, 46) * (locked ? 1.25 : 1);
     const h = w * 0.62;
     c.strokeStyle = col;
-    c.lineWidth = 1.4;
-    c.globalAlpha = 0.85;
+    c.lineWidth = locked ? 2.2 : 1.4;
+    c.globalAlpha = locked ? 1 : 0.85;
     // corner brackets
     const bx = x - w / 2,
       by = y - h / 2;

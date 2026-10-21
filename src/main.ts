@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { clamp, lerp } from './sim/constants';
 import { flightTime, hitChance, sigmaAt } from './sim/ballistics';
 import { Campaign, LEVEL1, LEVEL1_JP, type CampaignLevel } from './sim/campaign';
+import { TargetLock, type LockSolution } from './sim/targetlock';
 import { playerFire, playerTorpedo, cmdDC, World, DIFF, type Difficulty, type SimEvent } from './sim/world';
 import { AI } from './sim/ai';
 import { SPECS } from './sim/ships';
@@ -71,8 +72,10 @@ const keys: Record<string, boolean> = {};
 // Shift toggles the telescope (press once to stay in, press again to come out). The right mouse
 // button still works as a hold-to-look. Neither can stick on if the window loses focus.
 let zoomToggle = false;
-let rmbHeld = false;
 let zoomCmd: number | null = null;
+/** The target lock: guns follow her, the captain trims the solution, the rangefinder converges. */
+const lock = new TargetLock();
+let lockSol: LockSolution | null = null;
 let spots: { text: string; x: number; z: number; t: number }[] = [];
 let salvos: SalvoRec[] = [];
 
@@ -233,6 +236,8 @@ function startBattle(): void {
   views.clear();
   spots = [];
   salvos = [];
+  lock.unlock();
+  lockSol = null;
   G.level = G.side === 'US' ? LEVEL1 : LEVEL1_JP;
   G.world = new World({ diff: G.diff, onEvent, foe: G.side === 'US' ? 'JP' : 'US' });
   const spec = SPECS[G.key];
@@ -345,17 +350,49 @@ addEventListener('keydown', (e) => {
   if (e.code === 'KeyR') G.P && cmdDC(G.world!, G.P);
   if (e.code === 'KeyC') G.camMode = G.camMode === 'chase' ? 'bridge' : 'chase';
   if (e.code === 'KeyL') G.showLead = !G.showLead;
+  if (e.code === 'KeyX' && !e.repeat) toggleLock();
+  if (e.code === 'Tab' && !e.repeat) {
+    e.preventDefault();
+    cycleLock();
+  }
   if (e.code === 'F3') {
     G.debug = !G.debug;
     e.preventDefault();
   }
 });
+
+/** X: lock the enemy nearest the crosshair, or let her go if one is already locked. */
+function toggleLock(): void {
+  const P = G.P;
+  if (!P || !P.alive) return;
+  if (lock.locked) {
+    hud.hint('解除锁定');
+    lock.unlock();
+    lockSol = null;
+    return;
+  }
+  const t = lock.pick(P, aim.yaw, G.world?.ships ?? []);
+  if (!t) {
+    hud.hint('准星附近没有可锁定的敌舰');
+    return;
+  }
+  lock.lock(t);
+  hud.hint(`锁定 ${t.name} · 测距中`);
+}
+
+/** Tab: work through the enemies the crosshair can see. */
+function cycleLock(): void {
+  const P = G.P;
+  if (!P || !P.alive) return;
+  const t = lock.cycle(P, aim.yaw, G.world?.ships ?? []);
+  if (t) hud.hint(`切换目标：${t.name}`);
+  else hud.hint('没有可锁定的敌舰');
+}
 addEventListener('keyup', (e) => {
   keys[e.code] = false;
 });
 addEventListener('blur', () => {
   zoomToggle = false;
-  rmbHeld = false;
   for (const k in keys) keys[k] = false;
 });
 
@@ -375,11 +412,22 @@ function throttleStep(d: number): void {
 // So turning the view right means *decreasing* the bearing, hence the minus below.
 const YAW_PER_PX = 0.0022;
 
+/**
+ * Mouse movement. Free: it drives the guns directly. Locked: it becomes *trim* on top of the
+ * automatic solution, so the guns follow the target's manoeuvres while the captain still decides
+ * whether she is short, long or right.
+ */
 function aimDelta(dx: number, dy: number): void {
   if (G.mode !== 'play') return;
   const f = (camera.fov / 55) * aim.sens;
-  aim.yaw -= dx * YAW_PER_PX * f;
-  aim.range -= dy * clamp(aim.range * 0.004, 14, 90) * f;
+  const dYaw = -dx * YAW_PER_PX * f;
+  const dRange = -dy * clamp(aim.range * 0.004, 14, 90) * f;
+  if (lock.locked) {
+    lock.addTrim(dYaw, dRange);
+    return;
+  }
+  aim.yaw += dYaw;
+  aim.range += dRange;
   clampAim();
 }
 
@@ -405,19 +453,21 @@ $<HTMLCanvasElement>('gl').addEventListener('mousedown', (e) => {
   const P = G.P;
   if (!P) return;
   if (e.button === 0) {
-    if (G.weapon === 'guns') playerFire(G.world!, P, P.aimX, P.aimZ);
+    if (G.weapon === 'guns') playerFire(G.world!, P, P.aimX, P.aimZ, lock.locked ? lock.rangeError(aim.range) : 0);
     else playerTorpedo(G.world!, P, P.aimX, P.aimZ);
   }
-  if (e.button === 2) rmbHeld = true;
 });
-addEventListener('mouseup', (e) => {
-  if (e.button === 2) rmbHeld = false;
-});
+// The right button is deliberately unbound: browsers disagree about it and it fights the
+// context menu. Shift is the telescope; that is enough.
 addEventListener('contextmenu', (e) => e.preventDefault());
 addEventListener('wheel', (e) => {
   if (G.mode !== 'play') return;
-  aim.range -= e.deltaY * clamp(aim.range * 0.004, 14, 90);
-  clampAim();
+  const d = -e.deltaY * clamp(aim.range * 0.004, 14, 90);
+  if (lock.locked) lock.addTrim(0, d);
+  else {
+    aim.range += d;
+    clampAim();
+  }
 });
 
 // ------------------------------------------------------------------ menu wiring
@@ -470,7 +520,7 @@ function frame(now: number): void {
   const dt = Math.min(0.05, Math.max(0.0005, raw));
   lastDt = raw;
   G.time += dt;
-  G.zoomWant = zoomCmd !== null ? zoomCmd : zoomToggle || rmbHeld ? 1 : 0;
+  G.zoomWant = zoomCmd !== null ? zoomCmd : zoomToggle ? 1 : 0;
   G.shake = Math.max(0, G.shake - dt * 2.2);
 
   const world = G.world;
@@ -484,8 +534,22 @@ function frame(now: number): void {
         const right = keys.KeyD || keys.ArrowRight;
         P.rudderCmd = (right ? 1 : 0) - (left ? 1 : 0);
       }
-      // the guns and the camera are both driven straight off the mouse; no easing, no lag
+      // Guns: locked, they follow the target's lead point and the mouse only trims them.
+      // Free, the mouse drives them straight - no easing, no lag.
       if (P) {
+        if (lock.locked) {
+          lockSol = lock.update(dt, P, P.gun.range * 1.08);
+          if (lockSol) {
+            aim.yaw = lockSol.yaw;
+            aim.range = lockSol.range;
+            if (lockSol.broke) {
+              hud.hint('锁定解除：修正量过大');
+              lockSol = null;
+            }
+          }
+        } else {
+          lockSol = null;
+        }
         P.aimX = P.x + Math.sin(aim.yaw) * aim.range;
         P.aimZ = P.z + Math.cos(aim.yaw) * aim.range;
       }
@@ -691,11 +755,15 @@ function updateUI(dt: number, world: World, P: Ship): void {
     torpedoes: tpList,
     spots,
     time: G.time,
+    lock: lock.locked ? lock.target : null,
+    lead: lockSol ? { x: lockSol.leadX, z: lockSol.leadZ } : null,
+    converged: lock.locked ? lock.convergence() : 1,
   });
 
   hud.update(dt, P, world, G.camp, G.weapon, warn);
+  hud.updateTarget(lock.locked ? lock.target : null, lock.locked ? lock.convergence() : 1, flight);
   hud.setLockHint(G.mode === 'play' && document.pointerLockElement === null);
-  minimap.draw(world, P, world.torps, { x: P.aimX, z: P.aimZ });
+  minimap.draw(world, P, world.torps, { x: P.aimX, z: P.aimZ }, lock.locked ? lock.target : null);
 
   if (G.debug) {
     const t = nearestFoeTo(P.aimX, P.aimZ);
@@ -740,6 +808,15 @@ function updateUI(dt: number, world: World, P: Ship): void {
   shells: G.world?.shells.filter((s) => s.alive).length ?? 0,
   torps: G.world?.torps.filter((t) => t.alive).length ?? 0,
   overlay: overlay.dbg,
+  lock: lock.locked
+    ? {
+        name: lock.target!.name,
+        held: +lock.held.toFixed(1),
+        converged: +lock.convergence().toFixed(2),
+        err: Math.round(lock.rangeError(aim.range)),
+        trim: +((lock.offYaw * 180) / Math.PI).toFixed(2),
+      }
+    : null,
   kills: G.camp?.kills.length ?? 0,
   tons: G.camp?.tons ?? 0,
   fps: Math.round(1 / Math.max(0.0001, lastDt)),
