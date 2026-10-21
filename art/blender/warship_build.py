@@ -30,7 +30,7 @@ def W(x, y, z):
 
 # ---------------------------------------------------------------- data
 
-JSON_PATH = r"C:\Users\ADMINI~1\AppData\Local\Temp\opencode\ships.json"
+JSON_PATH = r"D:\warship-game\art\blender\ship_input.json"
 D = json.load(open(JSON_PATH))
 SHIPS = D['ships']
 TS = D['turrets']
@@ -117,7 +117,12 @@ def get_mat():
         m = bpy.data.materials.new(name)
         m.use_nodes = True
     bsdf = next(n for n in m.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
-    bsdf.inputs['Base Color'].default_value = (0.74, 0.78, 0.82, 1.0)
+    bsdf.inputs['Base Color'].default_value = (1.0, 1.0, 1.0, 1.0)
+    colors = next((n for n in m.node_tree.nodes if n.type == 'VERTEX_COLOR'), None)
+    if colors is None:
+        colors = m.node_tree.nodes.new('ShaderNodeVertexColor')
+    colors.layer_name = 'Col'
+    m.node_tree.links.new(colors.outputs['Color'], bsdf.inputs['Base Color'])
     bsdf.inputs['Roughness'].default_value = 0.72
     bsdf.inputs['Metallic'].default_value = 0.12
     return m
@@ -335,7 +340,7 @@ def p_rod(a, b, r, seg=6, rb=None):
     c = len(V) - 1
     for i in range(seg):
         j = (i + 1) % seg
-        F.append((i, j, c))
+        F.append((i, c, j))
     return V, F
 
 
@@ -362,14 +367,32 @@ def p_lathe_z(cx, cy, cz, prof, seg=10, cap_bot=True):
         c = len(V) - 1
         for i in range(seg):
             j = (i + 1) % seg
-            F.append((i, j, c))
+            F.append((i, c, j))
     if prof[-1][0] > 0.02:
         V.append(W(cx, cy, cz + prof[-1][1]))
         c = len(V) - 1
         base = (n - 1) * seg
         for i in range(seg):
             j = (i + 1) % seg
-            F.append((base + i, c, base + j))
+            F.append((base + i, base + j, c))
+    return V, F
+
+
+def p_box_y(x, y0, z, w, h, d, ry=0.0):
+    """Box rotated about the hull vertical axis (ry radians, +ve = bow toward +x)."""
+    ca, sa = math.cos(ry), math.sin(ry)
+
+    def rot(px, pz):
+        return (x + px * ca + pz * sa, z - px * sa + pz * ca)
+
+    pts = [rot(-w / 2, -d / 2), rot(w / 2, -d / 2), rot(w / 2, d / 2), rot(-w / 2, d / 2)]
+    V = [W(px, y0, pz) for (px, pz) in pts] + [W(px, y0 + h, pz) for (px, pz) in pts]
+    F = [(0, 1, 2), (0, 2, 3),
+         (4, 6, 5), (4, 7, 6),
+         (0, 4, 5), (0, 5, 1),
+         (1, 5, 6), (1, 6, 2),
+         (2, 6, 7), (2, 7, 3),
+         (3, 7, 4), (3, 4, 0)]
     return V, F
 
 
@@ -430,25 +453,58 @@ def shade(lo=0.62, span=4.0):
 # ---------------------------------------------------------------- fittings
 
 
-def add_rail(buf, x, y, z, w, d, h=1.0, col=STEEL, thick=0.07):
-    """Railing ring around a rectangular platform, hull coords."""
+RAIL = (0.38, 0.41, 0.45)
+
+
+def add_rail(buf, x, y, z, w, d, h=1.0, col=RAIL, thick=0.06):
+    """Railing: two horizontal rails plus stanchions, round a rectangular platform."""
     t = thick
-    # fore and aft rails
-    buf.emit(*p_box(x, y, z + d / 2 - t / 2, w, h, t), col=col, y0=None)
-    buf.emit(*p_box(x, y, z - d / 2 + t / 2, w, h, t), col=col, y0=None)
-    # side rails
-    buf.emit(*p_box(x + w / 2 - t / 2, y, z, t, h, d), col=col, y0=None)
-    buf.emit(*p_box(x - w / 2 + t / 2, y, z, t, h, d), col=col, y0=None)
+    for (yy, tt) in ((y + h, t), (y + h * 0.55, t * 0.8)):
+        buf.emit(*p_box(x, yy, z + d / 2 - t / 2, w, tt, t), col=col, y0=None)
+        buf.emit(*p_box(x, yy, z - d / 2 + t / 2, w, tt, t), col=col, y0=None)
+        buf.emit(*p_box(x + w / 2 - t / 2, yy, z, t, tt, d), col=col, y0=None)
+        buf.emit(*p_box(x - w / 2 + t / 2, yy, z, t, tt, d), col=col, y0=None)
+    n = max(2, min(14, int(d / 2.6)))
+    for i in range(n + 1):
+        pz = z - d / 2 + (i / n) * d
+        for sx in (-1, 1):
+            buf.emit(*p_box(x + sx * (w / 2 - t / 2), y, pz, t, h, t), col=col, y0=None)
+    m = max(2, min(10, int(w / 2.6)))
+    for i in range(m + 1):
+        px = x - w / 2 + (i / m) * w
+        for sz in (-1, 1):
+            buf.emit(*p_box(px, y, z + sz * (d / 2 - t / 2), t, h, t), col=col, y0=None)
 
 
-def add_platform(buf, x, y, z, ln, wd, col=STEEL, rail=True, deck=False):
-    buf.emit(*p_box(x, y - 0.18, z, wd, 0.35, ln), col=col, y0=y, span=3)
-    # supporting brackets
-    for sx in (-1, 1):
-        for dz in (-0.35, 0.35):
-            buf.emit(*p_box(x + sx * wd * 0.4, y - 1.4, z + ln * dz, 0.35, 1.4, 0.35), col=DARK, y0=y, span=3)
+def add_platform(buf, x, y, z, ln, wd, col=STEEL, rail=True, deck=False, base=None):
+    buf.emit(*p_box(x, y - 0.22, z, wd, 0.45, ln), col=col, y0=y, span=3)
+    # edge upstand, so a platform reads as a solid deck and not a sheet of paper
+    buf.emit(*p_box(x, y + 0.23, z, wd + 0.18, 0.35, 0.18), col=DARK, y0=y, span=3)
+    buf.emit(*p_box(x, y + 0.23, z - ln / 2, wd + 0.18, 0.35, 0.18), col=DARK, y0=y, span=3)
+    if base is not None and y - base > 1.6:
+        # stanchions down to whatever is underneath - no floating platforms
+        for sx in (-1, 1):
+            for dz in (-1, 1):
+                px = x + sx * max(0.5, wd / 2 - 0.7)
+                pz = z + dz * max(0.5, ln / 2 - 0.7)
+                buf.emit(*p_rod((px, base, pz), (px, y - 0.25, pz), 0.24, 5),
+                         col=DARK, y0=base, span=max(3.0, y - base))
+        if y - base > 4.0:
+            my = (y + base) / 2
+            for sx in (-1, 1):
+                px = x + sx * max(0.5, wd / 2 - 0.7)
+                buf.emit(*p_rod((px, my, z - ln / 2 + 0.7), (px, my, z + ln / 2 - 0.7), 0.14, 4),
+                         col=DARK, y0=base, span=max(3.0, y - base))
+            for dz in (-1, 1):
+                pz = z + dz * max(0.5, ln / 2 - 0.7)
+                buf.emit(*p_rod((x - wd / 2 + 0.7, my, pz), (x + wd / 2 - 0.7, my, pz), 0.14, 4),
+                         col=DARK, y0=base, span=max(3.0, y - base))
+    else:
+        for sx in (-1, 1):
+            for dz in (-0.35, 0.35):
+                buf.emit(*p_box(x + sx * wd * 0.4, y - 1.4, z + ln * dz, 0.35, 1.4, 0.35), col=DARK, y0=y, span=3)
     if deck:
-        buf.emit(*p_box(x, y + 0.17, z, wd - 0.1, 0.06, ln - 0.1), col=WOOD, y0=y, span=3)
+        buf.emit(*p_box(x, y + 0.23, z, wd - 0.3, 0.06, ln - 0.3), col=WOOD, y0=y, span=3)
     if rail:
         add_rail(buf, x, y + 0.35, z, wd, ln, 1.0)
 
@@ -475,6 +531,7 @@ def build_part(buf, spec, p):
     col = STEEL
 
     if k == 'b':
+        part_start = len(buf.v)
         ln, wd, h = p.get('len', 8), p.get('w', 6), p.get('h', 3)
         plan = plan_poly(ln, wd, p.get('rf', 0), p.get('rr', 0))
         ta = p.get('ta', 0.25)
@@ -491,23 +548,36 @@ def build_part(buf, spec, p):
         # a dark shadow gap, then an overhanging gallery deck, then a rail.
         tp = top
         span = max(2.5, h + 1.5)
-        buf.emit(*p_prism(outset(tp, 0.18), outset(tp, 0.18), y0 + h - 0.42, y0 + h - 0.06),
-                 col=DARK, y0=y0, span=span, lo=0.95)
-        over = 0.85 if wd >= 6 else 0.45
+        # dark shadow gap under the deck above: this is what separates two levels
+        gap = outset(tp, 0.30)
+        buf.emit(*p_prism(gap, gap, y0 + h - 0.55, y0 + h - 0.04), col=DARK, y0=y0, span=span, lo=0.96)
+        over = 1.25 if wd >= 6 else 0.6
         plate = outset(tp, over)
-        buf.emit(*p_prism(plate, plate, y0 + h - 0.08, y0 + h + 0.26, cap_top=True, cap_bot=True),
-                 col=(0.66, 0.70, 0.74), y0=y0, span=span, lo=0.92)
+        buf.emit(*p_prism(plate, plate, y0 + h - 0.06, y0 + h + 0.30, cap_top=True, cap_bot=True),
+                 col=(0.64, 0.68, 0.72), y0=y0, span=span, lo=0.92)
+        if wd >= 6:
+            # bulwark round the gallery deck
+            rim = outset(plate, 0.26)
+            buf.emit(*p_prism(plate, rim, y0 + h + 0.30, y0 + h + 0.70, cap_top=True, cap_bot=False),
+                     col=(0.58, 0.62, 0.66), y0=y0, span=span, lo=0.95)
+            rail_y = y0 + h + 0.70
+        else:
+            rail_y = y0 + h + 0.30
         # planking on the wide tops
         if wd >= 9:
-            buf.emit(*p_prism(outset(tp, over - 0.5), outset(tp, over - 0.5), y0 + h + 0.26, y0 + h + 0.31,
+            buf.emit(*p_prism(outset(tp, over - 0.55), outset(tp, over - 0.55), y0 + h + 0.30, y0 + h + 0.36,
                               cap_top=True, cap_bot=False), col=WOOD, y0=y0, span=span, lo=0.95)
         if p.get('win'):
             add_windows(buf, plan, y0, h, 0.46, 0.82)
+        # All outline surfaces are local, unlike boxes and railings.
+        for vi in range(part_start, len(buf.v)):
+            vx, vy, vz = buf.v[vi]
+            buf.v[vi] = (vx + x, vy - z, vz)
         # railing round the gallery deck
         if wd >= 4.5 and h <= 6:
             rr = max(plate, key=lambda q: abs(q[0]))
             rl = max(plate, key=lambda q: abs(q[1]))
-            add_rail(buf, x, y0 + h + 0.31, z, abs(rr[0]) * 2 - 0.5, abs(rl[1]) * 2 - 0.5, 0.9)
+            add_rail(buf, x, rail_y, z, abs(rr[0]) * 2 - 0.6, abs(rl[1]) * 2 - 0.6, 0.9)
 
     elif k == 'c':
         r, h = p.get('r', 2), p.get('h', 8)
@@ -563,7 +633,7 @@ def build_part(buf, spec, p):
 
     elif k == 'pl':
         ln, wd = p.get('len', 4), p.get('w', 6)
-        add_platform(buf, x, y0, z, ln, wd, rail=True, deck=(wd >= 8))
+        add_platform(buf, x, y0, z, ln, wd, rail=True, deck=(wd >= 8), base=deck_y(spec, z))
 
     elif k == 'tt':
         n, ln = int(p.get('n', 3)), p.get('len', 7.5)
@@ -621,8 +691,8 @@ def build_part(buf, spec, p):
     elif k == 'bt':
         ln = p.get('len', 7)
         # boat hull: rounded plan, tapering downward
-        bot = plan_poly(ln * 0.72, 1.5, 1.0, 1.0, 3)
-        top = plan_poly(ln, 2.0, 0.6, 0.4, 3)
+        bot = [(a + x, b + z) for a,b in plan_poly(ln * 0.72, 1.5, 1.0, 1.0, 3)]
+        top = [(a + x, b + z) for a,b in plan_poly(ln, 2.0, 0.6, 0.4, 3)]
         buf.emit(*p_prism(bot, top, y0, y0 + 0.75, cap_top=True, cap_bot=True), col=BOAT, y0=y0, span=2, lo=0.75)
         buf.emit(*p_box(x, y0 + 0.75, z - ln * 0.08, 1.5, 0.5, ln * 0.42), col=(0.72, 0.72, 0.70), y0=y0, span=2, lo=0.85)
         # thwarts / cover
@@ -635,24 +705,14 @@ def build_part(buf, spec, p):
         ln = p.get('len', 14)
         face = p.get('face', 0)
         ca, sa = math.cos(face), math.sin(face)
-        # truss along the catapult axis
-        steps = 8
-        for i in range(steps):
-            t0 = -0.5 + i / steps
-            t1 = -0.5 + (i + 1) / steps
-            a = (x + sa * ln * t0, y0 + 2.0, z + ca * ln * t0)
-            b = (x + sa * ln * t1, y0 + 2.0, z + ca * ln * t1)
-            buf.emit(*p_rod(a, b, 0.28, 5), col=col, y0=y0, span=3, lo=0.78)
-        for i in range(steps):
-            t = -0.5 + (i + 0.5) / steps
-            a = (x + sa * ln * t - ca * 0.8, y0 + 2.0, z + ca * ln * t + sa * 0.8)
-            b = (x + sa * ln * t + ca * 0.8, y0 + 2.0, z + ca * ln * t - sa * 0.8)
-            buf.emit(*p_rod(a, b, 0.16, 4), col=DARK, y0=y0, span=3, lo=0.85)
-        # rail + cradle
-        for i in range(steps):
-            t = -0.5 + (i + 0.5) / steps
-            buf.emit(*p_rod((x + sa * ln * t, y0, z + ca * ln * t),
-                            (x + sa * ln * t, y0 + 1.9, z + ca * ln * t), 0.2, 4), col=col, y0=y0, span=3, lo=0.8)
+        # a solid girder reads at distance; rods only when you are right on top of it
+        buf.emit(*p_box_y(x, y0 + 1.5, z, 2.0, 0.85, ln, face), col=col, y0=y0, span=3, lo=0.78)
+        buf.emit(*p_box_y(x, y0 + 2.35, z, 1.1, 0.35, ln * 0.96, face), col=DARK, y0=y0, span=3, lo=0.88)
+        # legs down to the deck
+        for t in (-0.38, -0.13, 0.13, 0.38):
+            px = x + sa * ln * t
+            pz = z + ca * ln * t
+            buf.emit(*p_rod((px, y0, pz), (px, y0 + 1.6, pz), 0.22, 5), col=col, y0=y0, span=3, lo=0.8)
         if p.get('plane'):
             px = x + sa * ln * 0.18
             pz = z + ca * ln * 0.18
@@ -749,7 +809,7 @@ def build_ship(key, ref=True, extras=True):
         try:
             build_part(buf, spec, p)
         except Exception as e:
-            print('part failed', key, p.get('k'), p.get('z'), e)
+            raise RuntimeError('part failed: %s %s z=%s' % (key,p.get('k'),p.get('z'))) from e
     if extras:
         add_extras(buf, spec)
     ob = make_obj('super_' + key, buf, coll=c)
@@ -759,7 +819,7 @@ def build_ship(key, ref=True, extras=True):
 
 def add_extras(buf, spec):
     """Scale-giving detail that is not in the part list: vents, hatches, flagstaff."""
-    rnd = random.Random(hash(spec['key']) & 0xFFFF)
+    rnd = random.Random(spec['key'])
     key = spec['key']
     B = spec['B']
     # ventilator cowls along the biggest deckhouse
@@ -778,11 +838,12 @@ def add_extras(buf, spec):
     buf.emit(*p_box(0, deck_y(spec, zz), zz, 1.4, 0.25, 2.0), col=DARK, y0=deck_y(spec, zz), span=2, lo=0.85)
     zz2 = -spec['L'] * 0.36
     buf.emit(*p_box(0, deck_y(spec, zz2), zz2, 1.4, 0.25, 2.0), col=DARK, y0=deck_y(spec, zz2), span=2, lo=0.85)
-    # anchor pockets near the bow
+    # anchor pockets near the bow, kept inside the hull plan
     for sx in (-1, 1):
         zz = spec['L'] * 0.42
         yy = deck_y(spec, zz) - 1.6
-        buf.emit(*p_box(sx * (B * 0.42), yy, zz, 0.5, 0.5, 1.6), col=DARK, y0=yy, span=2, lo=0.8)
+        hw = (spec['B'] / 2) * half_w(zz / spec['L'] + 0.5)
+        buf.emit(*p_box(sx * (hw - 0.5), yy, zz, 0.5, 0.5, 1.6), col=DARK, y0=yy, span=2, lo=0.8)
 
 
 # ---------------------------------------------------------------- turrets
@@ -850,13 +911,13 @@ def build_turret(kind, coll=None):
     b.emit(*p_cyl(0, h, -hl * 0.45, 0.55, 0.5, 0.5, seg=10), col=STEEL, y0=h, span=2, lo=0.92)
     for sx in (-0.6, 0.6):
         b.emit(*p_cyl(sx * hw * 0.8, h, -hl * 0.15, 0.22, 0.2, 0.35, seg=8), col=DARK, y0=h, span=2, lo=0.92)
-    base = make_obj('base', b, origin=(0, 0, 0), coll=c)
+    base = make_obj('base_' + kind, b, origin=(0, 0, 0), coll=c)
+    base['export_role'] = 'base'
 
     # ---- barrel group, origin at the trunnion.
-    # The node stays at h*0.5 (what the game's muzzle maths assumes) but the visible gun axis
-    # sits 0.14h higher, which is where the trunnions actually are on these mounts.
+    # Gun centreline and pitch origin coincide, matching game muzzle maths.
     ty0 = h * 0.5
-    ty = ty0 + 0.14 * h
+    ty = ty0
     tz = t['len'] * 0.18
     g = Buf()
     n = t['n']
@@ -887,7 +948,8 @@ def build_turret(kind, coll=None):
         for i in range(n):
             ox = (i - (n - 1) / 2) * t['w'] * 0.28
             g.emit(*p_cyl_z(ox, ty, tz + br * 2.0, br * 2.1, 0.22, 8), col=DARK, y0=ty, span=3, lo=0.9)
-    barrel = make_obj('barrel', g, origin=(0, ty0, tz), coll=c)
+    barrel = make_obj('barrel_' + kind, g, origin=(0, ty0, tz), coll=c)
+    barrel['export_role'] = 'barrel'
     print(kind, 'base', len(b.f), 'barrel', len(g.f))
     return base, barrel
 
@@ -908,17 +970,22 @@ def preview_turrets(key):
     """Linked copies of the gun models at their mounts, for eyeballing in the viewport."""
     spec = SHIPS[key]
     c = coll_named('preview_' + key)
+    bpy.context.view_layer.update()
     for t in spec['tur']:
         kind = t['kind']
         gc = bpy.data.collections.get('gun_' + kind)
         if not gc:
             build_turret(kind)
             gc = bpy.data.collections.get('gun_' + kind)
+            bpy.context.view_layer.update()
         for src in gc.objects:
             o = src.copy()
             o.data = src.data
-            o.location = (t['x'], -(t['z']), deck_y(spec, t['z']) + t['y'] + 0)
-            o.rotation_euler = (0, 0, t['face'])
+            # Preserve the source node's trunnion translation under a yaw-only mount parent.
+            from mathutils import Matrix, Vector
+            mount = Matrix.Translation(Vector(W(t['x'], deck_y(spec,t['z']) + t['y'], t['z'])))
+            yaw = Matrix.Rotation(t['face'], 4, 'Z')
+            o.matrix_world = mount @ yaw @ src.matrix_world
             c.objects.link(o)
 
 
@@ -927,31 +994,50 @@ def preview_turrets(key):
 OUT = r"D:\warship-game\public\models"
 
 
+def export_collection(c, path):
+    """Export works even when the single-ship workbench has hidden this collection."""
+    states = [(o, o.hide_get(), o.hide_render) for o in c.objects]
+    bpy.ops.object.select_all(action='DESELECT')
+    try:
+        for o, _, _ in states:
+            o.hide_set(False)
+            o.hide_render = False
+            o.select_set(True)
+        bpy.context.view_layer.objects.active = c.objects[0]
+        bpy.context.view_layer.update()
+        bpy.ops.export_scene.gltf(filepath=path, export_format='GLB', use_selection=True,
+                                  export_yup=True, export_materials='EXPORT',
+                                  export_vertex_color='ACTIVE', export_apply=True)
+    finally:
+        for o, hidden, hidden_render in states:
+            o.hide_set(hidden)
+            o.hide_render = hidden_render
+
+
 def export_ship(key):
     c = bpy.data.collections.get('ship_' + key)
     path = os.path.join(OUT, 'ships', key + '_super.glb')
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    bpy.ops.object.select_all(action='DESELECT')
-    for o in c.objects:
-        o.select_set(True)
-    bpy.context.view_layer.objects.active = c.objects[0]
-    bpy.ops.export_scene.gltf(filepath=path, export_format='GLB', use_selection=True,
-                              export_yup=True, export_materials='EXPORT',
-                              export_vertex_color='ACTIVE', export_apply=True)
+    export_collection(c, path)
     print('exported', path, os.path.getsize(path))
 
 
 def export_gun(kind):
     c = bpy.data.collections.get('gun_' + kind)
+    # the game looks for two nodes called exactly "base" and "barrel", and Blender will happily
+    # rename ours to "base.007" if another gun already owns the name - so take the names back.
+    mine = list(c.objects)
+    for n in ('base', 'barrel'):
+        o = bpy.data.objects.get(n)
+        if o is not None and o not in mine:
+            o.name = 'spare_' + n
+    for o in mine:
+        role = o.get('export_role')
+        if role in ('base', 'barrel'):
+            o.name = role
     path = os.path.join(OUT, 'guns', kind + '.glb')
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    bpy.ops.object.select_all(action='DESELECT')
-    for o in c.objects:
-        o.select_set(True)
-    bpy.context.view_layer.objects.active = c.objects[0]
-    bpy.ops.export_scene.gltf(filepath=path, export_format='GLB', use_selection=True,
-                              export_yup=True, export_materials='EXPORT',
-                              export_vertex_color='ACTIVE', export_apply=True)
+    export_collection(c, path)
     print('exported', path, os.path.getsize(path))
 
 
@@ -964,7 +1050,7 @@ def studio():
     if sc.world is None:
         sc.world = bpy.data.worlds.new('ws_world')
     sc.world.use_nodes = True
-    bg = sc.world.node_tree.nodes.get('Background')
+    bg = next((n for n in sc.world.node_tree.nodes if n.type == 'BACKGROUND'), None)
     if bg:
         # dark slate: the model is light grey, a bright background washes the silhouette out
         bg.inputs['Color'].default_value = (0.115, 0.140, 0.175, 1)
@@ -981,6 +1067,9 @@ def studio():
             l = bpy.data.objects.new(nm, ld)
             bpy.context.scene.collection.objects.link(l)
         l.location = loc
+        from mathutils import Vector
+        l.data.energy = e
+        l.rotation_euler = (-Vector(loc)).to_track_quat('-Z', 'Y').to_euler()
     cam = bpy.data.objects.get('ws_cam')
     if cam is None:
         cd = bpy.data.cameras.new('ws_cam')
@@ -997,6 +1086,7 @@ def render_shot(name, objs, yaw=-38, pitch=16, pad=1.10, res=(1400, 800), hide=(
     objs = [o for o in objs if o]
     sc = bpy.context.scene
     cam = studio()
+    bpy.context.view_layer.update()
     sc.render.resolution_x, sc.render.resolution_y = res
     mn = [1e9] * 3
     mx = [-1e9] * 3
@@ -1029,37 +1119,56 @@ def render_shot(name, objs, yaw=-38, pitch=16, pad=1.10, res=(1400, 800), hide=(
             ey = max(ey, abs(rel.dot(up_c)))
             ez = max(ez, abs(rel.dot(d)))
     if span:
-        ex = min(ex, span)
-        ey = min(ey, span)
-        ez = min(ez, span)
+        ex = span / 2
+        ey = ex * res[1] / res[0]
+        ez = span / 2
 
     aspect = res[0] / res[1]
+    cam.data.sensor_fit = 'HORIZONTAL'
     if ortho:
         cam.data.type = 'ORTHO'
-        cam.data.ortho_scale = max(2 * ey * pad, (2 * ex * pad) / aspect, 1.0)
+        cam.data.ortho_scale = max(2 * ey * pad * aspect, 2 * ex * pad, 1.0)
         dist = ez + size * 1.5 + 40
     else:
         cam.data.type = 'PERSP'
-        tanv = math.tan(cam.data.angle / 2)
-        tanh = tanv * aspect
+        tanh = cam.data.sensor_width / (2 * cam.data.lens)
+        tanv = tanh / aspect
         dist = max(ex / tanh + ez, ey / tanv + ez) * pad + size * 0.06
     cam.data.clip_end = max(2000.0, dist + size * 4)
     cam.location = ctr + d * dist
     cam.rotation_euler = (-d).to_track_quat('-Z', 'Y').to_euler()
 
-    hidden = []
-    for o in hide:
-        if o and o.hide_render is False:
-            o.hide_render = True
-            hidden.append(o)
+    states = [(o, o.hide_render) for o in sc.objects]
+    allowed = set(objs) - set(hide)
+    for o in sc.objects:
+        if o.type == 'MESH':
+            o.hide_render = o not in allowed
     os.makedirs(SHOTDIR, exist_ok=True)
     path = os.path.join(SHOTDIR, name + '.png')
     sc.render.filepath = path
     bpy.ops.render.render(write_still=True)
-    for o in hidden:
-        o.hide_render = False
+    for o, previous in states:
+        o.hide_render = previous
     print('shot', path)
     return path
+
+
+def show_ship(key):
+    """Single-ship workbench; source guns and other classes remain stored, not overlaid."""
+    allowed = {'ship_' + key, 'preview_' + key, 'ref_' + key}
+    for c in bpy.data.collections:
+        if c.name.startswith(('ship_', 'preview_', 'ref_', 'gun_', 'marks_')):
+            visible = c.name in allowed
+            # Per-object flags keep future exports selectable without excluded view layers.
+            c.hide_viewport = False
+            c.hide_render = False
+            for o in c.objects:
+                o.hide_set(not visible)
+                o.hide_render = not visible
+    for o in bpy.data.objects:
+        if o.name.startswith('refhull_'):
+            o.display_type = 'TEXTURED'
+    bpy.context.view_layer.update()
 
 
 def review(key, tag=''):
@@ -1083,6 +1192,53 @@ def review(key, tag=''):
     out.append(render_shot(tag + '_qbow', objs, yaw=40, pitch=15, res=(1400, 800)))
     out.append(render_shot(tag + '_qstern', objs, yaw=140, pitch=13, res=(1400, 800)))
     out.append(render_shot(tag + '_qport', objs, yaw=-55, pitch=22, res=(1400, 800)))
+    return out
+
+
+MARKS = [
+    ('bow', (1.0, 0.05, 0.05)),
+    ('turret1', (0.05, 1.0, 1.0)),
+    ('bridge', (0.05, 1.0, 0.1)),
+    ('funnel1', (1.0, 1.0, 0.05)),
+    ('funnel2', (1.0, 0.05, 1.0)),
+    ('stern', (0.1, 0.25, 1.0)),
+]
+
+
+def markers(key, z_bridge=31.5, z_f1=12.0, z_f2=-5.0, z_t1=72.0, y=52.0):
+    """Coloured balls floating above the ship in fore/aft order - an orientation sanity check."""
+    spec = SHIPS[key]
+    c = coll_named('marks_' + key)
+    pts = {
+        'bow': (0, y, spec['L'] * 0.46),
+        'stern': (0, y, -spec['L'] * 0.46),
+        'bridge': (0, y, z_bridge),
+        'funnel1': (0, y, z_f1),
+        'funnel2': (0, y, z_f2),
+        'turret1': (0, y, z_t1),
+    }
+    out = []
+    for (nm, rgb) in MARKS:
+        p = pts[nm]
+        me = bpy.data.meshes.new('mk_' + nm)
+        bm = bmesh.new()
+        bmesh.ops.create_icosphere(bm, subdivisions=2, radius=6.0)
+        bm.to_mesh(me)
+        bm.free()
+        m = bpy.data.materials.get('mk_' + nm)
+        if m is None:
+            m = bpy.data.materials.new('mk_' + nm)
+            m.use_nodes = True
+            b2 = next(n for n in m.node_tree.nodes if n.type == 'BSDF_PRINCIPLED')
+            b2.inputs['Base Color'].default_value = (rgb[0], rgb[1], rgb[2], 1)
+            b2.inputs['Roughness'].default_value = 0.4
+            b2.inputs['Emission Strength'].default_value = 1.2
+            b2.inputs['Emission Color'].default_value = (rgb[0], rgb[1], rgb[2], 1)
+        me.materials.append(m)
+        ob = bpy.data.objects.new('mk_' + nm, me)
+        ob.location = W(*p)
+        c.objects.link(ob)
+        out.append(ob)
     return out
 
 
@@ -1128,6 +1284,34 @@ def frame_all():
                     with bpy.context.temp_override(area=a, region=r):
                         bpy.ops.view3d.view_all()
                     return
+
+
+def validate_geometry():
+    """Check generated positions and preview matrices, not merely input parameters."""
+    from mathutils import Vector, Matrix
+    count = 0
+    for key, spec in SHIPS.items():
+        for p in spec['parts']:
+            if p['k'] != 'b':
+                continue
+            b = Buf()
+            build_part(b, spec, p)
+            xs, zs = [v[0] for v in b.v], [-v[1] for v in b.v]
+            assert abs((min(xs)+max(xs))/2-p['x']) < 0.6, (key,p,'X')
+            assert abs((min(zs)+max(zs))/2-p['z']) < 0.6, (key,p,'Z')
+            count += 1
+        preview = bpy.data.collections.get('preview_' + key)
+        if preview:
+            assert len(preview.objects) == 2*len(spec['tur']), key
+            for i, t in enumerate(spec['tur']):
+                ts = TS[t['kind']]
+                mount = Matrix.Translation(Vector(W(t['x'], deck_y(spec,t['z'])+t['y'], t['z'])))
+                yaw = Matrix.Rotation(t['face'],4,'Z')
+                expected = mount @ yaw @ Vector(W(0,ts['h']/2,ts['len']*0.18))
+                candidates = [o for o in preview.objects if o.get('export_role') == 'barrel'
+                              and (o.matrix_world.translation-expected).length < 0.001]
+                assert candidates, (key,t,'missing trunnion')
+    print('GEOMETRY VALIDATED:',count,'positioned blocks; preview trunnions matched')
 
 
 print('warship_build loaded')
