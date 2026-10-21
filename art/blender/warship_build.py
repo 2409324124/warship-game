@@ -899,6 +899,16 @@ def build_turret(kind, coll=None):
     t = TS[kind]
     hw, hl = t['w'] / 2, t['len'] / 2
     c = coll or coll_named('gun_' + kind)
+    if kind in ('us16t','us5d'):
+        source = r'D:\warship-game\art\blender\us_refined_guns.py'
+        namespace = {}
+        exec(compile(open(source).read(),source,'exec'),namespace)
+        b,g,origin = namespace['build_us_gun'](kind,globals())
+        base = make_obj('base_' + kind,b,coll=c)
+        barrel = make_obj('barrel_' + kind,g,origin=origin,coll=c)
+        base['export_role']='base';barrel['export_role']='barrel'
+        print(kind,'refined base',len(b.f),'barrel',len(g.f))
+        return base,barrel
 
     # ---- base (ring centre at the deck)
     b = Buf()
@@ -1012,12 +1022,12 @@ def build_turrets(kinds=None, force=True):
     return out
 
 
-def preview_turrets(key):
+def preview_turrets(key, mounts=None, collection_name=None):
     """Linked copies of the gun models at their mounts, for eyeballing in the viewport."""
     spec = SHIPS[key]
-    c = coll_named('preview_' + key)
+    c = coll_named(collection_name or ('preview_' + key))
     bpy.context.view_layer.update()
-    for t in spec['tur']:
+    for index,t in enumerate(mounts if mounts is not None else spec['tur']):
         kind = t['kind']
         gc = bpy.data.collections.get('gun_' + kind)
         if not gc:
@@ -1032,6 +1042,8 @@ def preview_turrets(key):
             mount = Matrix.Translation(Vector(W(t['x'], deck_y(spec,t['z']) + t['y'], t['z'])))
             yaw = Matrix.Rotation(t['face'], 4, 'Z')
             o.matrix_world = mount @ yaw @ src.matrix_world
+            o['mount_index']=index
+            o['kind']=kind
             c.objects.link(o)
 
 
@@ -1061,6 +1073,8 @@ def export_collection(c, path):
 
 
 def export_ship(key):
+    if key not in SHIPS:
+        raise ValueError('Preview-only layout must not be registered or exported as a game ship')
     c = bpy.data.collections.get('ship_' + key)
     path = os.path.join(OUT, 'ships', key + '_super.glb')
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -1336,13 +1350,15 @@ def validate_geometry():
     """Check generated positions and preview matrices, not merely input parameters."""
     from mathutils import Vector, Matrix
     count = 0
-    if 'WASHINGTON_AUDIT' in globals():
-        tower = WASHINGTON_AUDIT['continuous_tower']
+    washington = bpy.data.objects.get('super_us_bb')
+    stored_audit = json.loads(washington.get('component_bounds','{}')) if washington else {}
+    if stored_audit:
+        tower = stored_audit['continuous_tower']
         assert 24 < tower['bow'][0] < 27, tower
         assert 33 < tower['bow'][1] < 36, tower
         assert abs((tower['x'][0]+tower['x'][1])/2) < .01, tower
         assert tower['height'][1] > 34, tower
-        assert WASHINGTON_AUDIT['upper_platform_and_director']['height'][1] < 45
+        assert stored_audit['upper_platform_and_director']['height'][1] < 45
         print('WASHINGTON: actual continuous tower and director bounds passed')
     for key, spec in SHIPS.items():
         for p in spec['parts']:

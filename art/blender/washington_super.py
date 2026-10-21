@@ -18,6 +18,12 @@ def build_washington(buf, spec, api):
     def emit(shape, color=steel, y0=None, span=5, lo=0.78):
         buf.emit(*shape, col=color, y0=y0, span=span, lo=lo)
 
+    def open_rod(a,b,r,seg=6):
+        # warship_build.p_rod emits 2*seg side triangles, then both end fans.
+        # Connected fine rods need neither fan nor the two unused centre vertices.
+        verts,faces=k.p_rod(a,b,r,seg)
+        return verts[:2*seg],faces[:2*seg]
+
     def outline(x, z, length, width, rf=0.5, rr=0.25):
         return [(a+x, b+z) for a,b in k.plan_poly(length,width,rf,rr,5)]
 
@@ -52,16 +58,30 @@ def build_washington(buf, spec, api):
                            thickness,height,length,math.atan2(dx,dz)),color)
 
     def rails(plan,y,height=0.95):
+        edges=[]
+        perimeter=0.0
         for a,b in zip(plan,plan[1:]+plan[:1]):
             length=math.dist(a,b)
-            if length<0.05: continue
+            if length<1e-6: continue
+            edges.append((a,b,length))
+            perimeter+=length
             for up in (height,0.48*height):
-                emit(k.p_rod((a[0],y+up,a[1]),(b[0],y+up,b[1]),0.035,3),railpaint)
-            n=max(1,math.ceil(length/1.8))
-            for j in range(n):
-                t=j/n
-                x,z=a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t
-                emit(k.p_rod((x,y,z),(x,y+height,z),0.037,3),railpaint)
+                emit(open_rod((a[0],y+up,a[1]),(b[0],y+up,b[1]),0.035,3),railpaint)
+        if not edges: return
+        # Carry distance across corners; arc tessellation must not dictate post density.
+        # A closed loop has n equal gaps, including the last-to-first gap.
+        n=max(1,math.ceil(perimeter/1.9))
+        edge_index=0
+        edge_start=0.0
+        for j in range(n):
+            distance=j*perimeter/n
+            while edge_index<len(edges)-1 and distance>=edge_start+edges[edge_index][2]:
+                edge_start+=edges[edge_index][2]
+                edge_index+=1
+            a,b,length=edges[edge_index]
+            t=(distance-edge_start)/length
+            x,z=a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t
+            emit(open_rod((x,y,z),(x,y+height,z),0.037,3),railpaint)
 
     def gallery(plan,y,wall=False,braces=False):
         emit(k.p_prism(plan,plan,y-0.19,y,True,True),steel)
@@ -71,7 +91,7 @@ def build_washington(buf, spec, api):
         else: rails(inner,y)
         if braces:
             for x,z in plan[::max(1,len(plan)//8)]:
-                emit(k.p_rod((x*0.55,y-1.7,29.5+(z-29.5)*0.55),
+                emit(open_rod((x*0.55,y-1.7,29.5+(z-29.5)*0.55),
                              (x,y-0.22,z),0.085,5),steel)
 
     def openings(plan,y,rect=False,front_only=False):
@@ -113,19 +133,20 @@ def build_washington(buf, spec, api):
                     cz-u*math.sin(yaw)+depth*math.cos(yaw))
         for j in range(cols+1):
             u=width*(j/cols-.5)
-            emit(k.p_rod(point(u,0),point(u,height),.035 if j not in (0,cols) else .065,4),railpaint)
+            emit(open_rod(point(u,0),point(u,height),.035 if j not in (0,cols) else .065,4),railpaint)
         for j in range(rows+1):
             v=height*j/rows
             sections=cols if curved else 1
             for s in range(sections):
-                emit(k.p_rod(point(width*(s/sections-.5),v),point(width*((s+1)/sections-.5),v),
+                emit(open_rod(point(width*(s/sections-.5),v),point(width*((s+1)/sections-.5),v),
                              .035 if j not in (0,rows) else .065,3),railpaint)
-        emit(k.p_rod(point(-width/2,0),point(width/2,height),.045,4),railpaint)
-        emit(k.p_rod(point(width/2,0),point(-width/2,height),.045,4),railpaint)
+        emit(open_rod(point(-width/2,0),point(width/2,height),.045,4),railpaint)
+        emit(open_rod(point(width/2,0),point(-width/2,height),.045,4),railpaint)
 
     # Keep the gun installation deck, but no repeated gallery eaves or rails across gun arcs.
     start=len(buf.v)
-    mainplan=outline(0,3,64,24.8,.25,.25)
+    draft=api.get('BATTERY_PREVIEW_DATA')
+    mainplan=outline(0,3,64,draft['coreDeckhouseWidth'] if draft else 24.8,.25,.25)
     body(mainplan,7.9,14.25,.25)
     emit(k.p_prism(mainplan,mainplan,14.25,14.31,True,False),deckpaint)
     # Omit the blanket rail above gun ports: narrow passage rails only at deckhouse ends.
@@ -142,9 +163,9 @@ def build_washington(buf, spec, api):
             pts=[(side*7.12,16.05+.60*math.sin(i*math.tau/12),
                   zc+1.13*math.cos(i*math.tau/12)) for i in range(12)]
             for a,b in zip(pts,pts[1:]+pts[:1]):
-                emit(k.p_rod(a,b,.10,5),(.57,.61,.62))
+                emit(open_rod(a,b,.10,4),(.57,.61,.62))
             for dz in (-.55,0,.55):
-                emit(k.p_rod((side*7.13,15.65,zc+dz),(side*7.13,16.45,zc+dz),.027,3),railpaint)
+                emit(open_rod((side*7.13,15.65,zc+dz),(side*7.13,16.45,zc+dz),.027,3),railpaint)
     gallery(k.outset(lowertop,.42),18.13,wall=False)
     # Forward armoured conning structure is embedded in the bridge, not a separate tall pole.
     conning=ellipse(0,37.6,6.1,6.4)
@@ -163,7 +184,7 @@ def build_washington(buf, spec, api):
         wing=outline(side*6.1,32.6,4.2,3.4,.4,.4)
         gallery(wing,20.94,wall=False)
         for z in (31.1,34.0):
-            emit(k.p_rod((side*4.7,18.2,z),(side*7.4,20.7,z),.12,6))
+            emit(open_rod((side*4.7,18.2,z),(side*7.4,20.7,z),.12,6))
     record('lower_bridge',start)
 
     # The decisive change: one continuous rounded, tapered tower aft of the bridge front.
@@ -193,17 +214,17 @@ def build_washington(buf, spec, api):
             emit(k.p_rod((px,yy,surface-.12),(px,yy+.10,surface+.48),.18,8),steel)
             emit(k.p_rod((px,yy+.10,surface+.49),(px,yy+.11,surface+.53),.115,8),dark)
     for side in (-1,1):
-        emit(k.p_rod((side*2.8,19.5,28.2),(side*2.14,33.4,28.1),.11,6))
+        emit(open_rod((side*2.8,19.5,28.2),(side*2.14,33.4,28.1),.11,6))
         for z in (28.55,29.1):
-            emit(k.p_rod((side*3.06,20.8,z),(side*2.48,31.8,z),.045,4),railpaint)
+            emit(open_rod((side*3.06,20.8,z),(side*2.48,31.8,z),.045,4),railpaint)
         for j in range(22):
             yy=21+j*.47
             xx=side*(3.06-(yy-20.8)/11*.58)
-            emit(k.p_rod((xx,yy,28.55),(xx,yy,29.1),.032,4),railpaint)
+            emit(open_rod((xx,yy,28.55),(xx,yy,29.1),.032,4),railpaint)
     # Small lookout galleries, not four identical full-width storeys.
     for side in (-1,1):
         gallery(outline(side*3.4,28.9,2.7,2.4,.6,.5),27.0,wall=False)
-        emit(k.p_rod((side*2.4,25.3,28.9),(side*4.15,26.8,28.9),.10,5))
+        emit(open_rod((side*2.4,25.3,28.9),(side*4.15,26.8,28.9),.10,5))
     record('continuous_tower',start)
 
     start=len(buf.v)
@@ -214,8 +235,8 @@ def build_washington(buf, spec, api):
     # Lateral signal yards with triangular stays.
     emit(k.p_rod((-7.1,31.8,29.0),(7.1,31.8,29.0),.085,6),steel)
     for side in (-1,1):
-        emit(k.p_rod((0,33.1,29),(side*7.1,31.8,29),.045,4),railpaint)
-        emit(k.p_rod((side*7.1,31.8,29),(side*6.2,31.8,27.7),.045,4),railpaint)
+        emit(open_rod((0,33.1,29),(side*7.1,31.8,29),.045,4),railpaint)
+        emit(open_rod((side*7.1,31.8,29),(side*6.2,31.8,27.7),.045,4),railpaint)
     # Round director with long transverse optical rangefinder arms.
     body(ellipse(0,29.5,4.65,4.9),34.25,37.05,.12)
     emit(k.p_cyl(0,37.05,29.5,2.35,2.25,.3,24),steel)
@@ -224,12 +245,12 @@ def build_washington(buf, spec, api):
         emit(k.p_box(side*5.89,36.35,29.55,.14,.48,.80),dark)
     # Fire-control antenna and tall search array, separately articulated in silhouette.
     for side in (-1,1):
-        emit(k.p_rod((side*1.10,37.24,30.0),(side*1.10,37.68,30.0),.065,5),steel)
+        emit(open_rod((side*1.10,37.24,30.0),(side*1.10,37.68,30.0),.065,5),steel)
     radar(0,37.65,30.0,3.7,1.9,0,-.20,10,5,curved=True)
-    emit(k.p_rod((0,36.8,27.5),(0,40.0,27.5),.13,8),steel)
+    emit(open_rod((0,36.8,27.5),(0,40.0,27.5),.13,8),steel)
     radar(0,39.1,27.5,4.4,4.8,math.radians(35),.10,7,7)
     # SG: small front-of-tower mount underneath the upper gallery, not the tall top array.
-    emit(k.p_rod((0,31.1,32.3),(0,32.8,33.0),.10,6),steel)
+    emit(open_rod((0,31.1,32.3),(0,32.8,33.0),.10,6),steel)
     emit(k.p_cyl(0,32.2,33.0,.28,.25,.5,10),steel)
     radar(0,32.65,33.0,1.15,.52,0,0,4,2)
     record('upper_platform_and_director',start)
@@ -255,7 +276,7 @@ def build_washington(buf, spec, api):
             emit(k.p_cyl(x,base+h-.38,z+shift,r*.92,r*1.02,.38,24),(.24,.27,.30))
             emit(k.p_cyl(x,base+h+.005,z+shift,r*.86,r*.86,.025,24),dark)
             for side in (-1,1):
-                emit(k.p_rod((x+side*r*.83,base,z-.35),
+                emit(open_rod((x+side*r*.83,base,z-.35),
                              (x+side*r*.78,base+h*.92,z+shift-.35),.10,6),steel)
             continue
         # Light mounts retain the game's proxy layout; exact 1942 AA fitting is not claimed.

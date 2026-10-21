@@ -1,0 +1,17 @@
+{
+  "status": "BLENDER_PREVIEW_ONLY_PENDING_USER_REVIEW",
+  "target": "USS Washington BB-56, 1942 photo-based layout draft",
+  "coordinates": "hull metres: x positive port, z positive bow; y is height above local deck",
+  "evidence": "references/washington_1942/1942-08-21_aerial_BS33803_3840.jpg",
+  "caution": "Low/high/low/high/low and outboard/inboard relation are supported by the photograph. Metre coordinates are a game-scale interpretation, not surveyed dimensions. Mirrored port positions are provisional. Do not import into simulation until user review.",
+  "coreDeckhouseWidth": 18.4,
+  "portMounts": [
+    {"id":"P1","simIndex":3,"z":32,"x":13.2,"y":3.2,"tier":"low","confidence":"relative arrangement high; metric position provisional"},
+    {"id":"P2","simIndex":4,"z":17,"x":9.0,"y":6.4,"tier":"high","confidence":"relative arrangement high; metric position provisional"},
+    {"id":"P3","simIndex":5,"z":3.5,"x":13.4,"y":3.2,"tier":"low","confidence":"relative arrangement medium-high; metric position provisional"},
+    {"id":"P4","simIndex":6,"z":-10.5,"x":9.0,"y":6.4,"tier":"high","confidence":"relative arrangement medium; partially obscured"},
+    {"id":"P5","simIndex":7,"z":-25,"x":13.2,"y":3.2,"tier":"low","confidence":"relative arrangement medium-high; metric position provisional"}
+  ],
+  "starboard": "Mirror port x to negative; simIndex adds five; IDs S1-S5. Subject to port-side confirmation.",
+  "gameFilesChangedForLayout": false
+}
