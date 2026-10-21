@@ -18,6 +18,16 @@ import { createLand } from './render/land';
 import { FX } from './render/fx';
 import { AimMarker } from './render/aimMarker';
 import { ShipView } from './render/shipView';
+import { anyModel, loadModelManifest, modelList } from './render/models';
+// Read the model index first: with no Blender exports there is nothing to fetch and the glTF
+// loader is never imported at all.
+let loadedModelsFn: () => string[] = () => [];
+void loadModelManifest().then(() => {
+  if (!anyModel()) return;
+  void import('./render/assets').then((m) => {
+    loadedModelsFn = m.loadedModels;
+  });
+});
 import { Hud } from './ui/hud';
 import { Overlay } from './ui/overlay';
 import { Minimap } from './ui/minimap';
@@ -817,6 +827,7 @@ function updateUI(dt: number, world: World, P: Ship): void {
         trim: +((lock.offYaw * 180) / Math.PI).toFixed(2),
       }
     : null,
+  models: { available: modelList(), loaded: loadedModelsFn() },
   kills: G.camp?.kills.length ?? 0,
   tons: G.camp?.tons ?? 0,
   fps: Math.round(1 / Math.max(0.0001, lastDt)),

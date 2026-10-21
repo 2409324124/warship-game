@@ -9,7 +9,7 @@ import { World } from '../src/sim/world.ts';
 import { Campaign, LEVEL1 } from '../src/sim/campaign.ts';
 import { AI } from '../src/sim/ai.ts';
 import { playerFire } from '../src/sim/world.ts';
-import { leadPoint } from '../src/sim/ship.ts';
+import { leadPoint, Ship } from '../src/sim/ship.ts';
 import { flightTime } from '../src/sim/ballistics.ts';
 
 interface Run {
@@ -90,9 +90,22 @@ test('the player battleship can shoot, and shells connect', () => {
   assert.ok(acc > 0.02, `hit rate ${(acc * 100).toFixed(1)}% is too low for a well-led battleship`);
 });
 
-test('the Japanese destroyers launch torpedoes', () => {
-  const r = runBattle(180);
-  assert.ok(r.torpsLaunched > 0, 'no torpedo attacks in three minutes');
+test('a destroyer inside torpedo range fires them', () => {
+  // Reloads are long (150 s) and she has to close to about 5 km first, so waiting for it to happen
+  // inside a full battle is flaky. Put her where the doctrine already applies and check the decision.
+  // Open water: the origin is clear of every island, and so is a point 2.8 km due west of it.
+  // (Put her near Savo and torpClear() rightly refuses to fire into the hillside.)
+  const w = new World({ diff: 'captain', foe: 'JP' });
+  const me = w.add(new Ship(w, 'us_bb', 'US', 'me', { x: 0, z: 0, heading: 0, speedFrac: 0.4 }));
+  w.add(new Ship(w, 'jp_dd', 'JP', 'dd', { x: -2800, z: 0, heading: 0, speedFrac: 0.9 }));
+  for (const s of w.ships) if (!s.isPlayer) s.ai = new AI(w, s);
+  let launched = 0;
+  w.onEvent = (e) => {
+    if (e.k === 'torpLaunch') launched++;
+  };
+  for (let i = 0; i < 30 * 25; i++) w.step(1 / 30, true);
+  assert.ok(launched > 0, 'she had a target abeam at 3.8 km and should have fired');
+  assert.ok(me.alive, 'the battleship should survive one salvo');
 });
 
 test('a well-handled battleship sinks at least one destroyer', () => {

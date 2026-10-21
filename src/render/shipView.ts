@@ -5,12 +5,22 @@ import * as THREE from 'three';
 import { clamp, sstep } from '../sim/constants';
 import type { Ship } from '../sim/ship';
 import { shipGeometry, shipMaterials, buildRails, type TurretGeo } from './shipModel';
+// Loaded on demand: until a .glb exists there is nothing to fetch, and GLTFLoader is a big module
+// that has no business sitting in the base bundle.
+import { hasModel } from './models';
+
+type Assets = typeof import('./assets');
+let assetsPromise: Promise<Assets> | null = null;
+function assets(): Promise<Assets> {
+  if (!assetsPromise) assetsPromise = import('./assets');
+  return assetsPromise;
+}
 import type { Water } from './water';
 
 export class ShipView {
   readonly ship: Ship;
   readonly group = new THREE.Group();
-  readonly turrets: { pivot: THREE.Group; barrel: THREE.Group; geo: TurretGeo }[] = [];
+  readonly turrets: { pivot: THREE.Group; base: THREE.Object3D; barrel: THREE.Object3D; geo: TurretGeo }[] = [];
   private foam: THREE.Mesh;
   private hull: THREE.Mesh;
   private struct: THREE.Mesh;
@@ -59,7 +69,7 @@ export class ShipView {
       bp.add(barrel);
       pivot.add(bp);
       this.group.add(pivot);
-      this.turrets.push({ pivot, barrel: bp, geo: t.geo });
+      this.turrets.push({ pivot, base, barrel: bp, geo: t.geo });
     }
 
     this.foam = new THREE.Mesh(
@@ -76,6 +86,25 @@ export class ShipView {
     this.group.add(this.foam);
 
     scene.add(this.group);
+
+    // Blender overrides. Both are no-ops until the .glb exists, so the procedural ship stays
+    // playable for as long as the modelling work is still in progress.
+    // Nothing to override? Then never even pull the loader in.
+    const wanted = [`ships/${spec.key}_super`, ...spec.tur.map((t) => `guns/${t.kind}`)];
+    if (!wanted.some(hasModel)) return;
+
+    const group = this.group;
+    const hide = [this.struct, this.dark];
+    const turrets = this.turrets;
+    void assets().then((a) => {
+      void a.overrideSuperstructure(spec.key, group, hide);
+      for (let i = 0; i < turrets.length; i++) {
+        const entry = turrets[i];
+        void a.overrideTurret(spec.tur[i].kind, entry.pivot, entry.base, entry.barrel).then((barrel) => {
+          if (barrel) entry.barrel = barrel;
+        });
+      }
+    });
   }
 
   update(_dt: number, t: number, water: Water): void {

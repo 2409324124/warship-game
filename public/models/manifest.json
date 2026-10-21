@@ -1,0 +1,4 @@
+{
+  "_comment": "Models exported from Blender. Add the name (without the .glb) to 'models' and the game will load it. An empty list means procedural geometry only, and the glTF loader is never fetched.",
+  "models": []
+}

@@ -6,6 +6,7 @@
 // quiet when the file is not there.
 
 import * as THREE from 'three';
+import { hasModel } from './models';
 
 // GLTFLoader is heavy and most sessions will never need it, so it is pulled in on first use.
 let loaderPromise: Promise<import('three/examples/jsm/loaders/GLTFLoader.js').GLTFLoader> | null = null;
@@ -23,6 +24,7 @@ const failed = new Set<string>();
 /** `name` is a path under /models without the .glb, e.g. "props/us_bb_floatplane". */
 export async function loadModel(name: string): Promise<THREE.Object3D | null> {
   if (failed.has(name)) return null;
+  if (!hasModel(name)) return null;
   const hit = cache.get(name);
   if (hit) return hit.clone(true);
   const loader = await getLoader();
@@ -53,6 +55,65 @@ export async function loadModel(name: string): Promise<THREE.Object3D | null> {
 
 export function modelMissing(name: string): boolean {
   return failed.has(name);
+}
+
+/** Which models have actually been loaded - handy for checking an override took effect. */
+export function loadedModels(): string[] {
+  return [...cache.keys()];
+}
+
+/**
+ * Blender's superstructure replaces the procedural one.
+ *
+ * This is an *override*, not a replacement: if `ships/<key>_super.glb` is not there, nothing is
+ * hidden and the procedural geometry carries on. `hide` is the list of procedural meshes to turn
+ * off once a real model arrives (the superstructure meshes; hull, deck and foam stay).
+ */
+export async function overrideSuperstructure(
+  key: string,
+  group: THREE.Object3D,
+  hide: THREE.Object3D[],
+): Promise<boolean> {
+  const obj = await loadModel(`ships/${key}_super`);
+  if (!obj) return false;
+  for (const m of hide) m.visible = false;
+  group.add(obj);
+  return true;
+}
+
+/**
+ * Blender's turret replaces the procedural one on the same pivot, so `updateTurrets()` keeps
+ * driving bearing and elevation exactly as before.
+ *
+ * The model is expected to hold two sibling nodes: `base` (rotates in bearing) and `barrel`
+ * (pitches, with its own origin at the trunnion). Either one may be absent, in which case the
+ * procedural part it would have replaced stays put.
+ *
+ * @returns the object that should be pitched, or null if the procedural turret stays.
+ */
+export async function overrideTurret(
+  kind: string,
+  pivot: THREE.Object3D,
+  procBase: THREE.Object3D,
+  procBarrel: THREE.Object3D,
+): Promise<THREE.Object3D | null> {
+  const src = await loadModel(`guns/${kind}`);
+  if (!src) return null;
+  const baseSrc = src.getObjectByName('base');
+  const barrelSrc = src.getObjectByName('barrel');
+  if (!baseSrc && !barrelSrc) return null;
+
+  if (baseSrc) {
+    pivot.remove(procBase);
+    pivot.add(baseSrc.clone(true));
+  }
+  if (barrelSrc) {
+    pivot.remove(procBarrel);
+    const b = barrelSrc.clone(true);
+    pivot.add(b);
+    return b;
+  }
+  return null;
 }
 
 export interface PropPlacement {
