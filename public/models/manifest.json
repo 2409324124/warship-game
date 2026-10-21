@@ -1,4 +1,22 @@
 {
   "_comment": "Models exported from Blender. Add the name (without the .glb) to 'models' and the game will load it. An empty list means procedural geometry only, and the glTF loader is never fetched.",
-  "models": []
+  "models": [
+    "ships/us_bb_super",
+    "ships/jp_dd_super",
+    "ships/jp_bb_super",
+    "ships/jp_ca_super",
+    "ships/us_ca_super",
+    "ships/us_dd_super",
+    "guns/us5s",
+    "guns/us5d",
+    "guns/us6t",
+    "guns/us8t",
+    "guns/us16t",
+    "guns/jp5d",
+    "guns/jp5s",
+    "guns/jp55",
+    "guns/jp8d",
+    "guns/jp14d",
+    "guns/jp6c"
+  ]
 }
