@@ -6,3 +6,5 @@ shots/
 *.log
 .DS_Store
 Thumbs.db
+*.blend
+*.blend1
