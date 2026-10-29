@@ -1,198 +1,191 @@
-// The sea: a Gerstner swell with foam on the crests and along the shore, a Fresnel sky mirror,
-// and a sun glitter. One mesh, one shader, no textures except a small height map of the islands.
-
+// One camera-centred, graded mesh / one draw call. World-anchored waves never swim with the camera.
 import * as THREE from 'three';
-import { TAU } from '../sim/constants';
 import { terrainH } from '../sim/terrain';
 import { FOG_COLOR, SUN_DIR } from './engine';
-
-// [direction rad, wavelength m, amplitude m, phase]
-const WAVE_DEF: [number, number, number, number][] = [
-  [0.35, 210, 1.05, 0.0],
-  [-0.55, 128, 0.6, 1.3],
-  [1.15, 74, 0.34, 2.1],
-  [2.45, 47, 0.2, 4.2],
-];
-
-const WAVES = WAVE_DEF.map(([a, L, A, ph]) => {
-  const k = TAU / L;
-  return { dx: Math.cos(a), dz: Math.sin(a), k, A, w: Math.sqrt(9.81 * k), ph };
-});
-
-const COMMON = /* glsl */ `
-  uniform vec4 uW0; uniform vec4 uW1; uniform vec4 uW2; uniform vec4 uW3;
-  // xy = direction, z = angular wavenumber, w = omega
-  uniform float uTime;
-
-  const float G = 9.81;
-
-  // slope of one short travelling wave, as (dH/dx, dH/dz)
-  vec2 rippleGrad(vec2 p, vec2 d, float k, float w, float amp) {
-    float f = k * dot(d, p) - w * uTime;
-    return -d * (k * amp * cos(f));
-  }
-
-  uniform int uVertWaves;   // only these are displaced in the vertex stage (see the note below)
-
-  vec3 gerstner(vec2 p, out vec3 nrm, float fade, int count) {
-    vec3 disp = vec3(0.0);
-    vec3 tangent = vec3(1.0, 0.0, 0.0);
-    vec3 binormal = vec3(0.0, 0.0, 1.0);
-    vec4 W[4];
-    W[0] = uW0; W[1] = uW1; W[2] = uW2; W[3] = uW3;
-    float A[4];
-    A[0] = ${WAVES[0].A.toFixed(3)}; A[1] = ${WAVES[1].A.toFixed(3)};
-    A[2] = ${WAVES[2].A.toFixed(3)}; A[3] = ${WAVES[3].A.toFixed(3)};
-    float PH[4];
-    PH[0] = ${WAVES[0].ph.toFixed(3)}; PH[1] = ${WAVES[1].ph.toFixed(3)};
-    PH[2] = ${WAVES[2].ph.toFixed(3)}; PH[3] = ${WAVES[3].ph.toFixed(3)};
-    for (int i = 0; i < 4; i++) {
-      if (i >= count) break;
-      vec2 d = W[i].xy;
-      float k = W[i].z;
-      float w = W[i].w;
-      float amp = A[i] * fade;
-      float f = k * dot(d, p) - w * uTime + PH[i];
-      float s = sin(f), c = cos(f);
-      disp.y += amp * s;
-      disp.x += d.x * amp * c;
-      disp.z += d.y * amp * c;
-      float wa = k * amp;
-      tangent += vec3(-d.x * d.x * wa * s, d.x * wa * c, -d.x * d.y * wa * s);
-      binormal += vec3(-d.x * d.y * wa * s, d.y * wa * c, -d.y * d.y * wa * s);
-    }
-    nrm = normalize(cross(binormal, tangent));
-    return disp;
-  }
-`;
+import { OceanBlasts, OCEAN_GLSL, sampleOcean, oceanPhases, BLAST_CAPACITY } from './oceanModel';
+import { waterTriangleHeight } from './oceanSurfaceGeometry';
 
 const VERT = /* glsl */ `
-${COMMON}
-uniform vec3 uEye;
+${OCEAN_GLSL}
 varying vec3 vWorld;
-varying vec3 vNormal;
-varying float vFade;
-varying float vDist;
-
 void main() {
-  vec3 p = position;
-  vec4 world = modelMatrix * vec4(p, 1.0);
-  vDist = length(world.xyz - uEye);
-  vFade = 1.0 - smoothstep(1200.0, 9000.0, vDist);
-  // Only the longest swell moves the vertices. The sea grid is about 40 m across out here, so even\n  // a 128 m wave is barely sampled and the surface turns into moire stripes. Everything shorter is\n  // re-applied per pixel in the fragment stage, where there is no grid to fight.
-  vec3 nrm;
-  vec3 disp = gerstner(world.xz, nrm, mix(0.6, 1.0, vFade * 0.35 + 0.65), uVertWaves);
-  world.xyz += disp;
+  vec4 world = modelMatrix * vec4(position, 1.0);
+  world.y = oceanSurface(world.xz).x + blastSurface(world.xz).x;
   vWorld = world.xyz;
-  vNormal = nrm;
   gl_Position = projectionMatrix * viewMatrix * world;
 }
 `;
 
 const FRAG = /* glsl */ `
 precision highp float;
-${COMMON}
-uniform vec3 uEye;
-uniform vec3 uSun;
-uniform vec3 uFog;
-uniform vec3 uZenith;
-uniform float uFogDensity;
+${OCEAN_GLSL}
+uniform vec3 uEye, uSun, uFog, uZenith;
+uniform float uFogDensity, uLandScale;
 uniform sampler2D uLand;
-uniform float uLandScale;
-
 varying vec3 vWorld;
-varying vec3 vNormal;
-varying float vFade;
-varying float vDist;
 
+float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+// Simplex gradient noise with analytic derivatives: no persistent sinusoidal carrier or
+// rectangular interpolation lattice in the normal. Each octave has its own heading and phase.
+vec3 noiseCorner(vec2 cell, vec2 p) {
+  float angle = hash(cell) * 6.28318530718;
+  vec2 g = vec2(cos(angle), sin(angle));
+  float m = max(0.5 - dot(p, p), 0.0);
+  float m2 = m * m, m3 = m2 * m, m4 = m2 * m2;
+  float v = dot(g, p);
+  return vec3(m4 * v, m4 * g - 8.0 * m3 * v * p);
+}
+vec3 noiseD(vec2 p) {
+  const float F = 0.366025403784, G = 0.211324865405;
+  vec2 cell = floor(p + (p.x + p.y) * F);
+  vec2 a = p - cell + (cell.x + cell.y) * G;
+  vec2 stepCell = a.x > a.y ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  return 70.0 * (noiseCorner(cell, a)
+    + noiseCorner(cell + stepCell, a - stepCell + G)
+    + noiseCorner(cell + 1.0, a - 1.0 + 2.0 * G));
+}
+void wavelet(inout vec2 slope, vec2 p, vec2 dir, float k, float amp, float speed, vec2 phase) {
+  vec2 side = vec2(-dir.y, dir.x);
+  vec2 q = vec2(dot(p, dir), dot(p, side) * 0.72) * k + phase;
+  q.x -= uTime * speed;
+  vec3 n = noiseD(q);
+  float footprint = max(length(dFdx(q)), length(dFdy(q)));
+  float aa = 1.0 - smoothstep(0.22, 0.85, footprint);
+  slope += (dir * n.y + side * n.z * 0.72) * (amp * k * aa);
+}
+// Short optical roughness/pressure depression only: like fine wavelets this does not move
+// vertices or ships. Independent of foam perforation, so a heavy salvo reads on dark water.
+float pressureActivity(vec2 p) {
+  float energy = 0.0;
+  for (int i = 0; i < ${BLAST_CAPACITY}; i++) {
+    if (i >= uBlastCount) break;
+    vec4 b = uBlasts[i];
+    float age = b.z;
+    if (age <= 0.0 || age >= 1.05) continue;
+    vec2 d = p - b.xy;
+    float radius = 23.0 * age;
+    if (dot(d, d) > (radius + 16.0) * (radius + 16.0)) continue;
+    float r = length(d);
+    float front = (r - radius) / 6.0;
+    float footprint = max(exp(-front * front), exp(-dot(d, d) / 120.0 - age * 2.0));
+    float life = (1.0 - exp(-age * 28.0)) * (1.0 - smoothstep(0.65, 1.05, age));
+    float torn = 0.48 + 0.52 * smoothstep(-0.25, 0.4, noiseD(p * 0.19 + age * 0.6).x);
+    energy += b.w * footprint * life * torn;
+  }
+  return energy / (1.0 + energy);
+}
 vec3 skyCol(vec3 d) {
   float h = clamp(d.y, 0.0, 1.0);
   vec3 c = mix(uFog, uZenith, pow(h, 0.55));
   float sd = max(dot(d, normalize(uSun)), 0.0);
-  c += vec3(1.0, 0.78, 0.55) * pow(sd, 22.0) * 0.5;
-  c += vec3(1.0, 0.72, 0.52) * pow(sd, 4.0) * 0.1;
-  return c;
+  return c + vec3(1.0, 0.78, 0.55) * (pow(sd, 22.0) * 0.5 + pow(sd, 4.0) * 0.1);
 }
-
 float landH(vec2 p) {
   vec2 uv = p / (2.0 * uLandScale) + 0.5;
   if (any(lessThan(uv, vec2(0.0))) || any(greaterThan(uv, vec2(1.0)))) return -200.0;
   return texture2D(uLand, uv).r * 1000.0 - 100.0;
 }
-
 void main() {
-  // all four waves, recomputed per pixel: the short ones that the vertex grid cannot carry
-  vec3 nAll;
-  gerstner(vWorld.xz, nAll, 1.0, 4);
-  vec3 n = normalize(mix(normalize(vNormal), nAll, 0.85));
+  vec2 p = vWorld.xz;
+  float dist = length(uEye - vWorld);
+  vec4 sea = oceanSurface(p), blast = blastSurface(p);
+  vec2 grad = sea.yz + blast.yz;
+  float footprint = max(length(dFdx(p)), length(dFdy(p)));
+  // Analytic short-wave detail below mesh resolution, faded before it can alias.
+  grad += detailSlope(p) * (1.0 - smoothstep(2.0, 5.0, footprint));
+  // Wind frame: every fine band and streak aligns to this heading, never against it.
+  vec2 windDir = vec2(0.93937, 0.34290);
+  vec2 windSide = vec2(-windDir.y, windDir.x);
+  vec2 wind = vec2(uTime * 0.11, uTime * 0.065);
+  // Spindrift: strongly anisotropic streaks advected along the wind, modulating both the
+  // fine normal field and the base brightness so distant water reads as wind-blown bands.
+  float streak = noiseD(vec2(dot(p, windDir) * 0.05, dot(p, windSide) * 1.4) - vec2(uTime * 0.4, 0.0)).x;
+  vec2 q = p + 2.3 * vec2(noiseD(p * 0.065 - wind).x, noiseD(p * 0.073 - wind.yx + 27.0).x);
+  // Fine ripples ride the swell: stretched and livelier on crests, compressed in troughs.
+  float kMod = 1.0 - 0.25 * clamp(sea.x / 1.2, -1.0, 1.0);
+  float aMod = (0.7 + 0.6 * smoothstep(-0.3, 1.2, sea.x)) * (1.0 + streak * 0.15);
+  float distFade = exp(-dist * 0.0016);
+  vec2 fine = vec2(0.0);
+  wavelet(fine, q, windDir, 0.22 * kMod, 0.085 * aMod, 0.37, vec2(3.7, 17.1));
+  wavelet(fine, q, vec2(0.76484, 0.64422), 0.47 * kMod, 0.037 * aMod, 0.59, vec2(31.8, -9.2));
+  wavelet(fine, q, vec2(1.0, 0.0), 1.03 * kMod, 0.016 * aMod, 0.86, vec2(-18.3, 5.4));
+  if (distFade > 0.02) {
+    wavelet(fine, q, vec2(0.40849, 0.91276), 2.17 * kMod, 0.0065 * aMod, 1.12, vec2(7.9, 43.2));
+    wavelet(fine, q, vec2(0.90045, -0.43497), 4.31 * kMod, 0.0025 * aMod, 1.55, vec2(55.1, 2.8));
+  }
+  fine *= mix(0.35, 1.0, distFade);
+  float pressure = pressureActivity(p);
+  vec3 churn = noiseD(p * 0.46 + vec2(-uTime * 2.6, uTime * 1.9));
+  grad += fine * (1.0 - pressure * 0.6) + churn.yz * (0.12 * pressure);
+  vec3 n = normalize(vec3(-grad.x, 1.0, -grad.y));
   vec3 v = normalize(uEye - vWorld);
   if (dot(n, v) < 0.0) n = -n;
-
-  // Fine ripples on top of the swell, added as the slope of three short directional waves.
-  // (Multiplying two sines together here would give a plaid pattern - it has to be a sum.)
-  // The shortest one fades out with distance, where its wavelength would alias on screen.
-  vec2 q = vWorld.xz;
-  vec2 g = vec2(0.0);
-  g += rippleGrad(q, vec2(0.90, 0.44), 0.33, 2.2, 0.035) * (1.0 - smoothstep(700.0, 2600.0, vDist));
-  g += rippleGrad(q, vec2(-0.42, 0.91), 0.19, 1.5, 0.07) * (1.0 - smoothstep(1800.0, 6000.0, vDist));
-  g += rippleGrad(q, vec2(0.30, -0.95), 0.10, 1.1, 0.11);
-  g += rippleGrad(q, vec2(0.76, -0.65), 0.055, 0.7, 0.13);
-  n = normalize(vec3(n.x - g.x, n.y, n.z - g.y));
-
-  float h = landH(vWorld.xz);
+  float h = landH(p);
   float shallow = smoothstep(-70.0, 8.0, h);
   float shore = smoothstep(-34.0, 2.0, h) * (1.0 - smoothstep(2.0, 46.0, h));
-
-  vec3 deep = vec3(0.043, 0.086, 0.118);
-  vec3 shoal = vec3(0.10, 0.26, 0.27);
-  vec3 base = mix(deep, shoal, shallow);
-
-  // fresnel to the sky
-  float f = pow(1.0 - max(dot(n, v), 0.0), 5.0);
-  vec3 refl = reflect(-v, n);
-  refl.y = abs(refl.y);
-  vec3 col = mix(base, skyCol(refl), 0.04 + 0.94 * f);
-
-  // sun glitter: one tight lobe and one broad one. A single hard exponent reads as stripes.
+  vec3 base = mix(vec3(0.025, 0.066, 0.089), vec3(0.075, 0.22, 0.23), shallow);
+  base *= 1.0 + streak * 0.04;
+  // Forward-scattered emerald only where a crest is both tall and steep, against the sun.
+  base += vec3(0.02, 0.10, 0.075) * smoothstep(0.6, 1.6, sea.x)
+    * smoothstep(0.05, 0.12, length(sea.yz)) * max(0.0, dot(v, -uSun));
+  float fresnel = 0.035 + 0.94 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
+  vec3 refl = reflect(-v, n); refl.y = abs(refl.y);
+  vec3 col = mix(base, skyCol(refl), fresnel);
+  // Troughs absorb: less sky is seen and the path through water is longer.
+  col *= 1.0 - 0.18 * (1.0 - smoothstep(-1.4, 0.2, sea.x)) * (1.0 - fresnel);
+  // A dark compressed face beside brighter torn foam makes the transient region legible,
+  // without adding emitted light or changing the displacement/boat height cap.
+  col *= 1.0 - pressure * 0.48;
+  // Sun glitter: a sparse high-frequency sparkle field breaks the specular path into
+  // individual flashes; three lobes merge it into a broad sheen with viewing distance.
+  float sparkAA = 1.0 - smoothstep(0.06, 0.30, footprint);
+  float sparkle = smoothstep(0.55, 0.95, noiseD(p * 8.5 + wind * 3.1).x) * sparkAA * exp(-dist * 0.004);
   vec3 hv = normalize(normalize(uSun) + v);
   float nh = max(dot(n, hv), 0.0);
-  col += vec3(1.0, 0.86, 0.66) * pow(nh, 90.0) * 0.3;
-  col += vec3(1.0, 0.86, 0.68) * pow(nh, 14.0) * 0.05 * (0.3 + 0.7 * vFade);
-
-  // crest foam: where the wave surface is being pinched
-  float crest = smoothstep(0.62, 1.15, 1.0 - n.y) * (0.2 + 0.8 * vFade);
-  float shoreFoam = shore * (0.75 + 0.25 * sin(uTime * 2.4 + vWorld.x * 0.06 + vWorld.z * 0.05));
-  float foam = clamp(crest * 0.32 + shoreFoam, 0.0, 1.0);
-  col = mix(col, vec3(0.86, 0.90, 0.92), foam * 0.8);
-
-  // distance fog
-  float fog = 1.0 - exp(-uFogDensity * vDist * 0.85);
-  col = mix(col, uFog, clamp(fog, 0.0, 1.0));
-
-  gl_FragColor = vec4(col, 1.0);
+  col += vec3(1.0, 0.86, 0.66) * (pow(nh, 700.0) * (1.2 * sparkle + 0.25)
+    + pow(nh, 48.0) * 0.10 + pow(nh, 10.0) * 0.03);
+  // Thin crest ribbons with perforated edges and individual grains, rather than filled blobs.
+  float foamAA = 1.0 - smoothstep(0.8, 3.0, footprint);
+  vec2 fq = vec2(dot(p, vec2(0.94, 0.342)), dot(p, vec2(-0.342, 0.94)));
+  float lace = noiseD(fq * vec2(1.3, 0.48) - wind).x;
+  float grains = noiseD(p * 2.7 - wind + 73.2).x;
+  float grainAA = 1.0 - smoothstep(0.15, 0.65, footprint);
+  float pores = mix(0.31, smoothstep(-0.1, 0.42, grains), grainAA);
+  float broken = smoothstep(-0.12, 0.42, lace) * pores;
+  float patches = smoothstep(-0.05, 0.35, noiseD(p * 0.11 - wind * 0.5 + 19.4).x);
+  float crest = smoothstep(0.001, 0.006, sea.w) * broken * patches * foamAA;
+  // Lee-slope residue: a just-broken crest leaves a fading tail downwind of the crest line.
+  float trail = smoothstep(0.0, 0.05, -dot(sea.yz, windDir))
+    * smoothstep(0.001, 0.004, sea.w) * broken * patches * foamAA;
+  float shoreFoam = shore * broken * 0.35 * foamAA;
+  float pressureBreakup = smoothstep(-0.4, 0.45, noiseD(p * 0.64 - wind * 2.0 + 11.6).x);
+  float pressureFoam = blast.w * (0.24 + 0.76 * pressureBreakup) * (0.6 + 0.4 * pores) * foamAA;
+  float foam = clamp((crest + trail * 0.55) * 0.38 + shoreFoam, 0.0, 0.46);
+  // Muzzle pressure shreds whitecaps; the torn turbidity is rendered by pressureFoam instead.
+  foam *= 1.0 - pressure * 0.5;
+  // Diffuse foam, never emissive: blast rings disappear into the water in about a second.
+  col = mix(col, vec3(0.30, 0.39, 0.41), foam);
+  col = mix(col, vec3(0.22, 0.31, 0.33), min(0.20, pressureFoam));
+  float fog = 1.0 - exp(-uFogDensity * dist * 0.85);
+  gl_FragColor = vec4(mix(col, uFog, clamp(fog, 0.0, 1.0)), 1.0);
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
 }
 `;
 
 function landTexture(scale: number): THREE.DataTexture {
-  const N = 256;
-  const data = new Uint8Array(N * N * 4);
+  const N = 256, data = new Uint8Array(N * N * 4);
   for (let j = 0; j < N; j++) {
     for (let i = 0; i < N; i++) {
-      const x = (i / (N - 1)) * 2 * scale - scale;
-      const z = (j / (N - 1)) * 2 * scale - scale;
-      const v = Math.max(0, Math.min(1, (terrainH(x, z) + 100) / 1000));
+      const x = i / (N - 1) * 2 * scale - scale, z = j / (N - 1) * 2 * scale - scale;
+      const b = Math.round(Math.max(0, Math.min(1, (terrainH(x, z) + 100) / 1000)) * 255);
       const o = (j * N + i) * 4;
-      const b = Math.round(v * 255);
-      data[o] = b;
-      data[o + 1] = b;
-      data[o + 2] = b;
-      data[o + 3] = 255;
+      data[o] = data[o + 1] = data[o + 2] = b; data[o + 3] = 255;
     }
   }
   const tex = new THREE.DataTexture(data, N, N, THREE.RGBAFormat);
   tex.needsUpdate = true;
-  tex.minFilter = THREE.LinearFilter;
-  tex.magFilter = THREE.LinearFilter;
+  tex.minFilter = tex.magFilter = THREE.LinearFilter;
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
   return tex;
 }
@@ -200,65 +193,71 @@ function landTexture(scale: number): THREE.DataTexture {
 export interface Water {
   mesh: THREE.Mesh;
   update(t: number, eye: THREE.Vector3): void;
-  /** Height of the swell at a world point, so ships can ride it. */
+  /** Exact world-space vertex height field; fine shading-only ripples do not bob ships. */
   height(x: number, z: number, t: number): number;
+  /** Height of the rendered triangles, including distant mesh interpolation. */
+  renderHeight?(x:number,z:number,t:number):number;
+  /** One call per muzzle: world x/z in metres, bore cal in mm, clearance in metres (default 10).
+   * Uses the most recent update time. Call update with the current simulation time before emission. */
+  blast(x: number, z: number, cal: number, heightAboveWater?: number): void;
+  /** Clear pressure waves/foam on restart; does not reset the ambient sea clock. */
+  resetBlasts(): void;
 }
 
 export function createWater(scene: THREE.Scene, fogDensity: number): Water {
-  const R = 26000,
-    N = 300,
-    P = 1.9;
+  const N = 300; // 90,601 vertices, one indexed mesh; central 1.2 km sampled every 5 m.
   const g = new THREE.PlaneGeometry(2, 2, N, N);
   g.rotateX(-Math.PI / 2);
   const a = g.attributes.position as THREE.BufferAttribute;
+  const grade = (v: number) => {
+    const q = Math.abs(v);
+    const r = q <= 0.8 ? q * 750 : 600 + 750 * (q - 0.8) + 25250 * ((q - 0.8) / 0.2) ** 2.6;
+    return Math.sign(v) * r;
+  };
   for (let i = 0; i < a.count; i++) {
-    const x = a.getX(i),
-      z = a.getZ(i);
-    a.setX(i, Math.sign(x) * Math.pow(Math.abs(x), P) * R);
-    a.setZ(i, Math.sign(z) * Math.pow(Math.abs(z), P) * R);
+    a.setX(i, grade(a.getX(i))); a.setZ(i, grade(a.getZ(i)));
   }
   g.computeBoundingSphere();
-  if (g.boundingSphere) g.boundingSphere.radius = 1e6;
-
-  const land = landTexture(14000);
+  const axisX=Float32Array.from({length:N+1},(_,i)=>a.getX(i));
+  const axisZ=Float32Array.from({length:N+1},(_,i)=>a.getZ(i*(N+1)));
+  const blasts = new OceanBlasts();
   const mat = new THREE.ShaderMaterial({
-    vertexShader: VERT,
-    fragmentShader: FRAG,
+    vertexShader: VERT, fragmentShader: FRAG,
     uniforms: {
-      uTime: { value: 0 },
-      uEye: { value: new THREE.Vector3() },
-      uSun: { value: SUN_DIR.clone() },
-      uFog: { value: FOG_COLOR.clone() },
-      uZenith: { value: new THREE.Color(0x4d78a8) },
-      uFogDensity: { value: fogDensity },
-      uLand: { value: land },
+      uTime: { value: 0 }, uWavePhase: { value: oceanPhases(0) },
+      uBlastCount: { value: 0 }, uBlasts: { value: blasts.data },
+      uEye: { value: new THREE.Vector3() }, uSun: { value: SUN_DIR.clone() },
+      uFog: { value: FOG_COLOR.clone() }, uZenith: { value: new THREE.Color(0x4d78a8) },
+      uFogDensity: { value: fogDensity }, uLand: { value: landTexture(14000) },
       uLandScale: { value: 14000 },
-      uW0: { value: new THREE.Vector4(WAVES[0].dx, WAVES[0].dz, WAVES[0].k, WAVES[0].w) },
-      uW1: { value: new THREE.Vector4(WAVES[1].dx, WAVES[1].dz, WAVES[1].k, WAVES[1].w) },
-      uW2: { value: new THREE.Vector4(WAVES[2].dx, WAVES[2].dz, WAVES[2].k, WAVES[2].w) },
-      uW3: { value: new THREE.Vector4(WAVES[3].dx, WAVES[3].dz, WAVES[3].k, WAVES[3].w) },
-      uVertWaves: { value: 1 },
     },
     fog: false,
   });
-
   const mesh = new THREE.Mesh(g, mat);
   mesh.frustumCulled = false;
   mesh.renderOrder = -5;
   scene.add(mesh);
-
   return {
     mesh,
     update(t, eye) {
-      mat.uniforms.uTime.value = t;
-      (mat.uniforms.uEye.value as THREE.Vector3).copy(eye);
-    },
-    height(x, z, t) {
-      let h = 0;
-      for (const w of WAVES) {
-        h += w.A * Math.sin(w.k * (w.dx * x + w.dz * z) - w.w * t + w.ph);
+      blasts.update(t);
+      mat.uniforms.uTime.value = blasts.time;
+      oceanPhases(blasts.time, mat.uniforms.uWavePhase.value as Float32Array);
+      mat.uniforms.uBlastCount.value = blasts.count;
+      if ([eye.x, eye.y, eye.z].every(Number.isFinite)) {
+        (mat.uniforms.uEye.value as THREE.Vector3).copy(eye);
+        mesh.position.set(eye.x, 0, eye.z);
       }
-      return h;
     },
+    height(x, z, t) { return sampleOcean(x, z, t).height + blasts.sample(x, z, t).height; },
+    renderHeight(x,z,t) {
+      return waterTriangleHeight(x,z,t,axisX,axisZ,mesh.position.x,mesh.position.z,
+        (px,pz,pt)=>sampleOcean(px,pz,pt).height+blasts.sample(px,pz,pt).height);
+    },
+    blast(x, z, cal, heightAboveWater = 10) {
+      blasts.blast(x, z, cal, heightAboveWater);
+      mat.uniforms.uBlastCount.value = blasts.count;
+    },
+    resetBlasts() { blasts.reset(); mat.uniforms.uBlastCount.value = 0; },
   };
 }

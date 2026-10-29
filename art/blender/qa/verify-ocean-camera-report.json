@@ -1,0 +1,2040 @@
+{
+  "screenshots": [
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-game-wide.png",
+      "scene": "real game, default centered exterior chase, HUD",
+      "camera": {
+        "fov": 54,
+        "x": 0,
+        "y": 74.6627932861268,
+        "z": -2813.9660094536766
+      }
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-game-side.png",
+      "scene": "real game, __cmd.turn(650,0), centered exterior chase (not inspect)",
+      "camera": {
+        "fov": 54,
+        "x": 339.3244708154401,
+        "y": 75.96128780762378,
+        "z": -2387.939990350424
+      }
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-game-fired.png",
+      "scene": "real game / HUD, 0.2s after __cmd.muzzle(406)",
+      "camera": {
+        "fov": 54,
+        "x": 339.32447190233086,
+        "y": 76.0746798347686,
+        "z": -2381.7504770877167
+      }
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-wide-chase.png",
+      "scene": "controlled actual BB / chaseFraming / far forward lookAt"
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-broadside-waves.png",
+      "scene": "controlled BB / forward-quarter / visible sea faces"
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-0p2s-clear.png",
+      "scene": "controlled clear",
+      "time": 0.2
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-0p2s-pressure-only.png",
+      "scene": "diagnostic: actual Water pressure, FX smoke omitted",
+      "time": 0.2
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-0p2s-fired.png",
+      "scene": "controlled fired",
+      "time": 0.2
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-0p5s-clear.png",
+      "scene": "controlled clear",
+      "time": 0.5
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-0p5s-pressure-only.png",
+      "scene": "diagnostic: actual Water pressure, FX smoke omitted",
+      "time": 0.5
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-0p5s-fired.png",
+      "scene": "controlled fired",
+      "time": 0.5
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-1p0s-clear.png",
+      "scene": "controlled clear",
+      "time": 1
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-1p0s-pressure-only.png",
+      "scene": "diagnostic: actual Water pressure, FX smoke omitted",
+      "time": 1
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-1p0s-fired.png",
+      "scene": "controlled fired",
+      "time": 1
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-4p0s-clear.png",
+      "scene": "controlled clear",
+      "time": 4
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-4p0s-pressure-only.png",
+      "scene": "diagnostic: actual Water pressure, FX smoke omitted",
+      "time": 4
+    },
+    {
+      "path": "D:\\warship-game\\art\\blender\\qa\\ocean-pressure-4p0s-fired.png",
+      "scene": "controlled fired",
+      "time": 4
+    }
+  ],
+  "failures": [],
+  "observations": [
+    "Water currently exposes height(), not sample(); CPU comparison uses sampleOcean + OceanBlasts.sample and validates Water.height against the same time and GPU uniforms.",
+    "Pressure-only diagnostics intentionally omit FX smoke; fired images include both real FX and Water pressure.",
+    "Real-game frames use main.ts with HUD and chase camera; browser rAF delivery is gated in the tool to sample short effects without changing simulation parameters.",
+    "Default and side exterior views use centered chaseFraming and level 0 ship state; Shift enters level 4 binocular mode at 11 degrees without free look/follow, preserves the weapon group, then restores level 0. Scope world coordinates follow the weapon-group anchor and geometry clearance, not the legacy spec.cam endpoint. Pressure close-ups intentionally crop the aft ship/masts to favour the water.",
+    "Float GPU readback can emit SwiftShader ReadPixels GPU-stall warnings; these are captured separately from shader failures and do not constitute an FPS measurement."
+  ],
+  "console": [
+    {
+      "page": "game",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "game",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "controlled",
+      "type": "warn",
+      "text": "[.WebGL-0x2aa400c9d800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "page": "controlled",
+      "type": "warn",
+      "text": "[.WebGL-0x2aa400c9d800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+    }
+  ],
+  "pageErrors": [],
+  "networkErrors": [],
+  "shaderErrors": [],
+  "renderer": "Edge / ANGLE SwiftShader; no hardware FPS claim",
+  "timestep": 0.005,
+  "typecheck": {
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "game": {
+    "wide": {
+      "mode": "play",
+      "time": 1.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2468
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8334,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8682,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9090,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.1940995467845
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6531
+        ],
+        "ship": [
+          0,
+          -2468
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "guns/us16t",
+          "guns/us5d",
+          "ships/jp_dd_hull",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/us_bb_super",
+          "guns/jp5d"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 106,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 0,
+        "y": 74.6627932861268,
+        "z": -2813.9660094536766
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      }
+    },
+    "framing": {
+      "fov": 54,
+      "back": 344.1,
+      "height": 75.48,
+      "shoulder": 0,
+      "length": 222
+    },
+    "centeredChase": {
+      "wide": {
+        "lateral": 0,
+        "aft": 345.96600945367663,
+        "fov": 54
+      },
+      "lateralToleranceMetres": 2,
+      "distanceToleranceMetres": 5,
+      "scopeFovTolerance": 0.15,
+      "restored": {
+        "lateral": -6.903640316617188e-9,
+        "aft": 346.2765835564119,
+        "fov": 54
+      },
+      "side": {
+        "lateral": -1.7859430419677977,
+        "aft": 344.40068142228955,
+        "fov": 54
+      }
+    },
+    "scope": {
+      "mode": "play",
+      "time": 3.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2427
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8211,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8560,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8970,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9931656025782,
+          462.5076472932432
+        ],
+        "zoom": 1,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6572
+        ],
+        "ship": [
+          0,
+          -2427
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "guns/us16t",
+          "guns/us5d",
+          "ships/jp_dd_hull",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/us_bb_super",
+          "guns/jp5d"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 180,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 11,
+        "x": -0.05192870031803864,
+        "y": 28.507594856108724,
+        "z": -2364.4244635528044
+      },
+      "cameraControl": {
+        "mode": "binocular",
+        "level": 4,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      }
+    },
+    "restored": {
+      "mode": "play",
+      "time": 5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2380
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8085,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8435,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8852,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000000011372,
+          452.2459591129395
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6618
+        ],
+        "ship": [
+          0,
+          -2380
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "guns/us16t",
+          "guns/us5d",
+          "ships/jp_dd_hull",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/us_bb_super",
+          "guns/jp5d"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 192,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": -6.903640316617188e-9,
+        "y": 75.25879856877224,
+        "z": -2726.276583556412
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      }
+    },
+    "side": {
+      "mode": "play",
+      "time": 6.8,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2329
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7957,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8305,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8738,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9998034622735,
+          452.3182226626542
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          -8875,
+          -836
+        ],
+        "ship": [
+          0,
+          -2329
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "guns/us16t",
+          "guns/us5d",
+          "ships/jp_dd_hull",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/us_bb_super",
+          "guns/jp5d"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 193,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 339.3244708154401,
+        "y": 75.96128780762378,
+        "z": -2387.939990350424
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -1.4039998343422946,
+        "aimRange": 9000,
+        "projectiles": []
+      }
+    },
+    "firedImmediate": {
+      "before": {
+        "particles": 193,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "after": {
+        "particles": 193,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 9,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 30,
+          "flashSpawned": 9,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    "fired": {
+      "debug": {
+        "mode": "play",
+        "time": 7,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2323
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 7942,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8289,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8726,
+            "fires": 0
+          }
+        ],
+        "shells": 0,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9998032832724,
+            452.3292640509063
+          ],
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 86,
+            "cross": 38
+          },
+          "aim": [
+            -8875,
+            -830
+          ],
+          "ship": [
+            0,
+            -2323
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "guns/us16t",
+            "guns/us5d",
+            "ships/jp_dd_hull",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 193,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 30,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 1
+          }
+        },
+        "camera": {
+          "fov": 54,
+          "x": 339.32447190233086,
+          "y": 76.0746798347686,
+          "z": -2381.7504770877167
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -1.4039998343422946,
+          "aimRange": 9000,
+          "projectiles": []
+        }
+      },
+      "gpu": {
+        "frames": 140,
+        "shaderErrors": [],
+        "blastUploads": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 136,
+            "value": 3
+          }
+        ],
+        "maxBlastCount": 3
+      }
+    }
+  },
+  "controlled": {
+    "models": [
+      "ships/us_bb_hull",
+      "ships/us_bb_super",
+      "guns/us16t",
+      "guns/us5d"
+    ],
+    "glbMounted": true,
+    "framing": {
+      "fov": 54,
+      "back": 344.1,
+      "height": 75.48,
+      "shoulder": 0
+    },
+    "framingCases": [
+      {
+        "aspect": 0.5,
+        "zoom": 0,
+        "fov": 54,
+        "back": 505.41145737768636,
+        "height": 75.48,
+        "shoulder": 0
+      },
+      {
+        "aspect": 0.5,
+        "zoom": 1,
+        "fov": 11,
+        "back": 264,
+        "height": 109.2,
+        "shoulder": 0
+      },
+      {
+        "aspect": 1,
+        "zoom": 0,
+        "fov": 54,
+        "back": 344.1,
+        "height": 75.48,
+        "shoulder": 0
+      },
+      {
+        "aspect": 1,
+        "zoom": 1,
+        "fov": 11,
+        "back": 264,
+        "height": 109.2,
+        "shoulder": 0
+      },
+      {
+        "aspect": 1.7777777777777777,
+        "zoom": 0,
+        "fov": 54,
+        "back": 344.1,
+        "height": 75.48,
+        "shoulder": 0
+      },
+      {
+        "aspect": 1.7777777777777777,
+        "zoom": 1,
+        "fov": 11,
+        "back": 264,
+        "height": 109.2,
+        "shoulder": 0
+      },
+      {
+        "aspect": 2.4,
+        "zoom": 0,
+        "fov": 54,
+        "back": 344.1,
+        "height": 75.48,
+        "shoulder": 0
+      },
+      {
+        "aspect": 2.4,
+        "zoom": 1,
+        "fov": 11,
+        "back": 264,
+        "height": 109.2,
+        "shoulder": 0
+      }
+    ],
+    "wide": {
+      "time": 0,
+      "shaderTime": 0,
+      "blastCount": 0,
+      "drawCalls": 36,
+      "camera": {
+        "fov": 54,
+        "x": 0,
+        "y": 75.48,
+        "z": -344.1
+      }
+    },
+    "projectedHullBounds": [
+      [
+        0.09063213797705542,
+        -0.7180668409016117,
+        0.9957278380861293
+      ],
+      [
+        0.04644093582386675,
+        -0.36287825797479045,
+        0.9978163134446171
+      ],
+      [
+        0.09074744918508962,
+        -0.24742668691216216,
+        0.9957223884806692
+      ],
+      [
+        0.04647119378511435,
+        -0.12163499862115475,
+        0.997814883453954
+      ],
+      [
+        -0.10848551435257772,
+        -0.7180668409016117,
+        0.9957278380861293
+      ],
+      [
+        -0.05558920844549323,
+        -0.36287825797479045,
+        0.9978163134446171
+      ],
+      [
+        -0.1086235403993358,
+        -0.24742668691216216,
+        0.9957223884806692
+      ],
+      [
+        -0.05562542683956926,
+        -0.12163499862115475,
+        0.997814883453954
+      ]
+    ],
+    "waterAPI": {
+      "sample": "undefined",
+      "height": "function",
+      "blast": "function",
+      "resetBlasts": "function"
+    },
+    "waterVertices": 90601,
+    "broadside": {
+      "time": 0,
+      "shaderTime": 0,
+      "blastCount": 0,
+      "drawCalls": 36,
+      "camera": {
+        "fov": 56,
+        "x": 215,
+        "y": 34,
+        "z": 155
+      }
+    }
+  },
+  "api": {
+    "checks": [
+      {
+        "name": "Fixed 24-slot / 96-float pool",
+        "passed": true
+      },
+      {
+        "name": "Pool bounded after 40 simultaneous BB impulses",
+        "passed": true
+      },
+      {
+        "name": "Invalid inputs do not corrupt pool",
+        "passed": true
+      },
+      {
+        "name": "Weak equal-time shot cannot evict BB pressure",
+        "passed": true
+      },
+      {
+        "name": "Pool stores age relative to birth",
+        "passed": true
+      },
+      {
+        "name": "Saturated height cap and CPU analytic gradient",
+        "passed": true
+      },
+      {
+        "name": "Pressure expires and compacts at 4s",
+        "passed": true
+      },
+      {
+        "name": "Clock rewind clears pressure",
+        "passed": true
+      },
+      {
+        "name": "Pool reset clears all data",
+        "passed": true
+      },
+      {
+        "name": "Ambient CPU finite/gradient at t=0",
+        "passed": true
+      },
+      {
+        "name": "Ambient CPU finite/gradient at t=1",
+        "passed": true
+      },
+      {
+        "name": "Ambient CPU finite/gradient at t=1000000",
+        "passed": true
+      },
+      {
+        "name": "Ambient CPU finite/gradient at t=10000000",
+        "passed": true
+      }
+    ],
+    "maxHeight": 0.3909103149465268,
+    "maxGradientError": 7.506717865368717e-9,
+    "ambient": [
+      {
+        "t": 0,
+        "sample": {
+          "height": 1.336118611511143,
+          "dx": 0.06129598214518192,
+          "dz": 0.043312283319332984,
+          "foam": 0
+        },
+        "gradientError": 2.9291016834243067e-10
+      },
+      {
+        "t": 1,
+        "sample": {
+          "height": -0.01280701681520352,
+          "dx": 0.08224515939408829,
+          "dz": -0.01954506127694573,
+          "foam": 0
+        },
+        "gradientError": 3.4607579302292635e-10
+      },
+      {
+        "t": 1000000,
+        "sample": {
+          "height": -0.01606981251494674,
+          "dx": 0.03493385715002634,
+          "dz": 0.04537924315833346,
+          "foam": 0.0002724016935207341
+        },
+        "gradientError": 2.7413399328324317e-10
+      },
+      {
+        "t": 10000000,
+        "sample": {
+          "height": 1.0810195429360747,
+          "dx": -0.09090662163335689,
+          "dz": -0.003353811480823768,
+          "foam": 0
+        },
+        "gradientError": 3.7070274627737376e-10
+      }
+    ]
+  },
+  "gpuCPU": {
+    "supported": true,
+    "points": 32,
+    "tolerance": {
+      "heightMetres": 0.001,
+      "slope": 0.0005,
+      "foam": 0.0005,
+      "waterCPUHeight": 1e-9
+    },
+    "rows": [
+      {
+        "time": 0.2,
+        "shaderTime": 0.2,
+        "blastCount": 3,
+        "maxError": 0.0003925143607272797,
+        "fieldErrors": {
+          "height": 0.0003925143607272797,
+          "dx": 0.000018427001623855244,
+          "dz": 0.000007857019915932621,
+          "foam": 0.0001845788336883071
+        },
+        "maxWaterHeightError": 2.0990154059319366e-16
+      },
+      {
+        "time": 0.5,
+        "shaderTime": 0.5,
+        "blastCount": 3,
+        "maxError": 0.00025548680280410886,
+        "fieldErrors": {
+          "height": 0.00025548680280410886,
+          "dx": 0.000011464656721910452,
+          "dz": 0.000008165590195657185,
+          "foam": 0.00008675223588094916
+        },
+        "maxWaterHeightError": 2.0122792321330962e-16
+      },
+      {
+        "time": 1,
+        "shaderTime": 1,
+        "blastCount": 3,
+        "maxError": 0.00012774047216189584,
+        "fieldErrors": {
+          "height": 0.00012774047216189584,
+          "dx": 0.000014553466167818371,
+          "dz": 0.000010873885288534973,
+          "foam": 0.00008402687200938577
+        },
+        "maxWaterHeightError": 1.5265566588595902e-16
+      },
+      {
+        "time": 4,
+        "shaderTime": 4,
+        "blastCount": 0,
+        "maxError": 0.0002527107966387998,
+        "fieldErrors": {
+          "height": 0.0002527107966387998,
+          "dx": 0.000013509663905855729,
+          "dz": 0.000009910743707833292,
+          "foam": 0.00010313741129766053
+        },
+        "maxWaterHeightError": 0
+      },
+      {
+        "time": 1000000,
+        "shaderTime": 1000000,
+        "blastCount": 0,
+        "maxError": 0.00016394511178741134,
+        "fieldErrors": {
+          "height": 0.00016394511178741134,
+          "dx": 0.00001197773645117417,
+          "dz": 0.00000961238196316161,
+          "foam": 0.00005801007199982694
+        },
+        "maxWaterHeightError": 0
+      }
+    ]
+  },
+  "pressure": [
+    {
+      "time": 0.2,
+      "shaderTime": 0.2,
+      "blastCount": 0,
+      "drawCalls": 33,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "clear",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": null,
+      "maxHeightDelta": 0,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 0.2,
+      "shaderTime": 0.2,
+      "blastCount": 3,
+      "drawCalls": 33,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "pressure-only",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 46032,
+        "maxChannelDelta": 85,
+        "meanMaxChannelDelta": 0.36942283950617283
+      },
+      "maxHeightDelta": 0.22227714516497143,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 0.2,
+      "shaderTime": 0.2,
+      "blastCount": 3,
+      "drawCalls": 34,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "fired",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 103980,
+        "maxChannelDelta": 85,
+        "meanMaxChannelDelta": 1.263332561728395
+      },
+      "maxHeightDelta": 0.22227714516497143,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 30,
+          "flashSpawned": 9,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      }
+    },
+    {
+      "time": 0.5,
+      "shaderTime": 0.5,
+      "blastCount": 0,
+      "drawCalls": 33,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "clear",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": null,
+      "maxHeightDelta": 0,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 0.5,
+      "shaderTime": 0.5,
+      "blastCount": 3,
+      "drawCalls": 33,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "pressure-only",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 77699,
+        "maxChannelDelta": 83,
+        "meanMaxChannelDelta": 0.698766975308642
+      },
+      "maxHeightDelta": 0.2290131831263864,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 0.5,
+      "shaderTime": 0.5,
+      "blastCount": 3,
+      "drawCalls": 34,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "fired",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 164118,
+        "maxChannelDelta": 83,
+        "meanMaxChannelDelta": 2.0015871913580248
+      },
+      "maxHeightDelta": 0.2290131831263864,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 30,
+          "flashSpawned": 9,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      }
+    },
+    {
+      "time": 1,
+      "shaderTime": 1,
+      "blastCount": 0,
+      "drawCalls": 33,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "clear",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": null,
+      "maxHeightDelta": 0,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 1,
+      "shaderTime": 1,
+      "blastCount": 3,
+      "drawCalls": 33,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "pressure-only",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 30833,
+        "maxChannelDelta": 103,
+        "meanMaxChannelDelta": 0.4450046296296296
+      },
+      "maxHeightDelta": 0.19446327688042353,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 1,
+      "shaderTime": 1,
+      "blastCount": 3,
+      "drawCalls": 34,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "fired",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 176139,
+        "maxChannelDelta": 103,
+        "meanMaxChannelDelta": 2.314277777777778
+      },
+      "maxHeightDelta": 0.19446327688042353,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 30,
+          "flashSpawned": 9,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      }
+    },
+    {
+      "time": 4,
+      "shaderTime": 4,
+      "blastCount": 0,
+      "drawCalls": 34,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "clear",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": null,
+      "maxHeightDelta": 0,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 4,
+      "shaderTime": 4,
+      "blastCount": 0,
+      "drawCalls": 34,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "pressure-only",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 0,
+        "maxChannelDelta": 0,
+        "meanMaxChannelDelta": 0
+      },
+      "maxHeightDelta": 0,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      }
+    },
+    {
+      "time": 4,
+      "shaderTime": 4,
+      "blastCount": 0,
+      "drawCalls": 35,
+      "camera": {
+        "fov": 48,
+        "x": 81.52657932899973,
+        "y": 74,
+        "z": 128.89084287410793
+      },
+      "variant": "fired",
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "muzzleClearances": [
+        13.699021832651766,
+        13.81625577592811,
+        13.932133337750386
+      ],
+      "pixelComparison": {
+        "changedPixelsAbove2": 173022,
+        "maxChannelDelta": 26,
+        "meanMaxChannelDelta": 0.9793433641975309
+      },
+      "maxHeightDelta": 0,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 30,
+          "flashSpawned": 9,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      }
+    }
+  ],
+  "reset": {
+    "blastCount": 0,
+    "fx": {
+      "particles": 0,
+      "columns": 0,
+      "shells": 0,
+      "torpedoWakePoints": 0,
+      "muzzle": {
+        "smoke": 0,
+        "flash": 0,
+        "smokeCapacity": 512,
+        "flashCapacity": 128,
+        "smokeSpawned": 0,
+        "flashSpawned": 0,
+        "smokeRecycled": 0,
+        "flashRecycled": 0,
+        "drawCalls": 0
+      }
+    }
+  },
+  "passed": true
+}

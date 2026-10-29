@@ -56,8 +56,8 @@
         <div class="hud-bc">
           <div class="wpn sel" id="wGun">
             <div class="wpn-h"><kbd>1</kbd><b>主炮</b><span id="wGunName">16"/45</span></div>
-            <div class="pips" id="wGunPips"></div>
-            <div class="sub" id="wGunSub">就绪</div>
+            <div class="reload-list" id="wGunPips" role="group" aria-label="各主炮塔装填与指向"></div>
+            <div class="sub" id="wGunSub">装填与指向分别显示</div>
           </div>
           <div class="wpn" id="wTorp">
             <div class="wpn-h"><kbd>2</kbd><b>鱼雷</b><span id="wTorpName">—</span></div>
@@ -75,8 +75,9 @@
           <canvas id="mini" aria-label="海图"></canvas>
         </div>
 
+        <div id="cameraMode" class="camera-status">第三人称 · 远景</div>
         <div class="keys-strip">
-          <kbd>W/S</kbd>车钟<kbd>A/D</kbd>转舵<kbd>鼠标</kbd>瞄准<kbd>左键</kbd>齐射<kbd>Shift</kbd>开镜<kbd>X</kbd>锁定<kbd>Tab</kbd>换目标<kbd>C</kbd>视角<kbd>R</kbd>损管<kbd>Esc</kbd>暂停
+          <kbd>W/S</kbd>车钟<kbd>A/D</kbd>转舵<kbd>左键</kbd>齐射<kbd>滚轮</kbd>缩放<kbd>Shift</kbd>开镜<kbd>右键</kbd>观察<kbd>C</kbd>炮组<kbd>Z</kbd>跟弹<kbd>V</kbd>舰桥<kbd>X</kbd>锁定<kbd>R</kbd>损管
         </div>
 
         <div id="debug" class="debug" hidden></div>
@@ -111,6 +112,7 @@
             <button id="debugBtn" class="ghost" type="button">弹道面板</button>
           </div>
           <p class="best" id="homeBest"></p>
+          <p class="best"><a href="/audio/ATTRIBUTION.md" target="_blank" rel="noopener">炮声素材署名 · CC BY 3.0</a></p>
         </div>
       </div>
 
@@ -121,13 +123,18 @@
           <dl class="keys">
             <div><dt>W / S</dt><dd>车钟加减</dd></div>
             <div><dt>A / D</dt><dd>转舵</dd></div>
-            <div><dt>鼠标</dt><dd>方位与距离</dd></div>
+            <div><dt>鼠标</dt><dd>左右转向，上下抬头/压低瞄准</dd></div>
             <div><dt>左键</dt><dd>主炮齐射</dd></div>
             <div><dt>Shift</dt><dd>开镜 / 再按一次退出</dd></div>
+            <div><dt>滚轮</dt><dd>远景 → 近景 → 武器组 → 三级望远</dd></div>
+            <div><dt>按住右键</dt><dd>自由观察，不改变武器瞄准；松开返回</dd></div>
             <div><dt>X</dt><dd>锁定准星附近的敌舰（再按解除）</dd></div>
             <div><dt>Tab</dt><dd>切换锁定目标</dd></div>
             <div><dt>鼠标</dt><dd>锁定时为修正量；偏差过大自动解锁</dd></div>
-            <div><dt>C</dt><dd>切换舰桥 / 跟随视角</dd></div>
+            <div><dt>C / 长按C</dt><dd>切换炮组 / 武器组与外景切换</dd></div>
+            <div><dt>Z / 中键射击</dt><dd>跟随己方弹丸；Z / Shift / Esc返回</dd></div>
+            <div><dt>跟弹时C</dt><dd>切换仍在飞行的弹丸，失效自动返回</dd></div>
+            <div><dt>V</dt><dd>独立舰桥视角 / 返回</dd></div>
             <div><dt>1 / 2</dt><dd>主炮 / 鱼雷</dd></div>
             <div><dt>R</dt><dd>损管：灭火并抢修</dd></div>
             <div><dt>F3</dt><dd>弹道调试面板</dd></div>
@@ -157,8 +164,8 @@
           <p class="eyebrow">CONTROLS</p>
           <h2>操作说明</h2>
           <p class="brief">
-            鼠标左右定方位，上下定距离刻度。屏幕中央的十字是炮口指向，海面上的琥珀色椭圆是这一距离上一个 σ 的散布范围：
-            长轴顺着射向，短轴横跨射向。齐射后看着水柱修正——偏前就把距离刻度往回压，偏后就往上加。
+            鼠标左右转向，上下真实抬头/压低视线。准星视线落在海面或地形上时，火炮按该位置解算弹道；
+            向天空或射程外观察时隐藏海面落点提示。海面金色轮廓是预计核心弹群，齐射后观察水柱再修正。
           </p>
           <p class="brief">
             副炮由舰上自己指挥：只要敌舰进入五千米，十座 5 英寸炮会自己选目标、算提前量并开火，你不用管它们。

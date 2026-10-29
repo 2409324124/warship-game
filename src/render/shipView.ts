@@ -3,11 +3,13 @@
 
 import * as THREE from 'three';
 import { clamp, sstep } from '../sim/constants';
+import { clampElevation } from '../sim/ballistics';
 import type { Ship } from '../sim/ship';
 import { shipGeometry, shipMaterials, buildRails, type TurretGeo } from './shipModel';
 // Loaded on demand: until a .glb exists there is nothing to fetch, and GLTFLoader is a big module
 // that has no business sitting in the base bundle.
 import { hasModel } from './models';
+import { buildVisualFoam } from './visualHull';
 
 type Assets = typeof import('./assets');
 let assetsPromise: Promise<Assets> | null = null;
@@ -26,6 +28,9 @@ export class ShipView {
   private struct: THREE.Mesh;
   private dark: THREE.Mesh;
   private deck: THREE.Mesh;
+  private rails: THREE.Mesh;
+  private customFoam: THREE.BufferGeometry | null = null;
+  private disposed = false;
 
   constructor(scene: THREE.Scene, ship: Ship) {
     this.ship = ship;
@@ -48,9 +53,9 @@ export class ShipView {
       this.group.add(mesh);
     }
 
-    const rails = new THREE.Mesh(
+    const rails = this.rails = new THREE.Mesh(
       buildRails(spec),
-      new THREE.MeshBasicMaterial({ color: 0x1a1e22, transparent: true, opacity: 0.5, side: THREE.DoubleSide }),
+      new THREE.MeshStandardMaterial({ color: 0xa2adb4, roughness: 0.7, metalness: 0.12 }),
     );
     rails.name = `rails:${spec.key}`;
     this.group.add(rails);
@@ -90,14 +95,20 @@ export class ShipView {
     // Blender overrides. Both are no-ops until the .glb exists, so the procedural ship stays
     // playable for as long as the modelling work is still in progress.
     // Nothing to override? Then never even pull the loader in.
-    const wanted = [`ships/${spec.key}_super`, ...spec.tur.map((t) => `guns/${t.kind}`)];
+    const wanted = [`ships/${spec.key}_super`, `ships/${spec.key}_hull`, ...spec.tur.map((t) => `guns/${t.kind}`)];
     if (!wanted.some(hasModel)) return;
 
     const group = this.group;
     const hide = [this.struct, this.dark];
     const turrets = this.turrets;
     void assets().then((a) => {
+      if (this.disposed) return;
       void a.overrideSuperstructure(spec.key, group, hide);
+      if (hasModel(`ships/${spec.key}_hull`)) {
+        void a.overrideHull(spec.key, group, [this.hull, this.deck, this.rails]).then((waterline) => {
+          if (waterline && !this.disposed) this.foam.geometry = this.customFoam = buildVisualFoam(waterline);
+        });
+      }
       for (let i = 0; i < turrets.length; i++) {
         const entry = turrets[i];
         void a.overrideTurret(spec.tur[i].kind, entry.pivot, entry.base, entry.barrel).then((barrel) => {
@@ -154,12 +165,30 @@ export class ShipView {
       const data = s.turrets[i];
       if (!data) continue;
       tt.pivot.rotation.y = data.rel;
-      tt.barrel.rotation.x = -data.elev;
+      tt.barrel.rotation.x = -clampElevation(data.gun, data.elev);
     }
 
   }
 
+  /** Visual muzzle, including current roll/pitch and the loaded barrel's trunnion.
+   * Simulation trajectories remain independent of rendering; only smoke uses this pose. */
+  muzzlePose(turret: number, tube: number): { x: number; y: number; z: number; bearing: number; elevation: number } | null {
+    const entry = this.turrets[turret], data = this.ship.turrets[turret];
+    if (!entry || !data || tube < 0 || tube >= data.ts.n) return null;
+    entry.pivot.rotation.y = data.rel;
+    entry.barrel.rotation.x = -clampElevation(data.gun, data.elev);
+    this.group.updateMatrixWorld(true);
+    const p = new THREE.Vector3((tube - (data.ts.n - 1) / 2) * data.ts.w * .28, 0, data.ts.bl);
+    entry.barrel.localToWorld(p);
+    const direction = new THREE.Vector3(0, 0, 1).transformDirection(entry.barrel.matrixWorld);
+    return { x: p.x, y: p.y, z: p.z, bearing: Math.atan2(direction.x, direction.z),
+      elevation: Math.atan2(direction.y, Math.hypot(direction.x, direction.z)) };
+  }
+
   dispose(scene: THREE.Scene): void {
+    this.disposed = true;
+    this.customFoam?.dispose();
+    this.customFoam = null;
     scene.remove(this.group);
   }
 }

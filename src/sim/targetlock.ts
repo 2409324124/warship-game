@@ -67,11 +67,13 @@ export class TargetLock {
   leadZ = 0;
 
   constructor(o: LockOptions = {}) {
-    this.err0 = o.err0 ?? 0.08;
-    this.errMin = o.errMin ?? 0.006;
-    this.tau = o.tau ?? 2.2;
+    this.err0 = o.err0 ?? 0.003;
+    this.errMin = o.errMin ?? 0.0003;
+    this.tau = o.tau ?? 0.9;
     this.breakYaw = o.breakYaw ?? (6 * Math.PI) / 180;
-    this.breakRange = o.breakRange ?? 0.12;
+    // Real angular pitch makes a single exterior-view pixel a meaningful range
+    // correction near the horizon. Do not drop lock for that small movement.
+    this.breakRange = o.breakRange ?? 0.35;
     this.cone = o.cone ?? 0.7;
   }
 
@@ -157,8 +159,9 @@ export class TargetLock {
 
   /** Extra 1-sigma spread in metres while the rangefinder is still settling. */
   rangeError(range: number): number {
-    const lo = this.errMin * range;
-    return lo + (this.err0 * range - lo) * Math.exp(-this.held / this.tau);
+    const r = Number.isFinite(range) ? Math.max(0,range) : 0;
+    const lo = this.errMin * r;
+    return Math.min(45,lo + (this.err0 * r - lo) * Math.exp(-this.held / this.tau));
   }
 
   /** 0 when just locked, 1 when the rangefinder has settled. */

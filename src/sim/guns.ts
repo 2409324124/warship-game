@@ -3,7 +3,7 @@
 // Muzzle velocities are chosen from the flight time we want, not from a ballistics table: T = d / v0.
 // The 16"/45 sits at 909 m/s because 10000 / 909 = 11.0 s, the number this game is built around.
 
-import { makeGun, type GunSpec } from './ballistics.ts';
+import { makeGun, MAIN_GUN_MAX_ELEVATION_DEG, type GunSpec } from './ballistics.ts';
 
 export const GUNS: Record<string, GunSpec> = {
   // ---- United States -----------------------------------------------------
@@ -18,7 +18,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.1,
     fire: 0.2,
     trav: 5,
-    disp: { along: 90, cross: 40, at: 10000 },
+    disp: { along: 56, cross: 22, at: 10000 },
   }),
   us203: makeGun({
     id: 'us203',
@@ -31,7 +31,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.1,
     fire: 0.1,
     trav: 9,
-    disp: { along: 85, cross: 38, at: 10000 },
+    disp: { along: 46, cross: 18, at: 10000 },
   }),
   us127: makeGun({
     id: 'us127',
@@ -44,7 +44,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.075,
     fire: 0.05,
     trav: 28,
-    disp: { along: 60, cross: 26, at: 6000 },
+    disp: { along: 30, cross: 12, at: 6000 },
   }),
   sec127: makeGun({
     id: 'sec127',
@@ -57,6 +57,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.08,
     fire: 0.03,
     trav: 20,
+    elevMax: 80,
     disp: { along: 55, cross: 24, at: 5000 },
   }),
 
@@ -72,7 +73,8 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.11,
     fire: 0.18,
     trav: 5,
-    disp: { along: 92, cross: 42, at: 10000 },
+    elevMax: MAIN_GUN_MAX_ELEVATION_DEG,
+    disp: { along: 60, cross: 24, at: 10000 },
   }),
   jp203: makeGun({
     id: 'jp203',
@@ -85,7 +87,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.1,
     fire: 0.1,
     trav: 8,
-    disp: { along: 90, cross: 40, at: 10000 },
+    disp: { along: 49, cross: 20, at: 10000 },
   }),
   jp127: makeGun({
     id: 'jp127',
@@ -98,7 +100,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.075,
     fire: 0.05,
     trav: 14,
-    disp: { along: 62, cross: 27, at: 6000 },
+    disp: { along: 32, cross: 13, at: 6000 },
   }),
   sec152: makeGun({
     id: 'sec152',
@@ -111,6 +113,7 @@ export const GUNS: Record<string, GunSpec> = {
     arc: 0.08,
     fire: 0.04,
     trav: 15,
+    elevMax: 20,
     disp: { along: 58, cross: 25, at: 5000 },
   }),
 };
@@ -175,6 +178,8 @@ export interface TurretShape {
   hood?: number;
   ears?: number;
   rr?: number;
+  /** Traverse either side of the home bearing, degrees; overrides the class default. */
+  traverseArc?: number;
 }
 
 export const TS: Record<string, TurretShape> = {
@@ -188,5 +193,5 @@ export const TS: Record<string, TurretShape> = {
   jp55: { len: 4.6, h: 2.4, w: 3.2, bl: 7.0, br: 0.18, n: 1, cf: 0.45, fs: 0.22, ss: 0.16, rs: 0.05 },
   jp8d: { len: 8.2, h: 3.3, w: 7.0, bl: 10, br: 0.38, n: 2, cf: 0.45, fs: 0.22, ss: 0.16, rs: 0.06 },
   jp14d: { len: 13, h: 4.4, w: 10.5, bl: 15, br: 0.62, n: 2, cf: 0.3, fs: 0.2, ss: 0.1, rs: 0.06, rr: 0.35, ears: 1 },
-  jp6c: { len: 2.6, h: 1.6, w: 2.2, bl: 5, br: 0.16, n: 1, cf: 0.3, fs: 0.2, ss: 0.1, rs: 0.08 },
+  jp6c: { len: 2.6, h: 1.6, w: 2.2, bl: 5, br: 0.16, n: 1, cf: 0.3, fs: 0.2, ss: 0.1, rs: 0.08, traverseArc: 35 },
 };

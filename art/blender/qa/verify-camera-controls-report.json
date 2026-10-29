@@ -1,0 +1,7301 @@
+{
+  "startedAt": "2026-10-28T04:38:00.140Z",
+  "origin": "http://localhost:5173/",
+  "checks": [
+    {
+      "name": "Default level 0 exterior",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Default vertical FOV 54deg",
+      "passed": true,
+      "evidence": {
+        "fov": 54,
+        "x": 0,
+        "y": 74.6627932861268,
+        "z": -2813.9660094536766
+      }
+    },
+    {
+      "name": "Default camera is centered above and behind hull (heading inferred from actual travel)",
+      "passed": true,
+      "evidence": {
+        "travel": {
+          "x": 0,
+          "z": 32
+        },
+        "lateral": 0,
+        "aft": 345.96600945367663,
+        "y": 74.6627932861268
+      }
+    },
+    {
+      "name": "cameraMode HUD is visible",
+      "passed": true,
+      "evidence": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察"
+    },
+    {
+      "name": "Negative wheel zooms to level 1",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Wheel level 1 preserves unlocked aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Negative wheel zooms to level 2",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Wheel level 2 preserves unlocked aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Negative wheel zooms to level 3",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Wheel level 3 preserves unlocked aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Level 3 scope FOV",
+      "passed": true,
+      "evidence": 18
+    },
+    {
+      "name": "Negative wheel zooms to level 4",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Wheel level 4 preserves unlocked aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Level 4 scope FOV",
+      "passed": true,
+      "evidence": 11
+    },
+    {
+      "name": "Negative wheel zooms to level 5",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Wheel level 5 preserves unlocked aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Level 5 scope FOV",
+      "passed": true,
+      "evidence": 7.5
+    },
+    {
+      "name": "Wheel clamps at level 5",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Positive wheel pulls back to level 4",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Positive wheel level 4 preserves aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Positive wheel pulls back to level 3",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Positive wheel level 3 preserves aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Positive wheel pulls back to level 2",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Positive wheel level 2 preserves aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Positive wheel pulls back to level 1",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Positive wheel level 1 preserves aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Positive wheel pulls back to level 0",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Positive wheel level 0 preserves aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Wheel clamps at level 0",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Shift from 1 enters standard binocular level 4",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Shift restores non-binocular level 1",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Shift from 2 enters standard binocular level 4",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Shift restores non-binocular level 2",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Short C selects next main turret",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Second short C selects aft turret",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Short C wraps turret group",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Long C exits weapon to previous exterior level",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Long C enters weapon view",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "RMB + real mousemove changes independent look yaw",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "RMB movement preserves unlocked aim yaw/range",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "RMB release clears freeLook",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "RMB release has multi-frame smooth camera return",
+      "passed": true,
+      "evidence": {
+        "firstStepMetres": 56.44877436402314,
+        "remainingMetres": 186.1208594414487
+      }
+    },
+    {
+      "name": "RMB return preserves aim",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.49680000202574454,
+          13170.763653370283
+        ],
+        "after": [
+          -0.49680000202574454,
+          13170.763653370283
+        ]
+      }
+    },
+    {
+      "name": "Unlocked real mousemove turns aim",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "V enters bridge",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "V returns exterior",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "X acquires nearest target after aim fixture",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Wheel preserves locked aim (same simulation instant)",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.4080902081404401,
+          6472.01468589965
+        ],
+        "after": [
+          -0.4080902081404401,
+          6472.01468589965
+        ]
+      }
+    },
+    {
+      "name": "RMB mousemove preserves locked aim (same simulation instant)",
+      "passed": true,
+      "evidence": {
+        "before": [
+          -0.4080902081404401,
+          6472.01468589965
+        ],
+        "after": [
+          -0.4080902081404401,
+          6472.01468589965
+        ]
+      }
+    },
+    {
+      "name": "Locked RMB look moves without breaking lock",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Real left click creates multiple live own main shells",
+      "passed": true,
+      "evidence": [
+        {
+          "kind": "shell",
+          "id": 9
+        },
+        {
+          "kind": "shell",
+          "id": 8
+        },
+        {
+          "kind": "shell",
+          "id": 7
+        }
+      ]
+    },
+    {
+      "name": "Z follows newest live own main projectile",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "C during follow selects next shell without changing turret",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Escape exits follow without pausing",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Escape only restores pre-follow view (no double toggle)",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "ShiftLeft exits follow without pausing",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "ShiftLeft only restores pre-follow view (no double toggle)",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "KeyZ exits follow without pausing",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "KeyZ only restores pre-follow view (no double toggle)",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Projectile disappearance automatically returns camera",
+      "passed": true,
+      "evidence": {
+        "expiryFrames": 140
+      }
+    },
+    {
+      "name": "Followed projectile really expired (not force-deleted)",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Middle mouse fires a new main shell and follows it",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Follow dirty state present immediately before restart handler",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Restart handler directly clears active follow and old projectiles",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Free-look dirty state present immediately before restart handler",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Restart handler directly clears active free-look and old projectiles",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "menu-start: normal Escape pauses",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "menu-start: quit returns menu",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "menu-start: restart resets free/follow/level/group",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "RMB dirty state present before restart",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "during-free-look: normal Escape pauses",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "during-free-look: quit returns menu",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "during-free-look: restart resets free/follow/level/group",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Debug API compatibility: zoom(1) selects standard binocular",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Debug API compatibility: zoom(0) selects exterior",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "cameraMode HUD distinguishes exterior/near/weapon/binocular/free/follow/bridge",
+      "passed": true,
+      "evidence": [
+        {
+          "name": "camera-default.png",
+          "text": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+          "expected": "第三人称 + 远景",
+          "passed": true
+        },
+        {
+          "name": "camera-near.png",
+          "text": "第三人称 · 近景 · 滚轮缩放 / 按住右键观察",
+          "expected": "第三人称 + 近景",
+          "passed": true
+        },
+        {
+          "name": "camera-weapon-front.png",
+          "text": "武器组 1 · C切换 / 长按C返回",
+          "expected": "武器组 1 + C切换",
+          "passed": true
+        },
+        {
+          "name": "camera-binocular.png",
+          "text": "望远瞄准 · 11° · 炮组 1",
+          "expected": "望远 + 11° + 炮组 1",
+          "passed": true
+        },
+        {
+          "name": "camera-weapon-aft.png",
+          "text": "武器组 3 · C切换 / 长按C返回",
+          "expected": "武器组 3 + C切换",
+          "passed": true
+        },
+        {
+          "name": "camera-free-look.png",
+          "text": "自由观察 · 松开右键返回 · 武器瞄准保持",
+          "expected": "自由观察 + 右键返回 + 保持瞄准",
+          "passed": true
+        },
+        {
+          "name": "camera-broadside.png",
+          "text": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+          "expected": "第三人称 + 远景",
+          "passed": true
+        },
+        {
+          "name": "camera-bridge.png",
+          "text": "舰桥视角 · V返回",
+          "expected": "舰桥 + V返回",
+          "passed": true
+        },
+        {
+          "name": "camera-shell-follow.png",
+          "text": "炮弹跟随 · C换弹 / Z返回",
+          "expected": "炮弹跟随 + C换弹 + Z返回",
+          "passed": true
+        },
+        {
+          "name": "camera-return.png",
+          "text": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+          "expected": "第三人称 + 远景",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "All input types exercised with browser-trusted DOM events",
+      "passed": true,
+      "evidence": {
+        "frames": 922,
+        "counts": {
+          "mousemove:trusted": 22,
+          "mousedown:trusted": 14,
+          "mouseup:trusted": 14,
+          "wheel:trusted": 18,
+          "keydown:trusted": 23,
+          "keyup:trusted": 23
+        }
+      }
+    },
+    {
+      "name": "No page errors",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "No console errors",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "No failed network requests",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "All ten requested screenshots saved",
+      "passed": true,
+      "evidence": [
+        "camera-default.png",
+        "camera-near.png",
+        "camera-weapon-front.png",
+        "camera-binocular.png",
+        "camera-weapon-aft.png",
+        "camera-free-look.png",
+        "camera-broadside.png",
+        "camera-bridge.png",
+        "camera-shell-follow.png",
+        "camera-return.png"
+      ]
+    }
+  ],
+  "failures": [],
+  "screenshots": [
+    {
+      "name": "camera-default.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-default.png",
+      "camera": {
+        "fov": 54,
+        "x": 0,
+        "y": 74.6627932861268,
+        "z": -2813.9660094536766
+      },
+      "control": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察"
+    },
+    {
+      "name": "camera-near.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-near.png",
+      "camera": {
+        "fov": 54,
+        "x": 131.20248702751016,
+        "y": 64.73742866214573,
+        "z": -2679.200885839987
+      },
+      "control": {
+        "mode": "ship",
+        "level": 1,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "第三人称 · 近景 · 滚轮缩放 / 按住右键观察"
+    },
+    {
+      "name": "camera-weapon-front.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-weapon-front.png",
+      "camera": {
+        "fov": 54,
+        "x": 10.337489914655633,
+        "y": 28.5022996933435,
+        "z": -2348.479862397694
+      },
+      "control": {
+        "mode": "weapon",
+        "level": 2,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "武器组 1 · C切换 / 长按C返回"
+    },
+    {
+      "name": "camera-binocular.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-binocular.png",
+      "camera": {
+        "fov": 11,
+        "x": 4.3846323060545185,
+        "y": 29.262375444907175,
+        "z": -2254.8991505775266
+      },
+      "control": {
+        "mode": "binocular",
+        "level": 4,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "望远瞄准 · 11° · 炮组 1"
+    },
+    {
+      "name": "camera-weapon-aft.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-weapon-aft.png",
+      "camera": {
+        "fov": 54,
+        "x": 9.94357437522923,
+        "y": 28.85101170460699,
+        "z": -2059.55089942655
+      },
+      "control": {
+        "mode": "weapon",
+        "level": 2,
+        "group": 2,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "武器组 3 · C切换 / 长按C返回"
+    },
+    {
+      "name": "camera-free-look.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-free-look.png",
+      "camera": {
+        "fov": 54,
+        "x": 333.2100259677645,
+        "y": 39.91782083052272,
+        "z": -1892.4906400885552
+      },
+      "control": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": true,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "自由观察 · 松开右键返回 · 武器瞄准保持"
+    },
+    {
+      "name": "camera-broadside.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-broadside.png",
+      "camera": {
+        "fov": 54,
+        "x": -271.0757641152037,
+        "y": 75.04050127880976,
+        "z": -1920.9639837693826
+      },
+      "control": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": 0.9071999979742553,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察"
+    },
+    {
+      "name": "camera-bridge.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-bridge.png",
+      "camera": {
+        "fov": 60,
+        "x": -0.0017606960058123501,
+        "y": 29.23295535930148,
+        "z": -1614.6050116203426
+      },
+      "control": {
+        "mode": "bridge",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": 0.9071999979742553,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "舰桥视角 · V返回"
+    },
+    {
+      "name": "camera-shell-follow.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-shell-follow.png",
+      "camera": {
+        "fov": 50.07,
+        "x": -109.11048017176829,
+        "y": 50.80796962616984,
+        "z": -1112.792157230856
+      },
+      "control": {
+        "mode": "projectile",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": {
+          "kind": "shell",
+          "id": 9
+        },
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "炮弹跟随 · C换弹 / Z返回"
+    },
+    {
+      "name": "camera-return.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\camera-return.png",
+      "camera": {
+        "fov": 54,
+        "x": 136.55809485989886,
+        "y": 76.46761938056828,
+        "z": -1441.5263325676817
+      },
+      "control": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察"
+    }
+  ],
+  "snapshots": {
+    "initial": {
+      "mode": "play",
+      "time": 1.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2468
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8335,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8682,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9090,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.1940995467845
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6531
+        ],
+        "ship": [
+          0,
+          -2468
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 102,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 0,
+        "y": 74.6627932861268,
+        "z": -2813.9660094536766
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-default.png": {
+      "mode": "play",
+      "time": 1.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2468
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8335,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8682,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9090,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.1940995467845
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6531
+        ],
+        "ship": [
+          0,
+          -2468
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 102,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 0,
+        "y": 74.6627932861268,
+        "z": -2813.9660094536766
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "wheel-level-1": {
+      "mode": "play",
+      "time": 2.9,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2436
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8239,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8585,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8994,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999391621302,
+          451.56645574781214
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9142
+        ],
+        "ship": [
+          0,
+          -2436
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 161,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 131.20248702751016,
+        "y": 64.73742866214573,
+        "z": -2679.200885839987
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 1,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "第三人称 · 近景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-near.png": {
+      "mode": "play",
+      "time": 2.9,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2436
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8239,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8585,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8994,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999391621302,
+          451.56645574781214
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9142
+        ],
+        "ship": [
+          0,
+          -2436
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 161,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 131.20248702751016,
+        "y": 64.73742866214573,
+        "z": -2679.200885839987
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 1,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "第三人称 · 近景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "wheel-level-2": {
+      "mode": "play",
+      "time": 4.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2400
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8144,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8485,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8899,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9998570076149,
+          451.60684203367055
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9178
+        ],
+        "ship": [
+          0,
+          -2400
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 184,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 10.337489914655633,
+        "y": 28.5022996933435,
+        "z": -2348.479862397694
+      },
+      "cameraControl": {
+        "mode": "weapon",
+        "level": 2,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "武器组 1 · C切换 / 长按C返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-weapon-front.png": {
+      "mode": "play",
+      "time": 4.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2400
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8144,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8485,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8899,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9998570076149,
+          451.60684203367055
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9178
+        ],
+        "ship": [
+          0,
+          -2400
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 184,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 10.337489914655633,
+        "y": 28.5022996933435,
+        "z": -2348.479862397694
+      },
+      "cameraControl": {
+        "mode": "weapon",
+        "level": 2,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "武器组 1 · C切换 / 长按C返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "wheel-level-3": {
+      "mode": "play",
+      "time": 5.7,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2360
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8050,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8383,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8806,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0004770561818,
+          455.19168245800194
+        ],
+        "zoom": 1,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9217
+        ],
+        "ship": [
+          0,
+          -2360
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 196,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 18,
+        "x": 3.8258252649683278,
+        "y": 28.53721731700759,
+        "z": -2297.182712013557
+      },
+      "cameraControl": {
+        "mode": "binocular",
+        "level": 3,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "望远瞄准 · 18° · 炮组 1",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "wheel-level-4": {
+      "mode": "play",
+      "time": 7.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2318
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7957,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8277,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8717,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0093445999738,
+          458.79797834190856
+        ],
+        "zoom": 1,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9259
+        ],
+        "ship": [
+          0,
+          -2318
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 208,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 11,
+        "x": 4.3846323060545185,
+        "y": 29.262375444907175,
+        "z": -2254.8991505775266
+      },
+      "cameraControl": {
+        "mode": "binocular",
+        "level": 4,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "望远瞄准 · 11° · 炮组 1",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-binocular.png": {
+      "mode": "play",
+      "time": 7.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2318
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7957,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8277,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8717,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0093445999738,
+          458.79797834190856
+        ],
+        "zoom": 1,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9259
+        ],
+        "ship": [
+          0,
+          -2318
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 208,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 11,
+        "x": 4.3846323060545185,
+        "y": 29.262375444907175,
+        "z": -2254.8991505775266
+      },
+      "cameraControl": {
+        "mode": "binocular",
+        "level": 4,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "望远瞄准 · 11° · 炮组 1",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "wheel-level-5": {
+      "mode": "play",
+      "time": 8.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2272
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7865,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8168,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8632,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9804710580694,
+          463.1071006009701
+        ],
+        "zoom": 1,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9305
+        ],
+        "ship": [
+          0,
+          -2272
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 201,
+        "columns": 0,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 60,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 7.5,
+        "x": 4.146589276852356,
+        "y": 29.62696422206946,
+        "z": -2209.3986541053987
+      },
+      "cameraControl": {
+        "mode": "binocular",
+        "level": 5,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 4
+          },
+          {
+            "kind": "shell",
+            "id": 3
+          },
+          {
+            "kind": "shell",
+            "id": 2
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "望远瞄准 · 7.5° · 炮组 1",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "shift-return-1": {
+      "mode": "play",
+      "time": 11.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2173
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7682,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7944,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8474,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999926443301,
+          451.61919604572046
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9404
+        ],
+        "ship": [
+          0,
+          -2173
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 441,
+        "columns": 3,
+        "shells": 3,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 131.20151175001,
+        "y": 65.54644412834958,
+        "z": -2417.3178146458627
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 1,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 6
+          },
+          {
+            "kind": "shell",
+            "id": 5
+          },
+          {
+            "kind": "shell",
+            "id": 1
+          }
+        ]
+      },
+      "hud": "第三人称 · 近景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "shift-return-2": {
+      "mode": "play",
+      "time": 14.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2072
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7508,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7722,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8302,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9975672115719,
+          451.71256365758023
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9505
+        ],
+        "ship": [
+          0,
+          -2072
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 242,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 9.990242393941973,
+        "y": 30.041867872499612,
+        "z": -2021.93231251518
+      },
+      "cameraControl": {
+        "mode": "weapon",
+        "level": 2,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "武器组 1 · C切换 / 长按C返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-weapon-aft.png": {
+      "mode": "play",
+      "time": 16.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1986
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7364,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7534,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8158,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9988150185218,
+          451.6177035440745
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9591
+        ],
+        "ship": [
+          0,
+          -1986
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 202,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 9.94357437522923,
+        "y": 28.85101170460699,
+        "z": -2059.55089942655
+      },
+      "cameraControl": {
+        "mode": "weapon",
+        "level": 2,
+        "group": 2,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "武器组 3 · C切换 / 长按C返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "free-before": {
+      "mode": "play",
+      "time": 20.2,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1852
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7152,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7252,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7939,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999357829931,
+          451.5578872192207
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9724
+        ],
+        "ship": [
+          0,
+          -1852
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 198,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 163.99394674401378,
+        "y": 75.36277821527712,
+        "z": -2157.3309555532383
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "free-moved": {
+      "mode": "play",
+      "time": 21.4,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1809
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7084,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7161,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7864,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          -209.80461926795985,
+          391.8817656481303
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9768
+        ],
+        "ship": [
+          0,
+          -1809
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 194,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 333.2100259677645,
+        "y": 39.91782083052272,
+        "z": -1892.4906400885552
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": true,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "自由观察 · 松开右键返回 · 武器瞄准保持",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-free-look.png": {
+      "mode": "play",
+      "time": 21.4,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1809
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7084,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7161,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7864,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          -209.80461926795985,
+          391.8817656481303
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9768
+        ],
+        "ship": [
+          0,
+          -1809
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 194,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 333.2100259677645,
+        "y": 39.91782083052272,
+        "z": -1892.4906400885552
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": true,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "自由观察 · 松开右键返回 · 武器瞄准保持",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "free-returned": {
+      "mode": "play",
+      "time": 22.9,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1757
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7004,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7054,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7780,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999023830386,
+          451.5345600846197
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          -6277,
+          9820
+        ],
+        "ship": [
+          0,
+          -1757
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 201,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 164.00379231308156,
+        "y": 74.94836831304929,
+        "z": -2061.9272969983103
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": -0.49680000202574454,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "broadside": {
+      "mode": "play",
+      "time": 24.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1707
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6928,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6952,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7703,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999932167991,
+          451.54014670509815
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          10376,
+          6404
+        ],
+        "ship": [
+          0,
+          -1707
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 207,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": -271.0757641152037,
+        "y": 75.04050127880976,
+        "z": -1920.9639837693826
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": 0.9071999979742553,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-broadside.png": {
+      "mode": "play",
+      "time": 24.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1707
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6928,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6952,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7703,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999932167991,
+          451.54014670509815
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          10376,
+          6404
+        ],
+        "ship": [
+          0,
+          -1707
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 207,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": -271.0757641152037,
+        "y": 75.04050127880976,
+        "z": -1920.9639837693826
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": 0.9071999979742553,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-bridge.png": {
+      "mode": "play",
+      "time": 25.7,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1656
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6852,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6848,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7623,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9999486355897,
+          451.3753521929538
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 103,
+          "cross": 46
+        },
+        "aim": [
+          10376,
+          6455
+        ],
+        "ship": [
+          0,
+          -1656
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 205,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 60,
+        "x": -0.0017606960058123501,
+        "y": 29.23295535930148,
+        "z": -1614.6050116203426
+      },
+      "cameraControl": {
+        "mode": "bridge",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": 0.9071999979742553,
+        "aimRange": 13170.763653370283,
+        "projectiles": []
+      },
+      "hud": "舰桥视角 · V返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "locked": {
+      "mode": "play",
+      "time": 27.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1599
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6767,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6733,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7525,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          763.7801291010943,
+          452.8946227369578
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4340
+        ],
+        "ship": [
+          0,
+          -1599
+        ]
+      },
+      "lock": {
+        "name": "白雪",
+        "held": 0.2,
+        "converged": 0.09,
+        "err": 476,
+        "trim": 0
+      },
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 209,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 92.4399069855449,
+        "y": 74.3373378111667,
+        "z": -1905.5499437036826
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -1.3328000020257456,
+        "lookPitch": 0.08404892296621655,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "locked-free-moved": {
+      "mode": "play",
+      "time": 27.3,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1599
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6767,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6733,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7525,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          763.7801291010943,
+          452.8946227369578
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4340
+        ],
+        "ship": [
+          0,
+          -1599
+        ]
+      },
+      "lock": {
+        "name": "白雪",
+        "held": 0.2,
+        "converged": 0.09,
+        "err": 476,
+        "trim": 0
+      },
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 209,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 92.4399069855449,
+        "y": 74.3373378111667,
+        "z": -1905.5499437036826
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 1,
+        "group": 0,
+        "freeLook": true,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "fire-0": {
+      "mode": "play",
+      "time": 28.7,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1548
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6693,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6635,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7442,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000014274635,
+          453.0083553729197
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4391
+        ],
+        "ship": [
+          0,
+          -1548
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 204,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55851769738655,
+        "y": 74.71432620843831,
+        "z": -1866.4216600625157
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "fire-1": {
+      "mode": "play",
+      "time": 30.2,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1494
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6614,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6532,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7361,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000000000001,
+          453.0223470312914
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4445
+        ],
+        "ship": [
+          0,
+          -1494
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 212,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 60,
+          "flashSpawned": 18,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55852544075523,
+        "y": 74.81341109264393,
+        "z": -1812.4096620428063
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "fire-2": {
+      "mode": "play",
+      "time": 31.7,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1440
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6537,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6434,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7280,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.92422987942115
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4499
+        ],
+        "ship": [
+          0,
+          -1440
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 216,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 9,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55852544075566,
+        "y": 74.07176025381607,
+        "z": -1758.3976620428039
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "follow-enter": {
+      "mode": "play",
+      "time": 31.7,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1440
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6537,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6434,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7280,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.92422987942115
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4499
+        ],
+        "ship": [
+          0,
+          -1440
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 216,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 9,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55852544075566,
+        "y": 74.07176025381607,
+        "z": -1758.3976620428039
+      },
+      "cameraControl": {
+        "mode": "projectile",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": {
+          "kind": "shell",
+          "id": 9
+        },
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-shell-follow.png": {
+      "mode": "play",
+      "time": 32.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1426
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6516,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6409,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7257,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          735.1497781002217,
+          459.08170074647427
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4513
+        ],
+        "ship": [
+          0,
+          -1426
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 206,
+        "columns": 0,
+        "shells": 3,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 50.07,
+        "x": -109.11048017176829,
+        "y": 50.80796962616984,
+        "z": -1112.792157230856
+      },
+      "cameraControl": {
+        "mode": "projectile",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": {
+          "kind": "shell",
+          "id": 9
+        },
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "炮弹跟随 · C换弹 / Z返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "follow-cycle": {
+      "mode": "play",
+      "time": 32.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1426
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6516,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6409,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7257,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          735.1497781002217,
+          459.08170074647427
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4513
+        ],
+        "ship": [
+          0,
+          -1426
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 206,
+        "columns": 0,
+        "shells": 3,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 50.07,
+        "x": -109.11048017176829,
+        "y": 50.80796962616984,
+        "z": -1112.792157230856
+      },
+      "cameraControl": {
+        "mode": "projectile",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": {
+          "kind": "shell",
+          "id": 8
+        },
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "炮弹跟随 · C换弹 / Z返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "follow-exit-Escape": {
+      "mode": "play",
+      "time": 32.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1426
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6516,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6409,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7257,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          735.1497781002217,
+          459.08170074647427
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4513
+        ],
+        "ship": [
+          0,
+          -1426
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 206,
+        "columns": 0,
+        "shells": 3,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 50.07,
+        "x": -109.11048017176829,
+        "y": 50.80796962616984,
+        "z": -1112.792157230856
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "炮弹跟随 · C换弹 / Z返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "follow-exit-ShiftLeft": {
+      "mode": "play",
+      "time": 32.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1426
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6516,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6409,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7257,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          735.1497781002217,
+          459.08170074647427
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4513
+        ],
+        "ship": [
+          0,
+          -1426
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 206,
+        "columns": 0,
+        "shells": 3,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 50.07,
+        "x": -109.11048017176829,
+        "y": 50.80796962616984,
+        "z": -1112.792157230856
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "炮弹跟随 · C换弹 / Z返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "follow-exit-KeyZ": {
+      "mode": "play",
+      "time": 32.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1426
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6516,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6409,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 7257,
+          "fires": 0
+        }
+      ],
+      "shells": 3,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          735.1497781002217,
+          459.08170074647427
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4513
+        ],
+        "ship": [
+          0,
+          -1426
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 206,
+        "columns": 0,
+        "shells": 3,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 30,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 90,
+          "flashSpawned": 27,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 50.07,
+        "x": -109.11048017176829,
+        "y": 50.80796962616984,
+        "z": -1112.792157230856
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 9
+          },
+          {
+            "kind": "shell",
+            "id": 8
+          },
+          {
+            "kind": "shell",
+            "id": 7
+          }
+        ]
+      },
+      "hud": "炮弹跟随 · C换弹 / Z返回",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "follow-expired": {
+      "mode": "play",
+      "time": 39.1,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1174
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6165,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6018,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6870,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          723.8319684611532,
+          450.5412062160321
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4765
+        ],
+        "ship": [
+          0,
+          -1174
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 434,
+        "columns": 3,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 72,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 132,
+          "flashSpawned": 45,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 53.93,
+        "x": -205.67151878364007,
+        "y": 68.26232761932302,
+        "z": -739.7007477552867
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "camera-return.png": {
+      "mode": "play",
+      "time": 40.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1123
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6097,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 5947,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6790,
+          "fires": 0
+        }
+      ],
+      "shells": 6,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000059589518,
+          453.23856697950987
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4815
+        ],
+        "ship": [
+          0,
+          -1123
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 433,
+        "columns": 3,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 36,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 132,
+          "flashSpawned": 45,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55809485989886,
+        "y": 76.46761938056828,
+        "z": -1441.5263325676817
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": null,
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "middle-fire-follow": {
+      "mode": "play",
+      "time": 40.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1123
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6097,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 5947,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6790,
+          "fires": 0
+        }
+      ],
+      "shells": 9,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000059589518,
+          453.23856697950987
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4815
+        ],
+        "ship": [
+          0,
+          -1123
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 433,
+        "columns": 3,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 66,
+          "flash": 9,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 162,
+          "flashSpawned": 54,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55809485989886,
+        "y": 76.46761938056828,
+        "z": -1441.5263325676817
+      },
+      "cameraControl": {
+        "mode": "projectile",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": {
+          "kind": "shell",
+          "id": 18
+        },
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 18
+          },
+          {
+            "kind": "shell",
+            "id": 17
+          },
+          {
+            "kind": "shell",
+            "id": 16
+          }
+        ]
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "dirty-restart-before-follow": {
+      "mode": "play",
+      "time": 40.5,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -1123
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6097,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 5947,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 6790,
+          "fires": 0
+        }
+      ],
+      "shells": 9,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000059589518,
+          453.23856697950987
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4815
+        ],
+        "ship": [
+          0,
+          -1123
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 433,
+        "columns": 3,
+        "shells": 6,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 66,
+          "flash": 9,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 162,
+          "flashSpawned": 54,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 1
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55809485989886,
+        "y": 76.46761938056828,
+        "z": -1441.5263325676817
+      },
+      "cameraControl": {
+        "mode": "projectile",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": -0.9580902081404403,
+        "lookPitch": 0.39187716697208896,
+        "follow": {
+          "kind": "shell",
+          "id": 18
+        },
+        "aimYaw": -0.4080902081404401,
+        "aimRange": 6472.01468589965,
+        "projectiles": [
+          {
+            "kind": "shell",
+            "id": 18
+          },
+          {
+            "kind": "shell",
+            "id": 17
+          },
+          {
+            "kind": "shell",
+            "id": 16
+          }
+        ]
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "dirty-restart-after-follow": {
+      "mode": "play",
+      "time": 0,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2500
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8434,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8782,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9189,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720.0000059589518,
+          453.23856697950987
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 75,
+          "cross": 34
+        },
+        "aim": [
+          -2568,
+          4815
+        ],
+        "ship": [
+          0,
+          -1123
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 136.55809485989886,
+        "y": 76.46761938056828,
+        "z": -1441.5263325676817
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "dirty-restart-before-free-look": {
+      "mode": "play",
+      "time": 1.4,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2471
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8342,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8689,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9097,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9998559754806,
+          452.189127318764
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6528
+        ],
+        "ship": [
+          0,
+          -2471
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 101,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 0.0008742381737450559,
+        "y": 74.61086391647018,
+        "z": -2816.183334222055
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": true,
+        "lookYaw": 0,
+        "lookPitch": 0.21584818522597088,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "dirty-restart-after-free-look": {
+      "mode": "play",
+      "time": 0,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2500
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8434,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8782,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9189,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          719.9998559754806,
+          452.189127318764
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6528
+        ],
+        "ship": [
+          0,
+          -2471
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 0,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 0.0008742381737450559,
+        "y": 74.61086391647018,
+        "z": -2816.183334222055
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "restart-menu-start": {
+      "mode": "play",
+      "time": 1.4,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2471
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8342,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8689,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9097,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.1891316586833
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6528
+        ],
+        "ship": [
+          0,
+          -2471
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 96,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 3.688222754205445e-14,
+        "y": 74.61087212441026,
+        "z": -2816.192262976054
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    },
+    "restart-during-free-look": {
+      "mode": "play",
+      "time": 1.4,
+      "side": "US",
+      "ship": "us_bb",
+      "player": {
+        "name": "华盛顿",
+        "hp": 72000,
+        "max": 72000,
+        "x": 0,
+        "z": -2471
+      },
+      "ships": [
+        {
+          "name": "华盛顿",
+          "team": "US",
+          "hp": 72000,
+          "alive": true,
+          "d": 0,
+          "fires": 0
+        },
+        {
+          "name": "吹雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8342,
+          "fires": 0
+        },
+        {
+          "name": "白雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 8689,
+          "fires": 0
+        },
+        {
+          "name": "初雪",
+          "team": "JP",
+          "hp": 10500,
+          "alive": true,
+          "d": 9097,
+          "fires": 0
+        }
+      ],
+      "shells": 0,
+      "torps": 0,
+      "overlay": {
+        "ap": [
+          720,
+          452.1891316586834
+        ],
+        "zoom": 0,
+        "weapon": "guns",
+        "sigma": {
+          "along": 86,
+          "cross": 38
+        },
+        "aim": [
+          0,
+          6528
+        ],
+        "ship": [
+          0,
+          -2471
+        ]
+      },
+      "lock": null,
+      "models": {
+        "available": [
+          "ships/us_bb_super",
+          "ships/us_bb_hull",
+          "ships/jp_dd_super",
+          "ships/jp_dd_hull",
+          "ships/jp_bb_super",
+          "ships/jp_bb_hull",
+          "ships/jp_ca_super",
+          "ships/us_ca_super",
+          "ships/us_dd_super",
+          "ships/us_dd_hull",
+          "guns/us5s",
+          "guns/us5d",
+          "guns/us6t",
+          "guns/us8t",
+          "guns/us16t",
+          "guns/jp5d",
+          "guns/jp5s",
+          "guns/jp55",
+          "guns/jp8d",
+          "guns/jp14d",
+          "guns/jp6c"
+        ],
+        "loaded": [
+          "ships/us_bb_hull",
+          "guns/us5d",
+          "guns/us16t",
+          "ships/jp_dd_hull",
+          "guns/jp5d",
+          "ships/jp_dd_super",
+          "ships/us_bb_super"
+        ]
+      },
+      "kills": 0,
+      "tons": 0,
+      "fps": 20,
+      "effects": {
+        "particles": 96,
+        "columns": 0,
+        "shells": 0,
+        "torpedoWakePoints": 0,
+        "muzzle": {
+          "smoke": 0,
+          "flash": 0,
+          "smokeCapacity": 512,
+          "flashCapacity": 128,
+          "smokeSpawned": 0,
+          "flashSpawned": 0,
+          "smokeRecycled": 0,
+          "flashRecycled": 0,
+          "drawCalls": 0
+        }
+      },
+      "camera": {
+        "fov": 54,
+        "x": 2.395580841788553e-19,
+        "y": 74.61087212441026,
+        "z": -2816.1922629760547
+      },
+      "cameraControl": {
+        "mode": "ship",
+        "level": 0,
+        "group": 0,
+        "freeLook": false,
+        "lookYaw": 0,
+        "lookPitch": 0,
+        "follow": null,
+        "aimYaw": 0,
+        "aimRange": 9000,
+        "projectiles": []
+      },
+      "hud": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "hudVisible": true,
+      "pauseVisible": false
+    }
+  },
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    }
+  ],
+  "pageErrors": [],
+  "networkErrors": [],
+  "limitations": [
+    "Edge headless / ANGLE SwiftShader; no real-GPU FPS claim.",
+    "Tool gates browser requestAnimationFrame at 50ms to sample short-lived projectiles. Game dt, simulation, camera and render code are unchanged.",
+    "Debug API is used for read-only state assertions and aimAtNearest fixture setup; camera transitions and firing use browser keyboard/mouse input.",
+    "Dirty-state restart uses DOM #againBtn.click() while its end screen is hidden, to exercise the existing startBattle handler with active follow/freeLook. Separate pause/menu/start coverage uses trusted real UI clicks."
+  ],
+  "visualReview": {
+    "status": "images inspected",
+    "reviewedAt": "2026-10-28T04:45:14.925Z",
+    "images": [
+      {
+        "name": "camera-default.png",
+        "finding": "HUD正确显示第三人称远景；完整舰体后上方居中，无边缘裁切，自身建筑未遮挡准星。"
+      },
+      {
+        "name": "camera-broadside.png",
+        "finding": "HUD正确显示第三人称远景；完整侧后方舰体入镜，艏艉未裁切，中心准星无自身建筑遮挡。"
+      },
+      {
+        "name": "camera-near.png",
+        "finding": "HUD已正确更新为第三人称近景；舰体更大但完整入镜，建筑未遮挡准星。"
+      },
+      {
+        "name": "camera-weapon-front.png",
+        "finding": "HUD正确显示武器组1及C切换说明；炮管甲板由底部局部裁切，符合局部武器取景，中心准星畅通。"
+      },
+      {
+        "name": "camera-weapon-aft.png",
+        "finding": "HUD正确显示武器组3；上层建筑占左侧及下方，舰体局部底部裁切，当前方向的中心准星未被自身建筑挡住。"
+      },
+      {
+        "name": "camera-binocular.png",
+        "finding": "HUD正确显示望远瞄准11度及炮组1；圆形遮罩、刻度和准星正常，无自身建筑遮挡。"
+      },
+      {
+        "name": "camera-free-look.png",
+        "finding": "HUD正确显示自由观察、松开右键返回及武器瞄准保持；准星、散布及右侧测距尺均已隐藏，舰体完整入镜。observing内部标志未通过debug直接读取，依据实际截图核验表现。"
+      },
+      {
+        "name": "camera-shell-follow.png",
+        "finding": "HUD正确显示炮弹跟随、C换弹及Z返回；已隐藏旧准星、散布、右侧测距尺及底部飞行装填信息，中心附近弹迹可见，无自身舰体遮挡。observing内部标志未通过debug直接读取，依据实际截图核验表现。"
+      },
+      {
+        "name": "camera-return.png",
+        "finding": "弹丸自然失效后恢复第三人称远景HUD及准星、散布、测距尺；完整舰体入镜，无自身建筑遮挡。中心附近仍有目标与弹着提示文字重叠。"
+      },
+      {
+        "name": "camera-bridge.png",
+        "finding": "HUD正确显示舰桥视角及V返回；当前方向面向开阔海面，自身建筑未遮挡中心准星。"
+      }
+    ]
+  },
+  "pointerLock": {
+    "native": true
+  },
+  "middleAttempts": [
+    {
+      "attempt": 0,
+      "time": 40.5,
+      "mode": "play",
+      "follow": {
+        "kind": "shell",
+        "id": 18
+      },
+      "beforeProjectiles": [],
+      "afterProjectiles": [
+        {
+          "kind": "shell",
+          "id": 18
+        },
+        {
+          "kind": "shell",
+          "id": 17
+        },
+        {
+          "kind": "shell",
+          "id": 16
+        }
+      ]
+    }
+  ],
+  "hudChecks": [
+    {
+      "name": "camera-default.png",
+      "text": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "expected": "第三人称 + 远景",
+      "passed": true
+    },
+    {
+      "name": "camera-near.png",
+      "text": "第三人称 · 近景 · 滚轮缩放 / 按住右键观察",
+      "expected": "第三人称 + 近景",
+      "passed": true
+    },
+    {
+      "name": "camera-weapon-front.png",
+      "text": "武器组 1 · C切换 / 长按C返回",
+      "expected": "武器组 1 + C切换",
+      "passed": true
+    },
+    {
+      "name": "camera-binocular.png",
+      "text": "望远瞄准 · 11° · 炮组 1",
+      "expected": "望远 + 11° + 炮组 1",
+      "passed": true
+    },
+    {
+      "name": "camera-weapon-aft.png",
+      "text": "武器组 3 · C切换 / 长按C返回",
+      "expected": "武器组 3 + C切换",
+      "passed": true
+    },
+    {
+      "name": "camera-free-look.png",
+      "text": "自由观察 · 松开右键返回 · 武器瞄准保持",
+      "expected": "自由观察 + 右键返回 + 保持瞄准",
+      "passed": true
+    },
+    {
+      "name": "camera-broadside.png",
+      "text": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "expected": "第三人称 + 远景",
+      "passed": true
+    },
+    {
+      "name": "camera-bridge.png",
+      "text": "舰桥视角 · V返回",
+      "expected": "舰桥 + V返回",
+      "passed": true
+    },
+    {
+      "name": "camera-shell-follow.png",
+      "text": "炮弹跟随 · C换弹 / Z返回",
+      "expected": "炮弹跟随 + C换弹 + Z返回",
+      "passed": true
+    },
+    {
+      "name": "camera-return.png",
+      "text": "第三人称 · 远景 · 滚轮缩放 / 按住右键观察",
+      "expected": "第三人称 + 远景",
+      "passed": true
+    }
+  ],
+  "input": {
+    "frames": 922,
+    "counts": {
+      "mousemove:trusted": 22,
+      "mousedown:trusted": 14,
+      "mouseup:trusted": 14,
+      "wheel:trusted": 18,
+      "keydown:trusted": 23,
+      "keyup:trusted": 23
+    }
+  },
+  "finishedAt": "2026-10-28T04:44:27.986Z",
+  "passed": true
+}

@@ -1,4 +1,4 @@
-// The canvas overlay: the sight, the dispersion ellipse hanging in the air where the guns point,
+// The canvas overlay: the sight (dispersion belongs to the world-space sea projection),
 // target markers with their lead, torpedo warnings, and the spotter's fall-of-shot report.
 
 import { clamp } from '../sim/constants';
@@ -17,6 +17,8 @@ export interface OverlayState {
   flight: number;
   weapon: string;
   zoom: number;
+  /** Free observation / projectile camera: markers remain, but no false central gun sight. */
+  observing?: boolean;
   showLead: boolean;
   target: Ship | null;
   torpedoes: { x: number; z: number; danger: boolean }[];
@@ -70,7 +72,7 @@ export class Overlay {
     if (!P || !P.alive) return;
 
     // ---- binocular field stop, drawn first so nothing it masks can end up on top of it
-    if (s.zoom > 0.35) {
+    if (s.zoom > 0.35 && !s.observing) {
       const r = Math.min(W, H) * 0.34;
       c.fillStyle = 'rgba(2,3,5,0.94)';
       c.beginPath();
@@ -90,10 +92,12 @@ export class Overlay {
       this.drawReticleScale(c, s, cx, cy, r);
     }
 
-    // ---- the aim point and its dispersion ellipse. Drawn last so target markers cannot bury it.
+    // ---- projected sea point is diagnostic only; the sight stays on the camera axis
     const ap = s.project(s.aimX, 2, s.aimZ);
     this.dbg = {
       ap,
+      reticle: [cx, cy],
+      observing: !!s.observing,
       zoom: +s.zoom.toFixed(2),
       weapon: s.weapon,
       sigma: { along: Math.round(s.sigma.along), cross: Math.round(s.sigma.cross) },
@@ -101,7 +105,7 @@ export class Overlay {
       ship: [Math.round(P.x), Math.round(P.z)],
     };
     // ---- range drum down the right-hand side
-    this.drawRangeScale(c, W, H, s);
+    if (!s.observing) this.drawRangeScale(c, W, H, s);
 
     // ---- ships. Closest first: if two labels would collide the farther one loses its text.
     const list = s.world.ships
@@ -120,7 +124,7 @@ export class Overlay {
       this.drawShipMarker(c, sp[0], sp[1], sh, foe, d, s.time, taken, labelled, isLock);
       // Lead marker. Locked: a solid diamond you can lay the crosshair on. Otherwise a hollow one
       // for the nearest enemy, if the captain wants the help.
-      if (foe && s.weapon === 'guns' && (isLock || (s.showLead && taken.length === 1))) {
+      if (!s.observing && foe && s.weapon === 'guns' && (isLock || (s.showLead && taken.length === 1))) {
         const [lx, lz] = isLock && s.lead ? [s.lead.x, s.lead.z] : leadPoint(P.x, P.z, sh, P.gun);
         this.drawLeadMarker(c, s, sh, lx, lz, isLock, s.converged);
       }
@@ -144,9 +148,8 @@ export class Overlay {
     }
 
     // ---- the sight itself, over the top of everything else in the scene
-    if (ap && s.weapon === 'guns') {
-      this.drawEllipse(c, s, ap);
-      this.drawCrosshair(c, ap[0], ap[1], s.sigma);
+    if (s.weapon === 'guns' && !s.observing) {
+      this.drawCrosshair(c, cx, cy);
     }
 
     // ---- spotter's report on the last salvo
@@ -163,63 +166,6 @@ export class Overlay {
     }
 
     // (the field stop is drawn at the top of this function, before everything else)
-  }
-
-  private drawEllipse(c: CanvasRenderingContext2D, s: OverlayState, ap: [number, number]): void {
-    const P = s.P;
-    const dx = s.aimX - P.x,
-      dz = s.aimZ - P.z;
-    const d = Math.hypot(dx, dz) || 1;
-    const ux = dx / d,
-      uz = dz / d;
-    const pa = s.project(s.aimX + ux * s.sigma.along, 2, s.aimZ + uz * s.sigma.along);
-    const pb = s.project(s.aimX - uz * s.sigma.cross, 2, s.aimZ + ux * s.sigma.cross);
-    if (!pa || !pb) return;
-    const ax = pa[0] - ap[0],
-      ay = pa[1] - ap[1];
-    const bx = pb[0] - ap[0],
-      by = pb[1] - ap[1];
-    const la = Math.hypot(ax, ay),
-      lb = Math.hypot(bx, by);
-    if (la < 1 && lb < 1) return;
-    const rot = Math.atan2(ay, ax);
-    c.save();
-    c.translate(ap[0], ap[1]);
-    c.rotate(rot);
-    // 2 sigma: where almost every shell of the salvo lands
-    c.strokeStyle = 'rgba(240,181,74,0.28)';
-    c.lineWidth = 1.2;
-    c.setLineDash([5, 5]);
-    c.beginPath();
-    c.ellipse(0, 0, Math.max(3, la * 2), Math.max(3, lb * 2), 0, 0, Math.PI * 2);
-    c.stroke();
-    c.setLineDash([]);
-    // a wash of colour inside 1 sigma, so the "圈" reads as an area and not just a hairline
-    c.fillStyle = 'rgba(240,181,74,0.2)';
-    c.beginPath();
-    c.ellipse(0, 0, Math.max(2, la), Math.max(2, lb), 0, 0, Math.PI * 2);
-    c.fill();
-    // the two axes, so the ellipse reads as long-and-narrow rather than as a blob
-    c.strokeStyle = 'rgba(255,196,84,0.5)';
-    c.lineWidth = 1;
-    c.beginPath();
-    c.moveTo(-Math.max(2, la), 0);
-    c.lineTo(Math.max(2, la), 0);
-    c.moveTo(0, -Math.max(2, lb));
-    c.lineTo(0, Math.max(2, lb));
-    c.stroke();
-    // 1 sigma: dark backing then the amber line, so it survives bright water behind it
-    c.strokeStyle = 'rgba(12,9,3,0.7)';
-    c.lineWidth = 6;
-    c.beginPath();
-    c.ellipse(0, 0, Math.max(2, la), Math.max(2, lb), 0, 0, Math.PI * 2);
-    c.stroke();
-    c.strokeStyle = 'rgba(255,204,96,1)';
-    c.lineWidth = 3;
-    c.beginPath();
-    c.ellipse(0, 0, Math.max(2, la), Math.max(2, lb), 0, 0, Math.PI * 2);
-    c.stroke();
-    c.restore();
   }
 
   /**
@@ -260,7 +206,7 @@ export class Overlay {
     }
   }
 
-  private drawCrosshair(c: CanvasRenderingContext2D, x: number, y: number, sigma: { along: number; cross: number }): void {
+  private drawCrosshair(c: CanvasRenderingContext2D, x: number, y: number): void {
     const arm = 30,
       gap = 7;
     c.lineWidth = 4;
@@ -273,14 +219,6 @@ export class Overlay {
     c.arc(x, y, 2.4, 0, Math.PI * 2);
     c.fillStyle = AMBER;
     c.fill();
-    const label = `σ ${Math.round(sigma.along)} × ${Math.round(sigma.cross)} m`;
-    c.font = '600 12px monospace';
-    c.textAlign = 'left';
-    c.lineWidth = 3;
-    c.strokeStyle = 'rgba(10,8,4,0.65)';
-    c.strokeText(label, x + arm + 7, y - 6);
-    c.fillStyle = AMBER;
-    c.fillText(label, x + arm + 7, y - 6);
   }
 
   private crossPath(c: CanvasRenderingContext2D, x: number, y: number, arm: number, gap: number): void {

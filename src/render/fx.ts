@@ -7,6 +7,7 @@ import type { Ship } from '../sim/ship';
 import type { Shell } from '../sim/gunnery';
 import type { Torpedo } from '../sim/torpedo';
 import type { Water } from './water';
+import { MuzzleEffects } from './muzzle';
 
 function dotTexture(): THREE.Texture {
   const S = 64;
@@ -124,6 +125,13 @@ class Pool {
         a0: 1,
       });
     }
+  }
+
+  get count(): number { return this.n; }
+
+  reset(): void {
+    this.n = 0;
+    this.points.geometry.setDrawRange(0, 0);
   }
 
   spawn(p: Partial<Particle>): void {
@@ -310,6 +318,16 @@ class ColumnPool {
     }
   }
 
+  get count(): number { return this.items.reduce((n, item) => n + Number(item.active), 0); }
+
+  reset(): void {
+    for (const item of this.items) {
+      item.active = false;
+      item.t = 0;
+      item.mesh.visible = false;
+    }
+  }
+
   spawn(x: number, z: number, k: number): void {
     const it = this.items.find((i) => !i.active) || this.items[0];
     it.active = true;
@@ -410,6 +428,7 @@ export class FX {
   private shells: ShellLayer;
   private torps: TorpLayer;
   private columns: ColumnPool;
+  private muzzleEffects: MuzzleEffects;
   private wakeT = 0;
   private smokeEmit = 0;
   private smokeT = new Map<number, number>();
@@ -420,6 +439,7 @@ export class FX {
     this.shells = new ShellLayer(scene, 600, tex);
     this.torps = new TorpLayer(scene, 400, tex);
     this.columns = new ColumnPool(scene);
+    this.muzzleEffects = new MuzzleEffects(scene);
   }
 
   /** White columns of water thrown up by a shell that missed. */
@@ -558,53 +578,9 @@ export class FX {
     }
   }
 
-  /** Muzzle blast: a bright puff and a smoke ring, thrown along the barrel. */
-  muzzle(x: number, y: number, z: number, bearing: number, cal: number): void {
-    const k = clamp(cal / 406, 0.2, 1.2);
-    const dx = Math.sin(bearing),
-      dz = Math.cos(bearing);
-    for (let i = 0; i < 8 + k * 16; i++) {
-      const sp = rand(6, 22) * (0.5 + k);
-      const spread = rand(-0.45, 0.45);
-      const ux = dx * Math.cos(spread) - dz * Math.sin(spread);
-      const uz = dz * Math.cos(spread) + dx * Math.sin(spread);
-      this.pool.spawn({
-        x,
-        y,
-        z,
-        vx: ux * sp,
-        vy: rand(1, 7) * (0.4 + k),
-        vz: uz * sp,
-        max: rand(0.18, 0.42),
-        size: 3 + k * 9,
-        grow: 8 + k * 20,
-        grav: 1.5,
-        drag: 2.2,
-        r: 1,
-        g: rand(0.72, 0.92),
-        b: rand(0.35, 0.6),
-        a0: 1,
-      });
-    }
-    for (let i = 0; i < 6 + k * 12; i++) {
-      this.pool.spawn({
-        x: x + dx * rand(0, 6),
-        y: y + rand(0, 3),
-        z: z + dz * rand(0, 6),
-        vx: dx * rand(2, 9) + rand(-2, 2),
-        vy: rand(3, 10),
-        vz: dz * rand(2, 9) + rand(-2, 2),
-        max: rand(1.4, 3.0),
-        size: 6 + k * 16,
-        grow: 22 + k * 34,
-        grav: 1.6,
-        drag: 0.9,
-        r: 0.62,
-        g: 0.62,
-        b: 0.63,
-        a0: 0.55,
-      });
-    }
+  /** One real barrel tip, bearing/elevation in radians; elevation defaults to horizontal. */
+  muzzle(x: number, y: number, z: number, bearing: number, cal: number, elevation = 0): void {
+    this.muzzleEffects.emit(x, y, z, bearing, cal, elevation);
   }
 
   /** A ship blowing up as she goes down. */
@@ -757,8 +733,30 @@ export class FX {
 
   update(dt: number, t: number, shells: Shell[], torps: Torpedo[]): void {
     this.pool.update(dt);
+    this.muzzleEffects.update(dt);
     this.columns.update(dt);
     this.shells.update(shells);
     this.torps.update(torps, dt, t);
+  }
+
+  /** Clear all transient visuals and emit timers when restarting a battle. */
+  reset(): void {
+    this.pool.reset();
+    this.muzzleEffects.reset();
+    this.columns.reset();
+    this.shells.points.geometry.setDrawRange(0, 0);
+    this.torps.points.geometry.setDrawRange(0, 0);
+    this.wakeT = this.smokeEmit = 0;
+    this.smokeT.clear();
+  }
+
+  stats() {
+    return {
+      particles: this.pool.count,
+      columns: this.columns.count,
+      shells: this.shells.points.geometry.drawRange.count,
+      torpedoWakePoints: this.torps.points.geometry.drawRange.count,
+      muzzle: this.muzzleEffects.stats(),
+    };
   }
 }

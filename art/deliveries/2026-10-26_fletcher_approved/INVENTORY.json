@@ -1,0 +1,1664 @@
+{
+  "batch": "2026-10-26_fletcher_approved",
+  "latest_approved": "art/blender/checkpoint_30_fletcher_guns_and_bridge.blend",
+  "source_file_count": 331,
+  "blend_count": 30,
+  "glb_count": 19,
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 94,
+      "sha256": "bb65ed6289220c52a017816d11a516f611c1d698e79834e435c227059e448404"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6587,
+      "sha256": "70023ed2f626c0a782d02a344efedaa0a16b137861ac84c1f0c0fff972e7f1a0"
+    },
+    {
+      "path": "art/2560x1440_battleship_north_carolina_class_05_99e1c54836b40ecae78a60b6655a7fd1.jpg",
+      "bytes": 2556080,
+      "sha256": "bbcfff3821bf477b7bfc001554a31c36e40d7f7fdee5f14fc16e5ff21dc5e843"
+    },
+    {
+      "path": "art/5fdf8db1cb1349549a90dc7a5a4e9258d1094a25-bkimg-process,v_1,rw_336,rh_252,maxl_672.webp",
+      "bytes": 39442,
+      "sha256": "a5a3499e37fc013734288d561291f88630ad0d8f19bb82d2da2cf0aba34eadfc"
+    },
+    {
+      "path": "art/README.md",
+      "bytes": 2727,
+      "sha256": "5ea0245d18230445b5253613e63269ea63990044652f2c81206cab6d0c69b600"
+    },
+    {
+      "path": "art/Uss-north-carolina-bb55-ONI-plate.jpg",
+      "bytes": 64360,
+      "sha256": "f99a4b72754d5c8a5806e8625f9bc64e933d7b7a03e83f2d14008dbecf2a4914"
+    },
+    {
+      "path": "art/blender/FLETCHER_GUNS_AND_BRIDGE.md",
+      "bytes": 3997,
+      "sha256": "824d4062e5addcd9f598beeb762b762fd065e91fe879d82ad6bdd86708200a27"
+    },
+    {
+      "path": "art/blender/FLETCHER_HULL_REFINEMENT.md",
+      "bytes": 4222,
+      "sha256": "f1ef6f8b99475680191f74449e8fdc1f90ecdc60c7c12e04c928dde3a8d6fddd"
+    },
+    {
+      "path": "art/blender/FLETCHER_REFINEMENT.md",
+      "bytes": 2983,
+      "sha256": "6e59dce9a311bf44296032e66a1f2471895f971a21ff00a7b91a96b2c909f7e8"
+    },
+    {
+      "path": "art/blender/FUBUKI_REFINEMENT.md",
+      "bytes": 4275,
+      "sha256": "629b163e0517c0062cd455d323ed6f75f47a4e2ee60162d5bb9a0872deee4f0a"
+    },
+    {
+      "path": "art/blender/KIRISHIMA_1942_PLAN.md",
+      "bytes": 11462,
+      "sha256": "46ef71153020370443270970464dc6d5b89076289dda6efa090832f560b0a0bf"
+    },
+    {
+      "path": "art/blender/KIRISHIMA_GAME_INTEGRATION.md",
+      "bytes": 5093,
+      "sha256": "a9dc41a0848b504412a0d806dae30a4e526c82c5a56737179296c7c696430eb4"
+    },
+    {
+      "path": "art/blender/KIRISHIMA_OPTICS_AND_ISLAND.md",
+      "bytes": 5016,
+      "sha256": "ecb908d87e00c26d28aec108570bf187c250827ea4a729a95231636de9da8acb"
+    },
+    {
+      "path": "art/blender/KIRISHIMA_ROBUST_UPPERWORKS.md",
+      "bytes": 4309,
+      "sha256": "8718d6120c554fa3827e8df7422a5000b53320745c61946d996d7e1cd1f259ba"
+    },
+    {
+      "path": "art/blender/README.md",
+      "bytes": 13736,
+      "sha256": "1c088c9cfe91bdaf77f6dbd953c27262c6482f89f142f961d14d8bfbb09391fe"
+    },
+    {
+      "path": "art/blender/RESCUE.md",
+      "bytes": 3991,
+      "sha256": "c2cc5a384f5fb3680249485c1387a00b1dd6bc2f2e76cb5bb6bd34fba3d9a749"
+    },
+    {
+      "path": "art/blender/WASHINGTON_BOW.md",
+      "bytes": 7267,
+      "sha256": "fbcdc125e1617802c2592b570114954bab64c78a41f67f6c8f6ef757abcfbc16"
+    },
+    {
+      "path": "art/blender/WASHINGTON_GAME_HULL_AND_RAILS.md",
+      "bytes": 4472,
+      "sha256": "066f1637f57a4c7d506bbf46daf730b4ea88ed71e4e9ebde3c975863d8c8954d"
+    },
+    {
+      "path": "art/blender/WASHINGTON_REFINEMENT.md",
+      "bytes": 4321,
+      "sha256": "0f4a399ee7e5df2b2402af04ebc64b2c6c3270933e04dfa036cdbaed43a30ba9"
+    },
+    {
+      "path": "art/blender/WEAPONS_AND_BATTERY.md",
+      "bytes": 5964,
+      "sha256": "49063cea46fcb3fbe4e0757841ba57d389b81f7aa17d972c1d08b1580de539f6"
+    },
+    {
+      "path": "art/blender/battery_layout_preview.py",
+      "bytes": 4906,
+      "sha256": "068089bf115ac927efad284faa8879549ad0e02d1d67ebfc197a38ecc2a33889"
+    },
+    {
+      "path": "art/blender/checkpoint_01_before_rescue.blend",
+      "bytes": 1356029,
+      "sha256": "f440a7e35f23e7a334e8561d4e2094162f985560c98e00430962ed8b17e5d897"
+    },
+    {
+      "path": "art/blender/checkpoint_02_north_carolina_repaired.blend",
+      "bytes": 1365864,
+      "sha256": "ac7da7a9a0e26c570d18474c626d1e7ee3837c123097a02176e6e0ee1a8e77a3"
+    },
+    {
+      "path": "art/blender/checkpoint_03_all_models_repaired.blend",
+      "bytes": 1429486,
+      "sha256": "165e0969e6bb8c372e676b2711104d2d28e29924e58f05aae4ec2894fa500203"
+    },
+    {
+      "path": "art/blender/checkpoint_04_fixed_barbettes.blend",
+      "bytes": 1501891,
+      "sha256": "b87964691a639e988a6c23356ae2c256e2e066abe2c865df8f2bfc0d199d0835"
+    },
+    {
+      "path": "art/blender/checkpoint_05_washington_start.blend",
+      "bytes": 1501255,
+      "sha256": "e230b29258486ead48c3de1a225fad7df19c72ddc276f4967d3e07bcf57d6d8b"
+    },
+    {
+      "path": "art/blender/checkpoint_06_washington_blockout.blend",
+      "bytes": 1793799,
+      "sha256": "8059caf008957e6c5c358e8842554484ce119f275eef71c8e72bed52d06bf5fb"
+    },
+    {
+      "path": "art/blender/checkpoint_07_washington_refined.blend",
+      "bytes": 1702891,
+      "sha256": "9af188250e228da5d95817552788c28fd6527ce4b3def6e9dc6c574babbb34ef"
+    },
+    {
+      "path": "art/blender/checkpoint_08_washington_1942_v1.blend",
+      "bytes": 1719755,
+      "sha256": "e758723e965e71d2bf56abc7571ea85c21716edee9f410bb572f7572d19c2198"
+    },
+    {
+      "path": "art/blender/checkpoint_09_before_weapons_layout.blend",
+      "bytes": 1719396,
+      "sha256": "d1e3cbde1b9e333aeece444b81127f6aa5abe9542840a9185b1244835330879c"
+    },
+    {
+      "path": "art/blender/checkpoint_10_battery_layout_draft.blend",
+      "bytes": 1943184,
+      "sha256": "cd22df7f7fa5f983a0c9d0e18b9bac7ca52a58b9e868c90ce2c10b5eff2db91a"
+    },
+    {
+      "path": "art/blender/checkpoint_11_weapons_refined_layout_review.blend",
+      "bytes": 1956750,
+      "sha256": "4419bdf7b73846c2e4eb03f09c2b6e267787c5a5be8352caa7666b7659eb82ba"
+    },
+    {
+      "path": "art/blender/checkpoint_12_bow_start.blend",
+      "bytes": 1955798,
+      "sha256": "e461eb8128e6fae76f0a8cdd9465a960bf35295164de0af7185371453d0532df"
+    },
+    {
+      "path": "art/blender/checkpoint_13_washington_bow_blockout.blend",
+      "bytes": 2448920,
+      "sha256": "34598296fb781239203a97563346e0e438a664998d3f06294586d09b4aba2b0e"
+    },
+    {
+      "path": "art/blender/checkpoint_14_bottom_diagnosis.blend",
+      "bytes": 2455182,
+      "sha256": "e5354efdc15dc8337deb2d06b28079538a39f3ea029b9202e8f44f421ee107e0"
+    },
+    {
+      "path": "art/blender/checkpoint_15_washington_bottom_refined.blend",
+      "bytes": 2504253,
+      "sha256": "adc4532b1d22deb728e100765f953ded16d61fc7487f25f99c22d7afad75ad25"
+    },
+    {
+      "path": "art/blender/checkpoint_16_fubuki_start.blend",
+      "bytes": 2502980,
+      "sha256": "43086db01fa47acb686704c555c0c784623936501db36e1efb065c8e23d04797"
+    },
+    {
+      "path": "art/blender/checkpoint_17_fubuki_refined.blend",
+      "bytes": 2790141,
+      "sha256": "8d461def3a44e7361776970ceff0b4793a127821af75c0c1ed46310247a83125"
+    },
+    {
+      "path": "art/blender/checkpoint_18_kirishima_layout_blockout.blend",
+      "bytes": 2865674,
+      "sha256": "8af67dd7fc5f2f5ebb6846b8a848abfb84e12b2bd0101088d22e87833dd9cd3b"
+    },
+    {
+      "path": "art/blender/checkpoint_19_kirishima_blockout.blend",
+      "bytes": 3308449,
+      "sha256": "904f0d1ed8bad5ad488100cbcff555aa7e22edf20afdd3b26c6264179081a52d"
+    },
+    {
+      "path": "art/blender/checkpoint_20_before_optics_and_island.blend",
+      "bytes": 3309080,
+      "sha256": "d0b0210304d87e341831dceef495029bf6ce878541157a0c075529b231e08f61"
+    },
+    {
+      "path": "art/blender/checkpoint_21_kirishima_optics_and_island.blend",
+      "bytes": 3390403,
+      "sha256": "d240396c118fb4539c253dddb10c0e91f1c727f43e02e2dae199fbb85d2149da"
+    },
+    {
+      "path": "art/blender/checkpoint_22_before_robust_island.blend",
+      "bytes": 3390312,
+      "sha256": "329847a71add933d65122030d701c59154c0697c51758769c1d3f8a01b2e1017"
+    },
+    {
+      "path": "art/blender/checkpoint_23_kirishima_robust_upperworks.blend",
+      "bytes": 3670475,
+      "sha256": "9a6dbcf76e31aba70df065e0960a9c1b9ca5918a115e9d2981b1e4cea6d7ea51"
+    },
+    {
+      "path": "art/blender/checkpoint_24_before_game_integration.blend",
+      "bytes": 3669533,
+      "sha256": "2f9f6abde060cfe06097c25be010290648fbe0ce77362f39f4da6e23d9b4de2a"
+    },
+    {
+      "path": "art/blender/checkpoint_25_kirishima_game_ready.blend",
+      "bytes": 3692111,
+      "sha256": "94be8136ee6eae4176b22a4718fc99b5d916dd6dd0ebf9cb555058029b353e00"
+    },
+    {
+      "path": "art/blender/checkpoint_26_before_washington_game_hull.blend",
+      "bytes": 3692130,
+      "sha256": "3555e45a27337c2594e3bbffa9ee19f51810e92b9eb9b611959ade3cc8f645be"
+    },
+    {
+      "path": "art/blender/checkpoint_27_washington_game_bow_and_rails.blend",
+      "bytes": 4235952,
+      "sha256": "35689945f597da06d2b6205d75424c7f41077737ce01acfebdf683fd4047aa0e"
+    },
+    {
+      "path": "art/blender/checkpoint_28_fletcher_blockout.blend",
+      "bytes": 4338707,
+      "sha256": "355d1b67a72d2bbe32ef1e8c2d68a31bdd35dcc9dfe56b93105e47e5f69f0b8a"
+    },
+    {
+      "path": "art/blender/checkpoint_29_fletcher_hull_refined.blend",
+      "bytes": 4313339,
+      "sha256": "a8402a2982b68f46bbf66e30a7a041d7d80ec985c52d5ebb1d5edf4e23192356"
+    },
+    {
+      "path": "art/blender/checkpoint_30_fletcher_guns_and_bridge.blend",
+      "bytes": 4369023,
+      "sha256": "03b7c5f2d4f14b02d38beea5c6112b6a857854feb0ae703d1fef9e0f30f531ed"
+    },
+    {
+      "path": "art/blender/fletcher_profile.json",
+      "bytes": 1352,
+      "sha256": "494616ae3c125d8da7e0517ad98951002d5cb5bb3529d017bd570113154254f7"
+    },
+    {
+      "path": "art/blender/fletcher_profile.py",
+      "bytes": 3149,
+      "sha256": "be4c4caf7f34702e85577efca74ceff21c774992ac670b86427023ad0ddaee88"
+    },
+    {
+      "path": "art/blender/fletcher_refined.py",
+      "bytes": 18168,
+      "sha256": "7d66245bafb52d6076d0cbeebd53b1dc1c6612fc1daf0547b9a6ca1114cab4be"
+    },
+    {
+      "path": "art/blender/fletcher_upperworks.py",
+      "bytes": 13020,
+      "sha256": "a1fb9e9dbacdd4ae73af5e496bff31fa68553b798f2f8de233683ab366bcc13f"
+    },
+    {
+      "path": "art/blender/fubuki_profile.json",
+      "bytes": 1103,
+      "sha256": "05653771190f95f305206b3982d355494935b691f0fb8f74bc9a512d2ea0c4bd"
+    },
+    {
+      "path": "art/blender/fubuki_profile.py",
+      "bytes": 2453,
+      "sha256": "c90b03bb7c84581660c6450c07419f35993f405dfba605f96b1d375306f902a1"
+    },
+    {
+      "path": "art/blender/fubuki_refined.py",
+      "bytes": 18348,
+      "sha256": "f52a248a261d5d24f8adace30aac6ce9f1e85372fa0eddcc2ef712b86e923e05"
+    },
+    {
+      "path": "art/blender/game_railings.py",
+      "bytes": 1407,
+      "sha256": "ffb74348661982ff39eacc5474998af35262472fbf230874a80852423535fb23"
+    },
+    {
+      "path": "art/blender/jp_refined_guns.py",
+      "bytes": 10521,
+      "sha256": "78d154a0ff49bd281081c4ec780e3f2012780b070bddf0f99b0af142f04203a3"
+    },
+    {
+      "path": "art/blender/kirishima_1942_build.py",
+      "bytes": 31929,
+      "sha256": "950e91098df716c11cff9e35c1fd1de46730e18d687cf50cd1628af805f843dd"
+    },
+    {
+      "path": "art/blender/kirishima_1942_layout.json",
+      "bytes": 4590,
+      "sha256": "0dce3e8986978eaf33f614ffe971f6bae09584cfee14cb9a230d7b73684336cb"
+    },
+    {
+      "path": "art/blender/kirishima_1942_layout.py",
+      "bytes": 16856,
+      "sha256": "80dea5b14a989a73c5faaf71cb7dee43db7e9127d3d7df2154d322ebb67ec8a2"
+    },
+    {
+      "path": "art/blender/kirishima_1942_profile.json",
+      "bytes": 1225,
+      "sha256": "8323904fbe89c93193170b7045995a6cafb7c86cb8f919b8c55441fb03aa66e6"
+    },
+    {
+      "path": "art/blender/kirishima_1942_profile.py",
+      "bytes": 2531,
+      "sha256": "21eee3c385e146672f11b2f2072a7c83377761ad0d7897ba4f0a20b5e9061478"
+    },
+    {
+      "path": "art/blender/kirishima_game_export.py",
+      "bytes": 7160,
+      "sha256": "d77877dba80e9096bd841832d22966e7853f2167e42dd384e951ae54eeb5c86b"
+    },
+    {
+      "path": "art/blender/kirishima_island_refined.py",
+      "bytes": 16874,
+      "sha256": "c9d7766870ac4c430748a93738244c64a8458c68afbd738527c6d3f8b8b394e1"
+    },
+    {
+      "path": "art/blender/kirishima_upperworks_layout.json",
+      "bytes": 1701,
+      "sha256": "fafeebaa5da93d02f8a48a21abd1788486ad578c033840aa40b019c0a2094f58"
+    },
+    {
+      "path": "art/blender/package_models.py",
+      "bytes": 6701,
+      "sha256": "87473a95f2ea25e625850288647517a21624b2de6a021d7a3badc57e10558b91"
+    },
+    {
+      "path": "art/blender/qa/barbette_no2_close.png",
+      "bytes": 977044,
+      "sha256": "db85b282733f6dca737adaad075a372f56c0e251ace6996c7136cb6203de588d"
+    },
+    {
+      "path": "art/blender/qa/barbette_us_bb_quarter.png",
+      "bytes": 1006187,
+      "sha256": "f65dd03b0375b8b815354d652549cdae1dcbb9de3e493a7bd5ffd5c8e7b0be67"
+    },
+    {
+      "path": "art/blender/qa/barbette_us_bb_side.png",
+      "bytes": 1110410,
+      "sha256": "b41ec2e419bc40f2751af61cda2613c45c95b6517eefce86bf0ddb3d3cfbe215"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_detail.png",
+      "bytes": 972528,
+      "sha256": "3157eddaf221f30a09239515d97806bb2ae992f83c1e716a5a5f766daea92236"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_front.png",
+      "bytes": 616092,
+      "sha256": "f6a33f8ceb328e02149cbd428898950bc2a9d68841576b15f4f8354b2a22170c"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_qbow.png",
+      "bytes": 1068982,
+      "sha256": "4d9ce5fa40e9b011329abb1ba5ad9cfd24e613aeaf339e99a19bafcb351ab5b6"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_qport.png",
+      "bytes": 1068403,
+      "sha256": "ecc28a0e3a210c2ffdd3d81694a5bea089688802f40753eaeed5af9388363e89"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_qstern.png",
+      "bytes": 1069260,
+      "sha256": "d744711b11af86834099472b011a1bcb6331429d2d1554d28048d73646f1d5f6"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_side.png",
+      "bytes": 1065117,
+      "sha256": "62a51fdd2ccadf0d7a7f818378a4eccb69270b55a8fc3de0c8d09aa84bde522b"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_final_top.png",
+      "bytes": 1032131,
+      "sha256": "9b083c11cf92afee3d901f03a0b3d6e2900f80279221fd9295017f2fb969cc03"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_front.png",
+      "bytes": 615448,
+      "sha256": "f27c608146d32ba1dd108dec578290d619b8669d65f7c917369cc0af44f212d8"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_qbow.png",
+      "bytes": 1069050,
+      "sha256": "615b0e44d470fa19b109a41c2289960214902b110deea9dfe5be46d714752d0f"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_qport.png",
+      "bytes": 1068947,
+      "sha256": "9ce89c345e6b34a558cb126f714cee67001021958589f750a64793a2e8dd4966"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_qstern.png",
+      "bytes": 1068908,
+      "sha256": "1fdc7b1e85ad1947725cd257d41954197588015181bac9e2c09f31496365a054"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_side.png",
+      "bytes": 1064635,
+      "sha256": "630550989964bd22b28547b04678b39f41cad2bd0d16b0018332d9f58ae67fd7"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_side_detail.png",
+      "bytes": 972118,
+      "sha256": "96637c67e26b6cef94524d8e6598672b9965bd9bc956d98f07631c9c4e380f01"
+    },
+    {
+      "path": "art/blender/qa/battery_draft_v1_top.png",
+      "bytes": 1032200,
+      "sha256": "5a1b28ebbd7400dd63396a1627487bfb4d4e4a9a6c2cc31057105301af941028"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_front.png",
+      "bytes": 792552,
+      "sha256": "549b49b2797024deb675017d4c1dcd5dcdd21850b366515a76d4f0f07bbeb15d"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_full.png",
+      "bytes": 1119677,
+      "sha256": "a94c1e91b896b3b98af2eada9edf1542854df64e6cba41e26c75b43d74992d18"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_low.png",
+      "bytes": 932477,
+      "sha256": "10cb4b5f1b2c867c461348f3b0504cc1ad84dcde59f7c49a729a8a2aa94494d4"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_normals_front.png",
+      "bytes": 805971,
+      "sha256": "a9a4c0fdb6f23dc07c2637df9b1191db740f4f62a16cb12bffa659721d77db39"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_normals_low.png",
+      "bytes": 938096,
+      "sha256": "37184c54d3a8c37b98c2f18bff3442bead2f73b4d1b8a7289ee57bc72c102420"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_side.png",
+      "bytes": 865352,
+      "sha256": "79fa516672c67021b9e3762c2618289ee4d465b04adbbc887ad6881272f9bf3f"
+    },
+    {
+      "path": "art/blender/qa/bottom_after_underside.png",
+      "bytes": 906565,
+      "sha256": "aa48a578d7dfb22a3ce869c4762e531d384eb4d2321d7415370f4940706eb66f"
+    },
+    {
+      "path": "art/blender/qa/bottom_before_front.png",
+      "bytes": 793260,
+      "sha256": "c0a54f930c995e50ead8afc3e4bcae133e932772d7a3592cf59ad312c756050b"
+    },
+    {
+      "path": "art/blender/qa/bottom_before_low.png",
+      "bytes": 935231,
+      "sha256": "1a17df0b6e1ebdf201ca9d8e3cafe89673f759b233da020424b1f13a6a7db45b"
+    },
+    {
+      "path": "art/blender/qa/bottom_before_normals_front.png",
+      "bytes": 806260,
+      "sha256": "f0f6d66d9e71f1c2dc6e9aa0ea62d2cc84e900f131b8c5a33bc7e423df9b1666"
+    },
+    {
+      "path": "art/blender/qa/bottom_before_normals_low.png",
+      "bytes": 945737,
+      "sha256": "103f25635863ffde06bd671a179280f5d08df0c4c0b2571a77a360fad3aba4e4"
+    },
+    {
+      "path": "art/blender/qa/bottom_before_side.png",
+      "bytes": 869069,
+      "sha256": "373d47297b263a831e576c4073e61af9f8fbd0eea72fd68287f1e81888126540"
+    },
+    {
+      "path": "art/blender/qa/bottom_before_underside.png",
+      "bytes": 906278,
+      "sha256": "9a29d2998ff89119bb1c2c3e26f9668555c640e168a63aed5681e0749b235ec0"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_final.png",
+      "bytes": 1129094,
+      "sha256": "f010d01d6d541b0f4932bf6aeb44b172dfa17d9f6e9043c4e1c18aa785ae5af6"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_fore_qbow.png",
+      "bytes": 998751,
+      "sha256": "c7d40f02388b8f47eb2a611d0d0d8d006c53fac5ddae6efec9d0eb7be3dc4071"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_fore_side.png",
+      "bytes": 797107,
+      "sha256": "407ed753c7b9f93554c6f0ab79b4ee855b64d494eeee82c2fc7a412aa6f1f0e2"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_fore_top.png",
+      "bytes": 918130,
+      "sha256": "7124f4c7a626af69b081d984a70b4c5a5e90e68c2e361ea3e71f9c9a3c06a974"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_front.png",
+      "bytes": 886504,
+      "sha256": "2c0b596f56d45b52861570ec8f1026b312e0b38926df08a52ac9e8ab544eb80b"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_qbow.png",
+      "bytes": 976954,
+      "sha256": "aef57043e3bcde0616721d81346525d76a676fa5ee6e3b6fbfc6d8d4ac4e8b17"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_side.png",
+      "bytes": 835738,
+      "sha256": "459aa1ab12657c6d7f0c42b0de019c3460a6f5b4cb8a5516324c10697a82bbf7"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_top.png",
+      "bytes": 834735,
+      "sha256": "f7245d36c73ae5702581720c68817c3775182ce2c99de502aed3965390c7aa84"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_waterline_front.png",
+      "bytes": 954198,
+      "sha256": "6eb0535a4c8685e9f869e1292375d5f092061189e5b0387eeb9e09ceebae14c1"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_waterline_qbow.png",
+      "bytes": 1052662,
+      "sha256": "ba504200b907b31f1e21be1357e6eee46d9b7d618bc22a35475e7b55b6286892"
+    },
+    {
+      "path": "art/blender/qa/bow_blockout_waterline_side.png",
+      "bytes": 853688,
+      "sha256": "0b29ed539fa0b7b846d7c109e01796f445de6a59dc43eb12508b5f2376190221"
+    },
+    {
+      "path": "art/blender/qa/fletcher_blockout_final.png",
+      "bytes": 1259164,
+      "sha256": "5ea7d48d82d5feb32cff821b9dfbe5837787288deed0158a0cf631ca9ba9143f"
+    },
+    {
+      "path": "art/blender/qa/fletcher_bridge.png",
+      "bytes": 1036606,
+      "sha256": "61152397e31a206ae15c3cecb129a1fae84c0b79dc6671343ff6fd84e92c4bed"
+    },
+    {
+      "path": "art/blender/qa/fletcher_bridge_after.png",
+      "bytes": 1425437,
+      "sha256": "343bd896a53e68e1fc956eed4c771bb85dc37a3c3e7f7c09b3aad69ad028dbaa"
+    },
+    {
+      "path": "art/blender/qa/fletcher_bridge_connection_check.png",
+      "bytes": 1143930,
+      "sha256": "0d8f2520cb3d3ddb9ba3535f306f8f0904fe0b06f783b13eddf6bb005774c69c"
+    },
+    {
+      "path": "art/blender/qa/fletcher_gun_after.png",
+      "bytes": 1383188,
+      "sha256": "32bfc525ef142a529a8cea4f8c907edf77633a77f737ce487d7441a17d82ed26"
+    },
+    {
+      "path": "art/blender/qa/fletcher_gun_before.png",
+      "bytes": 1123330,
+      "sha256": "5d489039d766a15675548bac03860fd9660b18edce733dc0566177e8c4c5b1a4"
+    },
+    {
+      "path": "art/blender/qa/fletcher_gun_elev45.png",
+      "bytes": 1009711,
+      "sha256": "20b9948bcbe785890413cb351317cf179f81d4906eb3e035a97964525d56e903"
+    },
+    {
+      "path": "art/blender/qa/fletcher_gun_front.png",
+      "bytes": 998309,
+      "sha256": "34bf03ee6e3e9609e3f16d7aafdbd7862013b145d5e26b90ff05e5bac144164a"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_after_bow.png",
+      "bytes": 1121381,
+      "sha256": "bb2b1b862ccaf6b9240cd893f5aa4658786495839e15590e561628e4ccba941e"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_after_side.png",
+      "bytes": 904679,
+      "sha256": "6b3568a018982cf8b7f00825800a53bac6a4f5a2840758377a6b47876b499ba6"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_after_stern.png",
+      "bytes": 1120404,
+      "sha256": "3f20506aa0fefb3d51900ea6f468eed2aea5d334e3f7c1568b205c6fad4eb2eb"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_before_bow.png",
+      "bytes": 1126196,
+      "sha256": "8fb07c087b222c2c9943bc2605d80be3b0f532a483761561e614e08cb10f921b"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_before_profile.json",
+      "bytes": 1081,
+      "sha256": "3c3ac7442bc56e8666efa69fc662b5bb522a7e4ffd7d177561accfa1078d55c7"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_before_side.png",
+      "bytes": 893045,
+      "sha256": "13cd35d9fd2a44849678f6398413104a3f8bf60d14943ca8f0282e4e8a47289d"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_only_bow_detail.png",
+      "bytes": 880522,
+      "sha256": "21aefd84249c2bd4377939da4a1172c46ef03486be2ca0ecb508b60a67c45a43"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_only_front.png",
+      "bytes": 889400,
+      "sha256": "f78b798c0d7d25337947539fb7068426e7db2622d570bf02b3441c4efe1c6d8a"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_only_rear.png",
+      "bytes": 884027,
+      "sha256": "1a86880e26aa912cc6d2a00130c4a715546c887117905a825cb724e7c29a713e"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_only_stern_detail.png",
+      "bytes": 885421,
+      "sha256": "f0b8dec49ee7dcb46ce6368e95c2f7aabe083182f64a855aff732b9f755fa740"
+    },
+    {
+      "path": "art/blender/qa/fletcher_hull_only_top.png",
+      "bytes": 856705,
+      "sha256": "9902d9c58c07a2dea0dcac6b7c83d62b0b1689e8d0d040c2961df5b587183976"
+    },
+    {
+      "path": "art/blender/qa/fletcher_overall_after.png",
+      "bytes": 1255451,
+      "sha256": "38e538309741021da5d13b21b029874cdbc7191f1b99a89a5934def6009ee80e"
+    },
+    {
+      "path": "art/blender/qa/fletcher_qbow.png",
+      "bytes": 1051132,
+      "sha256": "b0e8611b97b5a681d1efe75d62a785310c188508cc31648eca22ed2d0315c767"
+    },
+    {
+      "path": "art/blender/qa/fletcher_side.png",
+      "bytes": 893072,
+      "sha256": "203ff67ae18e3c1f003292231124bdecf6cc04f20b14e24bd5e367499a074bad"
+    },
+    {
+      "path": "art/blender/qa/fletcher_upper_after.png",
+      "bytes": 1365858,
+      "sha256": "8add5e89fb120e87f4b2c0f9ba8b48b0b087f6627f8cca46d9bd7bbe019a3168"
+    },
+    {
+      "path": "art/blender/qa/fletcher_upper_before.png",
+      "bytes": 1357954,
+      "sha256": "3b0a0d3ecd65ba9ef51b3cf888be3b41b7c7f51c70ab18919b1978cc86904143"
+    },
+    {
+      "path": "art/blender/qa/fubuki_before_qbow.png",
+      "bytes": 968822,
+      "sha256": "ab531887ad849f07ae08abaad75624442f27e0e362e6cdac5edbbb659788d941"
+    },
+    {
+      "path": "art/blender/qa/fubuki_before_side.png",
+      "bytes": 843714,
+      "sha256": "4b04eb6ac476294eb77255c6f3e63509bc7f063eaf7a32d3657393e6f5826c5b"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_battery.png",
+      "bytes": 1062738,
+      "sha256": "9a1778a6d2e620beae3c1dfdc79b26e704a3bf790d44d430fdf023d8cf81171a"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_bottom.png",
+      "bytes": 815566,
+      "sha256": "6d3f2bd070c17d62ae22564273691bebb40a9e9b208b3a52cf36e066b35cf974"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_bridge.png",
+      "bytes": 1050875,
+      "sha256": "ad63ed7c10b9fc5aefbf977a24b89bd40ee259aa12dd776250f6f74c04edd3f8"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_final.png",
+      "bytes": 1124308,
+      "sha256": "3450d64a68eabe47fa7bacb229d7742d08a0968f5900ceaf3e0444336950e452"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_front.png",
+      "bytes": 756704,
+      "sha256": "aa9ab6d13322dec9a73d8f01a6f0f9e77c11e06b0e316cde2ac81c5599ecb136"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_hull_side.png",
+      "bytes": 870967,
+      "sha256": "7f6b1eca4a1f50ea144cf9683c8e599e5f4023a9156d0b0ed532a7818930c300"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_normals_bottom.png",
+      "bytes": 814516,
+      "sha256": "31e6134cff0a29d6ee043a763407cb1abc5b5434658e43b83ab05e73d9a46a0e"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_normals_front.png",
+      "bytes": 848697,
+      "sha256": "4103bfeaf3ed34991de5a89c342a2e2c2fe4ba04989c22a49e49daed729bc37c"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_qbow.png",
+      "bytes": 1124297,
+      "sha256": "7ebdf5a99152a290dc96319da29dfb8d78028f5f8002bee4f112956a1fbe5307"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_qstern.png",
+      "bytes": 994752,
+      "sha256": "eb5e5d0762517002ab1658712fa442862cb57a122e5caf3419a0b0f822a97086"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_side.png",
+      "bytes": 892691,
+      "sha256": "8a6df203e0a3df20f431c48e98bdc2480ac1bf57bd5493b4ae8177980a7246cf"
+    },
+    {
+      "path": "art/blender/qa/fubuki_refined_top.png",
+      "bytes": 868314,
+      "sha256": "a5af64311d7be134d250268d0f0f7a4cb5626f11ba689bfcdc2884259e9ca432"
+    },
+    {
+      "path": "art/blender/qa/gun_jp14d_elev20.png",
+      "bytes": 591701,
+      "sha256": "fe502ad477c415ad2896305ef62188bf5343cc3e573672645a36f532647343cc"
+    },
+    {
+      "path": "art/blender/qa/gun_jp14d_front.png",
+      "bytes": 586059,
+      "sha256": "8dcf47833ff758d5a088d2f225389a87466ba48d5aeff6ac4ff50a8ed14495f0"
+    },
+    {
+      "path": "art/blender/qa/gun_jp14d_qbow.png",
+      "bytes": 592900,
+      "sha256": "8079f9054054034c229d3885e006769d89ac00952e46b5eb5cc048945ca339c1"
+    },
+    {
+      "path": "art/blender/qa/gun_jp14d_refined.png",
+      "bytes": 591375,
+      "sha256": "87ded742c956d084249668ddaf314548cbe9573dfbaa39d2bc4769a663589e65"
+    },
+    {
+      "path": "art/blender/qa/jp14d_before_45.png",
+      "bytes": 778137,
+      "sha256": "d5b7c25467ed9be820c2669cd24d12be198d86c4e38d637f91b6bf8c5d3f9c6d"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_elev20.png",
+      "bytes": 819504,
+      "sha256": "a297cfa68c1ee5915cf643126b26800d78a69312d93f4aea46355b342ef8f1f2"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_elev20_final.png",
+      "bytes": 817729,
+      "sha256": "f03d160ad696146bf31aee407359a7b65bc8cf6edcdc22ccb34e15fd8199dd32"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_final.png",
+      "bytes": 831298,
+      "sha256": "77d3a31b792c458e0fd59fb5128313e6512826d7af870f2e01448cc85dc51413"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_front.png",
+      "bytes": 813088,
+      "sha256": "9756ea04fd96f469242a40b82c53cb4d4e1f16dac5cc30e6d7123dd4d42d5c22"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_qbow.png",
+      "bytes": 829978,
+      "sha256": "3db231e860b88d55fc32ca7e36955fb2612fec782046b3613dbe5afa8bcbdccb"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_rear.png",
+      "bytes": 820045,
+      "sha256": "b3e864b2148bc62190558a8cba4c72df7a758f0462f451f0dfdbbba31b6b2cf0"
+    },
+    {
+      "path": "art/blender/qa/jp14d_optics_rear_final.png",
+      "bytes": 819438,
+      "sha256": "bf2ad3f10b6c9bee17a644db3cf185281a11f9c52d88282fff13a03c3f555e84"
+    },
+    {
+      "path": "art/blender/qa/kirishima_aa_towers.png",
+      "bytes": 1399259,
+      "sha256": "341514443bdf2ad3d3c6c1f8f3af66869250d6ae715c645074f79dac62f0997e"
+    },
+    {
+      "path": "art/blender/qa/kirishima_aft.png",
+      "bytes": 1165302,
+      "sha256": "55c5bb898ff24a19ad950feb322691f457542456d36d6a41c5073c24937570ff"
+    },
+    {
+      "path": "art/blender/qa/kirishima_bottom.png",
+      "bytes": 815157,
+      "sha256": "777d035465d4700da9ea8ce71ca1690b1049f962ccd41890fb4220e542090d4f"
+    },
+    {
+      "path": "art/blender/qa/kirishima_bridge.png",
+      "bytes": 1163481,
+      "sha256": "0914ea49e3318985c8e8e3e582eb67c8747acee40f295c031acac77804fbb391"
+    },
+    {
+      "path": "art/blender/qa/kirishima_casemates_detail.png",
+      "bytes": 1273430,
+      "sha256": "aac519289e17dac8bd5b658de1167a37e3bec7fa57a2076bbd8a0d27d896e643"
+    },
+    {
+      "path": "art/blender/qa/kirishima_casemates_qbow.png",
+      "bytes": 1239395,
+      "sha256": "761cb87afcd9cb4986e9767083111203a3d73184cca5bc2b880562cced069489"
+    },
+    {
+      "path": "art/blender/qa/kirishima_front.png",
+      "bytes": 897213,
+      "sha256": "e08af40f0cab4d55c3e60d105cf27af2e5b7253d299c429c1b5beb189eeb5e7b"
+    },
+    {
+      "path": "art/blender/qa/kirishima_game_ready_blender.png",
+      "bytes": 1262757,
+      "sha256": "63b8661afd4106bdbf16a159180dae39d14ac3c5a6f10c6412feed818c54a1a1"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_qbow.png",
+      "bytes": 1136816,
+      "sha256": "62930ef7716c2ab8cbc194a803d4c965c13387324bcc1eaeba10e6a9a530d91c"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_side.png",
+      "bytes": 1435666,
+      "sha256": "adca095c589a7e056d2e6ae34451287957516f4d3df998506fb03787c9a03b0d"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_side_bow.png",
+      "bytes": 1268590,
+      "sha256": "2c8ea0e40602d3b0ed1b5a3f757c0d9399ea147bbafc3e5340292eb416dcdfc3"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_side_stern.png",
+      "bytes": 1259908,
+      "sha256": "07619350cf69f0a3665eae98dd276579ea882f094a7a7925feb767fd79705640"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_top.png",
+      "bytes": 1410919,
+      "sha256": "9643404e22afea29775b9a49988954ed54bac287c9d0c130fadd2f55bdba391f"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_top_bow.png",
+      "bytes": 1302519,
+      "sha256": "98eee74a6ce5f89ba6412f46d6691b67c3b3ea0699dde4b256e749af8d54bd89"
+    },
+    {
+      "path": "art/blender/qa/kirishima_layout_top_stern.png",
+      "bytes": 1317311,
+      "sha256": "0acb0dc784ed06d2cb4a8feea6799e055950f39c293bff4148ad0f38f07d6fd0"
+    },
+    {
+      "path": "art/blender/qa/kirishima_midships.png",
+      "bytes": 1212558,
+      "sha256": "2ed04c1ca501f7c72220a9697fd65a3aad3494e67338faae7ae23c8e96287b7f"
+    },
+    {
+      "path": "art/blender/qa/kirishima_optics_island_detail.png",
+      "bytes": 1308994,
+      "sha256": "699e19c4508d9420e8d706667c9801675b7e1e657b9f55f5ef8f5ecaf4991d25"
+    },
+    {
+      "path": "art/blender/qa/kirishima_qbow.png",
+      "bytes": 1140161,
+      "sha256": "e589ba5a9ea6cf2d806ac6c818ff124daf5f78d107e779294df9a7ed0ed239e4"
+    },
+    {
+      "path": "art/blender/qa/kirishima_qstern.png",
+      "bytes": 1138233,
+      "sha256": "9499bef15cb0dde76c147f4109493488ccb03974f771d86dac98c0a2cfb85963"
+    },
+    {
+      "path": "art/blender/qa/kirishima_robust_bridge.png",
+      "bytes": 1257366,
+      "sha256": "a243cd3fe23b1148eb25eab4956be4c50337db480868a9a62f41a9971f164dcc"
+    },
+    {
+      "path": "art/blender/qa/kirishima_robust_upperworks_final.png",
+      "bytes": 1262913,
+      "sha256": "6ceac8e6949d4bc597f927e02093c2e82a0caa0357247a5a75a5527597644595"
+    },
+    {
+      "path": "art/blender/qa/kirishima_side.png",
+      "bytes": 1050256,
+      "sha256": "1792a65dc89ececb46029e3a74b88aa4a3b8cc6680f18dc838bbfe6938ef4762"
+    },
+    {
+      "path": "art/blender/qa/kirishima_top.png",
+      "bytes": 980361,
+      "sha256": "6d5da86114b3d4d8e869bc3c85f67a6cd9fe1b82ab579e3af83203a78a2b4364"
+    },
+    {
+      "path": "art/blender/qa/refined_us16t_elev22.png",
+      "bytes": 756192,
+      "sha256": "10c1e386cc2d896f428c8eb21fa46f209b3fe0cac6262dc6922b9777fe436a49"
+    },
+    {
+      "path": "art/blender/qa/refined_us16t_final.png",
+      "bytes": 775733,
+      "sha256": "a016784088ac5abb03cc1d07a407aebda1c869128a32cb2b7b68298edba0e068"
+    },
+    {
+      "path": "art/blender/qa/refined_us16t_v1.png",
+      "bytes": 704044,
+      "sha256": "e3a1810b1f1404bc50d40e3ff97f4f400a520676ee2d0bd733c0edfb4cb5ae65"
+    },
+    {
+      "path": "art/blender/qa/refined_us5d_elev22.png",
+      "bytes": 765963,
+      "sha256": "0e6bf60eae47a3bf7cbaaf9cd2f4f6338391fa172b252fee9da66dbe59b0f3ef"
+    },
+    {
+      "path": "art/blender/qa/refined_us5d_final.png",
+      "bytes": 771617,
+      "sha256": "8101f989d8e5a27f8bf4a0f12552ff8d6b6c3e266fd20fb5e1c7af427be248bd"
+    },
+    {
+      "path": "art/blender/qa/refined_us5d_v1.png",
+      "bytes": 702522,
+      "sha256": "9908b609dd2a8c18cf1940b9650e63607fce3d4080be3d456f73f22a9ab5ea08"
+    },
+    {
+      "path": "art/blender/qa/repaired_battery.png",
+      "bytes": 1122755,
+      "sha256": "30b78c72e81b09107dd028c9bfb761b79a0c8f143ea31f0001730c56e7310d23"
+    },
+    {
+      "path": "art/blender/qa/repaired_bridge.png",
+      "bytes": 992824,
+      "sha256": "027a45cb7693a9baffb7f1a1f96c2dcaca27869e4ef0d356a05f7d42381dce67"
+    },
+    {
+      "path": "art/blender/qa/repaired_jp_bb.png",
+      "bytes": 876736,
+      "sha256": "9dd089115c9e434b71a0e7f7b46c116061371cf320a7329dabcf5d57d2b64fb7"
+    },
+    {
+      "path": "art/blender/qa/repaired_jp_ca.png",
+      "bytes": 873889,
+      "sha256": "81603b6d6be97fa79ca2ceafa9997d5a6f54ac8e738424660e3d3d9b95e351c2"
+    },
+    {
+      "path": "art/blender/qa/repaired_jp_dd.png",
+      "bytes": 864414,
+      "sha256": "467c952fc0dd9aad9dbfa1bdfbde7b1cbe164776ed27e2c940cf59ca8e1de081"
+    },
+    {
+      "path": "art/blender/qa/repaired_us_bb.png",
+      "bytes": 876363,
+      "sha256": "620b9774e5ac97a16aa6670364fcf0319b689af35f7dbe903213bdbb8706181d"
+    },
+    {
+      "path": "art/blender/qa/repaired_us_ca.png",
+      "bytes": 872917,
+      "sha256": "ebb94effbe69f4028d09e5378ab65ec3166839ef5d99afa892919ae69ceb0715"
+    },
+    {
+      "path": "art/blender/qa/repaired_us_dd.png",
+      "bytes": 879695,
+      "sha256": "bdfc7324cf74c0bee62b8af9667e8432df84364ef389ecb9636c3123b6c320c7"
+    },
+    {
+      "path": "art/blender/qa/verify-kirishima-bow-rails.png",
+      "bytes": 421135,
+      "sha256": "8a43ff6ea3b7f08276bfb64a05810d859f219a0fd49ccf4e5ea2f5d3111c94a6"
+    },
+    {
+      "path": "art/blender/qa/verify-kirishima-bridge.png",
+      "bytes": 389227,
+      "sha256": "0ffc24f5590604d2e1535d3a24d43be2498aa328963050c9908fe764709ad11b"
+    },
+    {
+      "path": "art/blender/qa/verify-kirishima-broadside.png",
+      "bytes": 369321,
+      "sha256": "d03a74615cf8749c1714e842ded120e53fb6fc3bb06a031949112039a97a6550"
+    },
+    {
+      "path": "art/blender/qa/verify-kirishima-orbit.png",
+      "bytes": 471238,
+      "sha256": "b5e10079c38ba189264cd2a5ae29eeb2af2061ad71a11e3e50daa923556a27ba"
+    },
+    {
+      "path": "art/blender/qa/verify-models-broadside.png",
+      "bytes": 496584,
+      "sha256": "b66241a9ba2aed08cef5dde5790fe8de6ee8a06a9bdcd9eb8420805f2205abdd"
+    },
+    {
+      "path": "art/blender/qa/verify-models-orbit.png",
+      "bytes": 454187,
+      "sha256": "321ca1492fa533cdf5f9227708675702dbc48e6c24c1daba7b921f6688e1c7b3"
+    },
+    {
+      "path": "art/blender/qa/verify-washington-bow-rails.png",
+      "bytes": 369240,
+      "sha256": "1d5a9b710b50e153c2ac722a488809cdb884b2bb769f2730d640d3489c04be8a"
+    },
+    {
+      "path": "art/blender/qa/washington_final_bridge.png",
+      "bytes": 1045996,
+      "sha256": "517e3207f11fec378b46ca5417633293c24d39f950b32aaa83f109abb44d0fa0"
+    },
+    {
+      "path": "art/blender/qa/washington_final_bridge_front.png",
+      "bytes": 988069,
+      "sha256": "bed22b7bd345f0f5fdea5703add2bd4532b68296a90420a50dde80b81a30e502"
+    },
+    {
+      "path": "art/blender/qa/washington_final_front.png",
+      "bytes": 615999,
+      "sha256": "336db8589cd612d33a86fb72ecd2ff44aca90ae94a81d8f349343ad9677f2ef6"
+    },
+    {
+      "path": "art/blender/qa/washington_final_qbow.png",
+      "bytes": 1065911,
+      "sha256": "074c1d3b8f6cfb5f241ea7f02ea62c874b18af93ebf685a9c7bcf3466f12e654"
+    },
+    {
+      "path": "art/blender/qa/washington_final_qport.png",
+      "bytes": 1067961,
+      "sha256": "4547294a4a52eb74bdf516ee87615e623231a38c9bbb11fb0a781d4a863d1555"
+    },
+    {
+      "path": "art/blender/qa/washington_final_qstern.png",
+      "bytes": 1067581,
+      "sha256": "7801af24cc745d9f89aa094590770707562845c55da8a39c4751e7c95f894238"
+    },
+    {
+      "path": "art/blender/qa/washington_final_side.png",
+      "bytes": 1063320,
+      "sha256": "3bc1a89c6dbedba876661a3976377d196f300ea86fb0db529feb7342165d1240"
+    },
+    {
+      "path": "art/blender/qa/washington_final_top.png",
+      "bytes": 1030063,
+      "sha256": "b85de4001bea505819ea71521047125f66a4aa1f279ab170288bc4f6ec8ed668"
+    },
+    {
+      "path": "art/blender/qa/washington_game_bow.png",
+      "bytes": 1083590,
+      "sha256": "d392d58b5114e7b75e0f537cc6b4a8a3ddfa4b444e21f5d2f1d63f0087c3b049"
+    },
+    {
+      "path": "art/blender/qa/washington_game_hull_final.png",
+      "bytes": 1259898,
+      "sha256": "58e1e87db3ba73eb83a993286bbc99289c80482c868ea431c8e63552447c51be"
+    },
+    {
+      "path": "art/blender/qa/washington_game_rails.png",
+      "bytes": 1202865,
+      "sha256": "e97a62e34beb6ec3cd043a3693c65919f2bb7746363f25d52fa9d5fd8e2ce5c0"
+    },
+    {
+      "path": "art/blender/qa/washington_game_side.png",
+      "bytes": 911310,
+      "sha256": "576647b732e0dc7b40bf3b214b5a41c7e464a3814dcb2e44b01e7067470857c8"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_bridge.png",
+      "bytes": 1046057,
+      "sha256": "27e6d659442b99775cdb669dbb3497cb7d95e34d07b78f484cc26a241672f50d"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_front.png",
+      "bytes": 994485,
+      "sha256": "2245aa03a1d34032dbdcffeb5f5fb62e94714ac10ecf41c8445950b984b6fd72"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_qbow.png",
+      "bytes": 1066934,
+      "sha256": "c92089ec1eaff7ec85a3d2e47b1e3a15b0e44a6f0e8e164b828367f9cd89975d"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_qport.png",
+      "bytes": 1067177,
+      "sha256": "aaa8fad219f79208ada8c5188245ae7cb8d72dd24d5c467432ca9f3c5b82ae4e"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_qstern.png",
+      "bytes": 1067466,
+      "sha256": "a7de7a23ba6e4d11d801dad95363b812502288e6a1ac3e904f28e2564ccebde1"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_side.png",
+      "bytes": 1062929,
+      "sha256": "8651ef7f3ceb8f6b79cc8031eb8d1dc2b8cf4c6e5032a63f51bf12f414dcb9c2"
+    },
+    {
+      "path": "art/blender/qa/washington_v1_top.png",
+      "bytes": 1029512,
+      "sha256": "927159a4479621fe2922e5e6102465a4050d804a17df4bc2815446f20d8c9bfb"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_bridge.png",
+      "bytes": 1043847,
+      "sha256": "cd8081f2a8ea23bd5080965d17343922c56b5b032b9b410845eace756dee80df"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_bridge_front.png",
+      "bytes": 985294,
+      "sha256": "f8a89dab920d41c4b00b4fcfe4df9566adf424d5390fe56883bb59a54eacbb48"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_front.png",
+      "bytes": 614357,
+      "sha256": "beda1d16667ed6e17efb5c97bb58affe8fa50786ceacc6847306b2e1175a7b61"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_qbow.png",
+      "bytes": 1065784,
+      "sha256": "49a98e4dcd720a1e4c135a374c86cd81e3cfca3703e700b68e8e7aac6e461dd8"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_qport.png",
+      "bytes": 1068158,
+      "sha256": "d23b94be6c9473b5b2a60540b5a3abf4464caa0ea5ef6006f62c4b263a0533bc"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_qstern.png",
+      "bytes": 1067452,
+      "sha256": "5279d50e62fd495b14d84024e2de87060d2ab749c21b171150e8742722b28444"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_side.png",
+      "bytes": 1063105,
+      "sha256": "d4a822b3e89b5a3f40d872639494e7fe419b0a82a57c97a9532f8cbdb45180f9"
+    },
+    {
+      "path": "art/blender/qa/washington_v2_top.png",
+      "bytes": 1030119,
+      "sha256": "1b6eff5be79c9476bbf357bf6375d04ec1f8c0fe1ac71a3915f982ff815bd357"
+    },
+    {
+      "path": "art/blender/references/README.md",
+      "bytes": 5289,
+      "sha256": "d9f570b65dd222aa213d082dd6fe32e5331e32097cc718561426508b8b782e4b"
+    },
+    {
+      "path": "art/blender/references/fletcher/fletcher_1942.jpg",
+      "bytes": 8832377,
+      "sha256": "8e618468ee3c5f66306b9b0ffb165a111002c6ee9f987d899069e445baff2a59"
+    },
+    {
+      "path": "art/blender/references/fletcher/fletcher_class_plan_1954.jpg",
+      "bytes": 1368178,
+      "sha256": "7b96298ba3a308076dab375a8c1317d5872a17d49a400dbcb4d82ec6dab6899e"
+    },
+    {
+      "path": "art/blender/references/kirishima_1942/1937-05-10_Sukumo_Bay_Kirishima.jpg",
+      "bytes": 826666,
+      "sha256": "19871d0d7c618a9f081c717e3c2d04e826d081c56f479840b63947a075df152b"
+    },
+    {
+      "path": "art/blender/references/nc_bow_pearl_harbor_1942-11-16.jpg",
+      "bytes": 800821,
+      "sha256": "926c2787a4985b36d37d6d75d3fa1bdc7cd527b04464bbf60b60109df93df188"
+    },
+    {
+      "path": "art/blender/references/nc_forward_superstructure_1941-08.jpg",
+      "bytes": 199166,
+      "sha256": "3cf1abc08e62050aaab6f8422f92e5fd88307f81b3f021704c1e96e15ba167eb"
+    },
+    {
+      "path": "art/blender/references/nc_main_battery_firing_undated.jpg",
+      "bytes": 71290,
+      "sha256": "06959ae22874cb82099a3bc3e37dba563d68ef12e524442f915623d2a71bcec3"
+    },
+    {
+      "path": "art/blender/references/nc_underway_1946-06-03_NH97267.jpg",
+      "bytes": 2111852,
+      "sha256": "3c4b2dbcd4e2f8759ce68a85a12cfaa0f872afaa22057dd32f2e71e243dcad4b"
+    },
+    {
+      "path": "art/blender/references/washington_1942/1942-04-04_scapa_flow.jpg",
+      "bytes": 503540,
+      "sha256": "d870b92334c16b6a0b3fe369d06380b751c2140913ccab7694637f4e49a509ae"
+    },
+    {
+      "path": "art/blender/references/washington_1942/1942-08-18_tower_foremast_SG.jpg",
+      "bytes": 131176,
+      "sha256": "ffd727484bc733f00ecee42034c34bde926d92639b7e2792ced99d57f5cc5121"
+    },
+    {
+      "path": "art/blender/references/washington_1942/1942-08-21_aerial_BS33803_3840.jpg",
+      "bytes": 1339719,
+      "sha256": "6255fd9c9c843b07f9aba738b5ff935be89fa5344ab422a02e26e19bb3d05b6d"
+    },
+    {
+      "path": "art/blender/references/washington_1942/1942_circa-April_mid-Atlantic_date-disputed.jpg",
+      "bytes": 49700,
+      "sha256": "bcc5dcc15fdb077cd2e2b4f64182269bdc9cce37743af31eb1f4c6a368c7ecef"
+    },
+    {
+      "path": "art/blender/references/washington_1942/AUX_1941-05-29_port_bow_19-N-24147.jpg",
+      "bytes": 1025774,
+      "sha256": "ac9778c182885b13503426c20371d73a1ed208731b601326ec8a2f069f630629"
+    },
+    {
+      "path": "art/blender/references/washington_1942/MODELING_PLAN.md",
+      "bytes": 3718,
+      "sha256": "0f96f5fa54324b49c8f49c941a5d528c667c0e9f9889d799301f2d85a8999585"
+    },
+    {
+      "path": "art/blender/references/washington_1942/SOURCES.md",
+      "bytes": 8731,
+      "sha256": "771c38ce6c32fc6a3c70e8d9e7b251c646636afde7cd27e4ce8647c1af57a67a"
+    },
+    {
+      "path": "art/blender/ship_input.json",
+      "bytes": 39114,
+      "sha256": "fb54ed93c87016e13083e7bf0cc96ab4620d6689f8dcb996c74edea565596175"
+    },
+    {
+      "path": "art/blender/test_fletcher_profile.py",
+      "bytes": 1822,
+      "sha256": "8278a1f00658a203363f48d10684d1f7ed5f5883c1cce36d667abba1f8555069"
+    },
+    {
+      "path": "art/blender/test_fubuki_profile.py",
+      "bytes": 1998,
+      "sha256": "a5eb5697967437925fd3cf05a129dc514c8789fcb3e089031178e787a87a7ef4"
+    },
+    {
+      "path": "art/blender/test_kirishima_layout.py",
+      "bytes": 4047,
+      "sha256": "7cde649ae1f9d886fb3c80ae66e561ee278ff1096a514470ad50efaa20e4e24e"
+    },
+    {
+      "path": "art/blender/test_washington_bow.py",
+      "bytes": 4148,
+      "sha256": "ea9e910aadf4c9aedd4d2d5086e5bdd7327e05232c8f3a5f17a269e4742cd620"
+    },
+    {
+      "path": "art/blender/test_washington_game_hull.py",
+      "bytes": 961,
+      "sha256": "a1a09cbb92fb047dc45ba333fdeab55e4b86cbd1099a16e60739bc7078aeaeab"
+    },
+    {
+      "path": "art/blender/us_refined_guns.py",
+      "bytes": 6435,
+      "sha256": "11b846502eb2c3eda2737e68245e3c03d092f9021df9d949362ac03e57c3b1e0"
+    },
+    {
+      "path": "art/blender/warship_build.py",
+      "bytes": 55411,
+      "sha256": "1c86657d9175bb98354556a654d9ff32de882f172abb9cf735a4e83c195bf8d4"
+    },
+    {
+      "path": "art/blender/washington_battery_draft.json",
+      "bytes": 1465,
+      "sha256": "acc0659352786d8379d40c9992d19ec613a1986ded5ba786e8e0ca6950038455"
+    },
+    {
+      "path": "art/blender/washington_bottom_review.py",
+      "bytes": 2032,
+      "sha256": "f22cfb7dfab046b4ea9393ace011f5cc70ad99087c3d71b1cb44f4c8027c9f63"
+    },
+    {
+      "path": "art/blender/washington_bow_preview.py",
+      "bytes": 11191,
+      "sha256": "ea286b917627ad39e5b8a8bfd3a322e60834acd68e9caff13d20c03baac87d9c"
+    },
+    {
+      "path": "art/blender/washington_bow_profile.json",
+      "bytes": 1511,
+      "sha256": "79fc274fff40db64005ee10ea8c49a2acba6cdecb127a3ee7fdfdea92a051d64"
+    },
+    {
+      "path": "art/blender/washington_bow_profile.py",
+      "bytes": 6742,
+      "sha256": "8bc67274af8054512e193bb68613daffd9289246dcbf2327c61c9708cd3fa1c2"
+    },
+    {
+      "path": "art/blender/washington_game_hull.py",
+      "bytes": 9502,
+      "sha256": "384290f25aa7e459ffd35fc526e0d675a8dc9bd4c24fd22a137c93436043d7bb"
+    },
+    {
+      "path": "art/blender/washington_super.py",
+      "bytes": 14080,
+      "sha256": "4c7d358b4f1cf9396278589392cd56f2a7942fbc81f51392f01838e64754704c"
+    },
+    {
+      "path": "index.html",
+      "bytes": 8212,
+      "sha256": "d11897cbb111f95afdb14b452c0a3177468b57ed3c36400b61758bfde6829ec4"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 51020,
+      "sha256": "2b35531f0b5cacbf40c54635d21969dc5538452234cdc1dd99ac17d2e7867a3b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 637,
+      "sha256": "071d93cf5e39d594bdc7b0459ea0aa7699125eb6abd5623f1b6447f8fa3a4e2b"
+    },
+    {
+      "path": "public/models/guns/jp14d.glb",
+      "bytes": 88828,
+      "sha256": "16d022d5ac72e8614427171c3549b1df04ac0adee530d64f9bb46dd60705371a"
+    },
+    {
+      "path": "public/models/guns/jp55.glb",
+      "bytes": 33320,
+      "sha256": "d7f7c1d6c084e6e883408cbf02af06900cf1b4f33672cdd7c6cac3072cf8bfaf"
+    },
+    {
+      "path": "public/models/guns/jp5d.glb",
+      "bytes": 52848,
+      "sha256": "7d26139209da3f1fae68c82b49d6aafe1cbeb586f82fcde189439956a76d8156"
+    },
+    {
+      "path": "public/models/guns/jp5s.glb",
+      "bytes": 33544,
+      "sha256": "2c63f4fe758eff17aeb23d15193626c4a76ece046cf5ff4767d14b045efcd9d5"
+    },
+    {
+      "path": "public/models/guns/jp6c.glb",
+      "bytes": 18892,
+      "sha256": "be65688ca0517b89c31c7aeea1bdd140fe70dd3b9768360197b18c988eaff7ee"
+    },
+    {
+      "path": "public/models/guns/jp8d.glb",
+      "bytes": 52368,
+      "sha256": "cf6ebbb4845bb462970bb9e8f1b7f755545ff9c4302e510f34d7e7727656e847"
+    },
+    {
+      "path": "public/models/guns/us16t.glb",
+      "bytes": 103784,
+      "sha256": "2f897d390954ca36c0e943aea952d063397ecabc26e4d493e7826701c59bcf12"
+    },
+    {
+      "path": "public/models/guns/us5d.glb",
+      "bytes": 34792,
+      "sha256": "5c34d25ed005d77fd8379f211cf91b9846ee11ac0762538a11c8fb7de2542af8"
+    },
+    {
+      "path": "public/models/guns/us5s.glb",
+      "bytes": 35348,
+      "sha256": "448a2c8cf867b8ed4119358f2045670e1e35dfb9f35cdc8dc59364da5197ba34"
+    },
+    {
+      "path": "public/models/guns/us6t.glb",
+      "bytes": 70564,
+      "sha256": "6b808925c386d90e9c1f253102bb9f4e5c08309aec026fa42178a6d8f3e3eff9"
+    },
+    {
+      "path": "public/models/guns/us8t.glb",
+      "bytes": 70504,
+      "sha256": "d4b839a592c321210135986578dbc5c6fe836b68c588ba3905db1bf33738891f"
+    },
+    {
+      "path": "public/models/manifest.json",
+      "bytes": 610,
+      "sha256": "55a63119d4243708b33750573074ba1fa8f550978faf5350812c45c259b05e1b"
+    },
+    {
+      "path": "public/models/ships/jp_bb_hull.glb",
+      "bytes": 246260,
+      "sha256": "f0474f536d02057ee9b1f689dfef7c1b75042934dc5a2ab9733bc9470c33ef7f"
+    },
+    {
+      "path": "public/models/ships/jp_bb_super.glb",
+      "bytes": 1612116,
+      "sha256": "de793733d2329d278686402f836ebd0e5bd9a94493dc5ad791cc83047fe203b3"
+    },
+    {
+      "path": "public/models/ships/jp_ca_super.glb",
+      "bytes": 563164,
+      "sha256": "2c64f1bb6272b43d0538a5a5936fdcaa5e20220021e067d26d0261e0d575b241"
+    },
+    {
+      "path": "public/models/ships/jp_dd_super.glb",
+      "bytes": 287752,
+      "sha256": "055eb12bcf15e68177c18f5516f3385d324c096d729868700f93f8d50f256147"
+    },
+    {
+      "path": "public/models/ships/us_bb_hull.glb",
+      "bytes": 266696,
+      "sha256": "7872a5cbe2d56f0c60f6cbe9c1d6ba59eaa23baa2065eaf1f4397c45c995d4bf"
+    },
+    {
+      "path": "public/models/ships/us_bb_super.glb",
+      "bytes": 1052012,
+      "sha256": "f17e9abf2cd9d6a27931bc8d9b1da13070cbc28b6bbe4600fac776f292be75b5"
+    },
+    {
+      "path": "public/models/ships/us_ca_super.glb",
+      "bytes": 566680,
+      "sha256": "ecaaadf4d23aa19eddb44a2cd1586d454d7ebf2906d97c2f76e599310636b8fd"
+    },
+    {
+      "path": "public/models/ships/us_dd_super.glb",
+      "bytes": 446028,
+      "sha256": "676eafa176d2e140e57383e795ed85143d7c7251b53ee5b318d5f5dae626bc55"
+    },
+    {
+      "path": "src/audio/sfx.ts",
+      "bytes": 7148,
+      "sha256": "0847c15ada9b35ff211ac2888a842397ee7f56320302c73c295b267171035c94"
+    },
+    {
+      "path": "src/main.ts",
+      "bytes": 32131,
+      "sha256": "b6f8b19d06b3b982ba9ca8a6fff60cd8ef10053b51969666889e314bfe01dab3"
+    },
+    {
+      "path": "src/render/aimMarker.ts",
+      "bytes": 3584,
+      "sha256": "50c8dcfbb6194b9c142375a0858e7ea04efe6e0831c7b0db7a922d075175a841"
+    },
+    {
+      "path": "src/render/assets.ts",
+      "bytes": 5302,
+      "sha256": "d71c0311b6396ef4e3aab7ea7dd0da3781f91acb479971d9e35e0069d4d03964"
+    },
+    {
+      "path": "src/render/deckOutline.ts",
+      "bytes": 2104,
+      "sha256": "23440d5fe8bcb94aae5b6c2a1f0c8532a0533b5d277418a38eb4c2b99016f5d8"
+    },
+    {
+      "path": "src/render/engine.ts",
+      "bytes": 2367,
+      "sha256": "7a63afc8a3c43371417945f25bad7806ca6145eabf709bbf3e57c6cc98624a8f"
+    },
+    {
+      "path": "src/render/fx.ts",
+      "bytes": 22474,
+      "sha256": "2fd22c1bff0dd9c0e95eaef04815998b9016f5774018c7677d5ed66edb25cab8"
+    },
+    {
+      "path": "src/render/land.ts",
+      "bytes": 1777,
+      "sha256": "3e91013c52c5764015532fa13c6c2d305cb31e055429900f3429f75a21a2a281"
+    },
+    {
+      "path": "src/render/models.ts",
+      "bytes": 1328,
+      "sha256": "ced762891bffe03b1856cb18d7b1097b8fd87db22386c2bcaa300a0bc59a83a4"
+    },
+    {
+      "path": "src/render/railings.ts",
+      "bytes": 2002,
+      "sha256": "8278919dbd287954dbe640c99b907bb95657a3bf9f324ca9105474ab61414f6b"
+    },
+    {
+      "path": "src/render/shipModel.ts",
+      "bytes": 26482,
+      "sha256": "f1eb93e2b3047aef328e3c1556207aa42c7a2df1e80867c1fab65c7f410b64ac"
+    },
+    {
+      "path": "src/render/shipView.ts",
+      "bytes": 6673,
+      "sha256": "7cef56c21db5160b2435ea4a32ec29fff7b04e70fe73ae826efbb61f47e6e549"
+    },
+    {
+      "path": "src/render/sky.ts",
+      "bytes": 1905,
+      "sha256": "7eed68280cffaf853f500faaf0621a16b185082152bf2cc467d7df2ccfc51350"
+    },
+    {
+      "path": "src/render/visualHull.ts",
+      "bytes": 1854,
+      "sha256": "58a2209f0950cdab5f732dba1a0af74c51c8937675712c6bd712da546c31721e"
+    },
+    {
+      "path": "src/render/water.ts",
+      "bytes": 9073,
+      "sha256": "ba8d28368bab7580c4cc0ff48eac2ac1ea88e3913e0e4d0750441151c81c334b"
+    },
+    {
+      "path": "src/sim/ai.ts",
+      "bytes": 6406,
+      "sha256": "ac8a1e3a34564d3b556f12acd605713eddc0927fa8297a72a592b9aaa15ec07d"
+    },
+    {
+      "path": "src/sim/ballistics.ts",
+      "bytes": 6765,
+      "sha256": "0322a67d7f191925a9643fee23e2c54d095490f86d097c94295d59990ca5241e"
+    },
+    {
+      "path": "src/sim/campaign.ts",
+      "bytes": 5622,
+      "sha256": "eb8fbfe947b19b209fb5c1182141685306803227fd38f1f095e783d234214846"
+    },
+    {
+      "path": "src/sim/constants.ts",
+      "bytes": 2633,
+      "sha256": "416e2f365ff32c5b289bf39f88ec897a0602b2e7e540fb6dfbb0ac98aec874b0"
+    },
+    {
+      "path": "src/sim/gunnery.ts",
+      "bytes": 9618,
+      "sha256": "4f2cb1e6220a5068ac98e834ca5a61efcba54f15e3dfef4924c17d8175691462"
+    },
+    {
+      "path": "src/sim/guns.ts",
+      "bytes": 5415,
+      "sha256": "2e7b497b373d807a68c50b1c1cd402b590efffab46fc6ffd420342413a2bda8d"
+    },
+    {
+      "path": "src/sim/hull.ts",
+      "bytes": 3093,
+      "sha256": "830dd96df0ead6caba8fbfdbfde821954fc6e55faea6556b8761b25ced65c2ea"
+    },
+    {
+      "path": "src/sim/ship.ts",
+      "bytes": 9996,
+      "sha256": "80ec18f43bf1489e5b92e09c4fcded8328d8d3a817fd59da3099e38e330b8f2f"
+    },
+    {
+      "path": "src/sim/ships.ts",
+      "bytes": 17739,
+      "sha256": "d7a18eeb4aced388c983e16c82cb91fe572edc4e34e76d667301b44cb40a8f84"
+    },
+    {
+      "path": "src/sim/targetlock.ts",
+      "bytes": 6658,
+      "sha256": "4a6ffb7c4d45e8790754b63d6740775797c855564832bb00d3564bd86b437d87"
+    },
+    {
+      "path": "src/sim/terrain.ts",
+      "bytes": 3053,
+      "sha256": "abc17bc4d6c267155db675035e7b5c0fe6c7ac53145dd17cee3eeb2a8e68b6a3"
+    },
+    {
+      "path": "src/sim/torpedo.ts",
+      "bytes": 4653,
+      "sha256": "17abbc8ed0bfa78685f224a763dfe9f55169a9d787da14830d5049943b6f225a"
+    },
+    {
+      "path": "src/sim/world.ts",
+      "bytes": 8148,
+      "sha256": "429367d614e2ebf26095544a43462aede5bf4792827cf7b97de92cfdbde0c5f2"
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 11212,
+      "sha256": "83ffa5921987d334fb9c6a6d4c55ca4e31a772b1aaccd177b4a31b5b2c02fa5e"
+    },
+    {
+      "path": "src/ui/hud.ts",
+      "bytes": 9925,
+      "sha256": "309858ad6ba5d8537b1f7b56d53bf8119c6b6aa93bb7e15bc6b0b2f7497e39a8"
+    },
+    {
+      "path": "src/ui/minimap.ts",
+      "bytes": 4867,
+      "sha256": "f25c425654e88b83ac9ef378d61a216e7a6474e5c5202d33a5e5d662e7e66894"
+    },
+    {
+      "path": "src/ui/overlay.ts",
+      "bytes": 17131,
+      "sha256": "8d0da71d642113d3874d8b685b28c6be2b9674a15687ed15585c18f3d965d96a"
+    },
+    {
+      "path": "test/ballistics.test.ts",
+      "bytes": 2810,
+      "sha256": "815187a090e59051cacbe0070b1405ec62bfdc9623b541909fceb9416329523c"
+    },
+    {
+      "path": "test/battle.test.ts",
+      "bytes": 4882,
+      "sha256": "c18df2c7b7a1eaea908d79145e1b4eb42eb1e1a65145a19c3328fd9baf702a69"
+    },
+    {
+      "path": "test/elevation.test.ts",
+      "bytes": 2368,
+      "sha256": "bafbe23e5a01c5e5c550ed5c4801df123c557a195bccd07ec72fede9c5938869"
+    },
+    {
+      "path": "test/railings.test.ts",
+      "bytes": 1664,
+      "sha256": "77e22430e4fda20043c13597518ff356c0c9c540fbe0734efb7aede90decf7c5"
+    },
+    {
+      "path": "test/ships.test.ts",
+      "bytes": 4526,
+      "sha256": "6eb16a9333aa1b48b82a828b2dd5c8248cf2846cb1f962fff493b884b17507f6"
+    },
+    {
+      "path": "test/steering.test.ts",
+      "bytes": 5025,
+      "sha256": "0f2f388c0d80f7de7536af13b39d41894469013412f433291a089f30637f447c"
+    },
+    {
+      "path": "test/targetlock.test.ts",
+      "bytes": 6485,
+      "sha256": "cc3a7ce63457555a027c69d317bcddcca0be322cd41df8f9d059a2d3b3844e71"
+    },
+    {
+      "path": "test/visual-hull.test.ts",
+      "bytes": 1257,
+      "sha256": "fd5d2450cd7547405c8800264219753cdb3723390921f44e7b9bc5fdd82bd73e"
+    },
+    {
+      "path": "tools/balance.ts",
+      "bytes": 2681,
+      "sha256": "dda694b2c607603e8ad1656eede76e9b29a34aea321af4cc913b78a1eb5073b5"
+    },
+    {
+      "path": "tools/export-model-input.mjs",
+      "bytes": 849,
+      "sha256": "b19b056a8f592189f739bd6298bd0dced8ffa8ab7c437ff958bd131122ccf8f3"
+    },
+    {
+      "path": "tools/model-budget.mjs",
+      "bytes": 13149,
+      "sha256": "90645dfe4f60eefa08e3eb82e032d100554820328f458bfb0d6d7016d1b737f2"
+    },
+    {
+      "path": "tools/smoke.mjs",
+      "bytes": 8359,
+      "sha256": "c76db20de13dcac3487d5237abd56a04802917def78f80b13ecfee3681a57d73"
+    },
+    {
+      "path": "tools/verify-models.mjs",
+      "bytes": 14178,
+      "sha256": "d711dc2319f627f6c9857ed1700da7a33024ae62dae284de3392604b25514918"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 553,
+      "sha256": "d71ee095780d6006be55c2180da0d3234449861a672680c89f40598608767863"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 201,
+      "sha256": "a1ba5b342f54f0145b25c2b4838e660869c0a8840e8751eed3ec917eedd111ad"
+    }
+  ]
+}

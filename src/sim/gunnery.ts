@@ -1,7 +1,7 @@
 // Gunnery: laying the turrets, firing them, and flying the shells.
 
 import { clamp, lerp, rand } from './constants.ts';
-import { flightTime, scatterPoint, solveShot } from './ballistics.ts';
+import { clampElevation, flightTime, scatterPoint, solveShot } from './ballistics.ts';
 import { halfW } from './hull.ts';
 import { leadPoint, type Ship, type Turret } from './ship.ts';
 import { shellClear, terrainH } from './terrain.ts';
@@ -40,9 +40,10 @@ export function turretWorld(s: Ship, t: Turret): [number, number] {
 /** Muzzle position of barrel `k` of a turret, in world metres. */
 export function muzzleWorld(s: Ship, t: Turret, k: number): [number, number, number] {
   const ts = t.ts;
+  const elevation = clampElevation(t.gun, t.elev);
   const ox = (k - (ts.n - 1) / 2) * ts.w * 0.28;
-  const ly = ts.h * 0.5 + ts.bl * Math.sin(t.elev);
-  const lz = ts.len * 0.18 + ts.bl * Math.cos(t.elev);
+  const ly = ts.h * 0.5 + ts.bl * Math.sin(elevation);
+  const lz = ts.len * 0.18 + ts.bl * Math.cos(elevation);
   const cr = Math.cos(t.rel),
     sr = Math.sin(t.rel);
   const [wx, wz] = s.toWorld(t.x + ox * cr + lz * sr, t.z - ox * sr + lz * cr);
@@ -63,15 +64,13 @@ export function updateTurrets(s: Ship, dt: number): void {
       ax = s.aimX;
       az = s.aimZ;
     }
-    let want = 0,
-      dist = 0;
+    let want = 0;
     const [wx, wz] = turretWorld(s, t);
     if (ax !== null) {
       const b = Math.atan2(ax - wx, az - wz);
       const off0 = wrap(wrap(b - s.heading) - t.home);
       t.inArc = Math.abs(off0) <= t.arc;
       want = clamp(off0, -t.arc, t.arc);
-      dist = Math.hypot(ax - wx, az - wz);
     } else {
       t.inArc = false;
     }
@@ -80,9 +79,11 @@ export function updateTurrets(s: Ship, dt: number): void {
     const noff = off + clamp(want - off, -step, step);
     t.rel = t.home + noff;
     t.onTarget = t.inArc && Math.abs(want - noff) < 0.035;
-    const T = Math.min(dist, t.gun.range) / t.gun.v0;
-    const el = ax !== null ? Math.atan2(0.5 * t.gun.g * T, t.gun.v0) : 0.02;
-    t.elev += (el - t.elev) * Math.min(1, dt * 3);
+    const solution = ax === null ? null : solveShot(t.gun, wx, s.bob + t.y + t.ts.h * 0.5, wz, ax, az);
+    const el = solution?.elev ?? clampElevation(t.gun, 0.02);
+    t.elev = clampElevation(t.gun, clampElevation(t.gun, t.elev) +
+      (el - clampElevation(t.gun, t.elev)) * Math.min(1, dt * 3));
+    t.onTarget = t.onTarget && (solution?.reachable ?? false);
   }
 }
 
@@ -138,7 +139,14 @@ export function fireShell(
 
 export function fireTurret(w: World, s: Ship, t: Turret, tx: number, tz: number, err: number): void {
   const gun = t.gun;
+  // Never consume a reload for a trajectory that the mechanical elevation
+  // cannot produce. Dispersion is still applied independently to each shell.
+  for (let k = 0; k < t.ts.n; k++) {
+    const [x, y, z] = muzzleWorld(s, t, k);
+    if (!solveShot(gun, x, y, z, tx, tz).reachable) return;
+  }
   t.reload = gun.reload * rand(0.97, 1.05);
+  t.reloadTotal = t.reload;
   let mx = 0,
     my = 0,
     mz = 0;
@@ -160,6 +168,8 @@ export function fireTurret(w: World, s: Ship, t: Turret, tx: number, tz: number,
     sec: t.sec ? 1 : 0,
     cal: gun.cal,
     n: t.ts.n,
+    turret: s.turrets.indexOf(t),
+    elevation: clampElevation(gun, t.elev),
     x: mx,
     y: my,
     z: mz,

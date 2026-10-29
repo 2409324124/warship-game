@@ -256,7 +256,7 @@ export const SPECS: Record<string, ShipSpec> = {
     aiErr: 95,
     dc: 3,
     cam: [470, 135],
-    bridge: [52, 32],
+    bridge: [48, 41], // virtual lookout above the new pagoda, clear when looking abeam
     parts: [
       Bx(40, 0, 16, 8, 14.5, 0, 's', { rf: 0.5 }),
       Bx(40, 8, 12, 5, 11, 0, 's', { rf: 0.5, win: 0.6 }),
@@ -462,13 +462,18 @@ export const SPECS: Record<string, ShipSpec> = {
     type: '驱逐舰',
     L: 118,
     B: 10.4,
-    F: 4.6,
+    F: 2.35, // Actual amidships freeboard in metres; retain F's meaning for non-deck consumers.
     D: 3.2,
+    // fubuki_profile.json absolute deck metres / F; full-precision linear deck multipliers.
     sheer: [
-      [0, 0.85],
-      [0.618, 0.85],
-      [0.622, 1.45],
-      [1, 1.65],
+      [0, 0.95744680851063824],
+      [0.14, 1],
+      [0.60, 1],
+      [0.618, 1],
+      [0.622, 1.7234042553191489],
+      [0.76, 1.7659574468085106],
+      [0.9, 1.8723404255319149],
+      [1, 1.9787234042553192],
     ],
     top: 12,
     stem: 'clipper',
@@ -486,7 +491,7 @@ export const SPECS: Record<string, ShipSpec> = {
     aiErr: 80,
     dc: 1,
     cam: [300, 88],
-    bridge: [32, 12],
+    bridge: [33, 11], // Forward of the new z27 bridge; above its deck+5.1 optics and bow gun house.
     parts: [
       Bx(26.5, 0, 9.5, 2.8, 7.4, 0, 's', { rf: 0.5 }),
       Bx(27, 2.8, 7, 2.0, 6.4, 0, 's', { rf: 0.75, win: 0.6 }),
@@ -522,12 +527,18 @@ export const SPECS: Record<string, ShipSpec> = {
     type: '驱逐舰',
     L: 114,
     B: 12,
-    F: 5.2,
+    F: 2.65, // Actual amidships freeboard in metres; retain F's meaning for non-deck consumers.
     D: 4,
+    // fletcher_profile.json absolute deck metres / F; full-precision linear deck multipliers.
     sheer: [
-      [0, 0.9],
-      [0.5, 0.95],
-      [1, 1.4],
+      [0, 0.94339622641509435],
+      [0.14, 0.96226415094339623],
+      [0.5, 1],
+      [0.65, 1.0566037735849056],
+      [0.75, 1.1886792452830188],
+      [0.85, 1.3962264150943398],
+      [0.95, 1.7358490566037734],
+      [1, 1.9245283018867925],
     ],
     top: 12,
     kn: 36.5,
@@ -543,7 +554,7 @@ export const SPECS: Record<string, ShipSpec> = {
     aiErr: 70,
     dc: 2,
     cam: [300, 88],
-    bridge: [33, 13],
+    bridge: [29, 12], // Above the z22 round bridge's deck+6.3 platform/rails, ahead of its deck+10 director.
     parts: [
       Bx(22, 0, 14, 2.6, 8.6, 0, 's', { rf: 0.35 }),
       Bx(22.5, 2.6, 8.5, 2.4, 7.6, 0, 's', { rf: 0.7, win: 0.7, fs: 0.4 }),

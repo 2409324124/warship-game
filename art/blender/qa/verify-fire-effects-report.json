@@ -1,0 +1,906 @@
+{
+  "url": "http://127.0.0.1:5173/",
+  "timestep": 0.005,
+  "seaTime": 0,
+  "seed": 5370279,
+  "console": [],
+  "pageErrors": [],
+  "shaderErrors": [],
+  "networkErrors": [],
+  "failures": [],
+  "ships": [
+    {
+      "key": "us_bb",
+      "cal": 406,
+      "tubes": 3,
+      "turretIndex": 0,
+      "coverage": [
+        {
+          "name": "ships/us_bb_hull",
+          "available": true,
+          "meshCount": 3,
+          "attached": true
+        },
+        {
+          "name": "ships/us_bb_super",
+          "available": true,
+          "meshCount": 1,
+          "attached": true
+        },
+        {
+          "name": "guns/us16t",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        },
+        {
+          "name": "guns/us5d",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        }
+      ],
+      "poses": [
+        {
+          "x": 20.526579328999734,
+          "y": 15.104902723117497,
+          "z": 75.5307445051243,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.07814236953033,
+          "z": 71.8908428741079,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        },
+        {
+          "x": 20.526579328999734,
+          "y": 15.05138201594316,
+          "z": 68.2509412430915,
+          "bearing": 1.5715865900073207,
+          "elevation": 0.10707921950756438
+        }
+      ],
+      "baselineCalls": 36,
+      "samples": [
+        {
+          "time": 0.035,
+          "stage": "flash",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 30,
+              "flash": 9,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 30,
+              "flashSpawned": 9,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 2
+            }
+          },
+          "rendererCalls": 38,
+          "rendererCallDelta": 2,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-flash.png"
+        },
+        {
+          "time": 0.6,
+          "stage": "smoke",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 30,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 30,
+              "flashSpawned": 9,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 37,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-smoke.png"
+        },
+        {
+          "time": 2,
+          "stage": "light-gray",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 30,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 30,
+              "flashSpawned": 9,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 37,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-light-gray.png"
+        },
+        {
+          "time": 6,
+          "stage": "residual",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 30,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 30,
+              "flashSpawned": 9,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 37,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-residual.png"
+        },
+        {
+          "time": 13,
+          "stage": "clear",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 30,
+              "flashSpawned": 9,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 36,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-clear.png"
+        }
+      ],
+      "reset": {
+        "before": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 30,
+            "flash": 9,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 60,
+            "flashSpawned": 18,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 2
+          }
+        },
+        "after": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 0,
+            "flashSpawned": 0,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        }
+      }
+    },
+    {
+      "key": "jp_bb",
+      "cal": 356,
+      "tubes": 2,
+      "turretIndex": 0,
+      "coverage": [
+        {
+          "name": "ships/jp_bb_hull",
+          "available": true,
+          "meshCount": 3,
+          "attached": true
+        },
+        {
+          "name": "ships/jp_bb_super",
+          "available": true,
+          "meshCount": 1,
+          "attached": true
+        },
+        {
+          "name": "guns/jp14d",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        },
+        {
+          "name": "guns/jp6c",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        }
+      ],
+      "poses": [
+        {
+          "x": 17.02496507765237,
+          "y": 13.981929405135979,
+          "z": 75.36914792872847,
+          "bearing": 1.5715837406272104,
+          "elevation": 0.10669606250261963
+        },
+        {
+          "x": 17.02496507765237,
+          "y": 13.960315273392496,
+          "z": 72.42922738059984,
+          "bearing": 1.5715837406272104,
+          "elevation": 0.10669606250261963
+        }
+      ],
+      "baselineCalls": 34,
+      "samples": [
+        {
+          "time": 0.035,
+          "stage": "flash",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 20,
+              "flash": 6,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 20,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 2
+            }
+          },
+          "rendererCalls": 36,
+          "rendererCallDelta": 2,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-flash.png"
+        },
+        {
+          "time": 0.6,
+          "stage": "smoke",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 20,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 20,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 35,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-smoke.png"
+        },
+        {
+          "time": 2,
+          "stage": "light-gray",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 20,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 20,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 35,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-light-gray.png"
+        },
+        {
+          "time": 6,
+          "stage": "residual",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 20,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 20,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 35,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-residual.png"
+        },
+        {
+          "time": 13,
+          "stage": "clear",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 20,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 34,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-clear.png"
+        }
+      ],
+      "reset": {
+        "before": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 20,
+            "flash": 6,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 40,
+            "flashSpawned": 12,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 2
+          }
+        },
+        "after": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 0,
+            "flashSpawned": 0,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        }
+      }
+    },
+    {
+      "key": "us_dd",
+      "cal": 127,
+      "tubes": 1,
+      "turretIndex": 0,
+      "coverage": [
+        {
+          "name": "ships/us_dd_hull",
+          "available": true,
+          "meshCount": 3,
+          "attached": true
+        },
+        {
+          "name": "ships/us_dd_super",
+          "available": true,
+          "meshCount": 1,
+          "attached": true
+        },
+        {
+          "name": "guns/us5s",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        }
+      ],
+      "poses": [
+        {
+          "x": 6.979361355314634,
+          "y": 6.842127201281314,
+          "z": 39.93511700054677,
+          "bearing": 1.572049002973219,
+          "elevation": 0.11664639039172908
+        }
+      ],
+      "baselineCalls": 20,
+      "samples": [
+        {
+          "time": 0.035,
+          "stage": "flash",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 7,
+              "flash": 3,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 7,
+              "flashSpawned": 3,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 2
+            }
+          },
+          "rendererCalls": 22,
+          "rendererCallDelta": 2,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-flash.png"
+        },
+        {
+          "time": 0.6,
+          "stage": "smoke",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 7,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 7,
+              "flashSpawned": 3,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 21,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-smoke.png"
+        },
+        {
+          "time": 2,
+          "stage": "light-gray",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 5,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 7,
+              "flashSpawned": 3,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 21,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-light-gray.png"
+        },
+        {
+          "time": 3.2,
+          "stage": "clear-dd",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 7,
+              "flashSpawned": 3,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 20,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-clear-dd.png"
+        },
+        {
+          "time": 6,
+          "stage": "residual",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 7,
+              "flashSpawned": 3,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 20,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-residual.png"
+        },
+        {
+          "time": 13,
+          "stage": "clear",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 7,
+              "flashSpawned": 3,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 20,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-clear.png"
+        }
+      ],
+      "reset": {
+        "before": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 7,
+            "flash": 3,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 14,
+            "flashSpawned": 6,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 2
+          }
+        },
+        "after": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 0,
+            "flashSpawned": 0,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        }
+      },
+      "wholeShipScreenshot": "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-whole.png"
+    },
+    {
+      "key": "jp_dd",
+      "cal": 127,
+      "tubes": 2,
+      "turretIndex": 0,
+      "coverage": [
+        {
+          "name": "ships/jp_dd_hull",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        },
+        {
+          "name": "ships/jp_dd_super",
+          "available": true,
+          "meshCount": 1,
+          "attached": true
+        },
+        {
+          "name": "guns/jp5d",
+          "available": true,
+          "meshCount": 2,
+          "attached": true
+        }
+      ],
+      "poses": [
+        {
+          "x": 6.791430322079869,
+          "y": 7.343578241342793,
+          "z": 39.54097953977183,
+          "bearing": 1.572149076351753,
+          "elevation": 0.11822704017302027
+        },
+        {
+          "x": 6.791430322079869,
+          "y": 7.329548395430651,
+          "z": 38.309059427336095,
+          "bearing": 1.572149076351753,
+          "elevation": 0.11822704017302027
+        }
+      ],
+      "baselineCalls": 15,
+      "samples": [
+        {
+          "time": 0.035,
+          "stage": "flash",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 14,
+              "flash": 6,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 14,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 2
+            }
+          },
+          "rendererCalls": 17,
+          "rendererCallDelta": 2,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-flash.png"
+        },
+        {
+          "time": 0.6,
+          "stage": "smoke",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 14,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 14,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 16,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-smoke.png"
+        },
+        {
+          "time": 2,
+          "stage": "light-gray",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 11,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 14,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 1
+            }
+          },
+          "rendererCalls": 16,
+          "rendererCallDelta": 1,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-light-gray.png"
+        },
+        {
+          "time": 3.2,
+          "stage": "clear-dd",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 14,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 15,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-clear-dd.png"
+        },
+        {
+          "time": 6,
+          "stage": "residual",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 14,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 15,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-residual.png"
+        },
+        {
+          "time": 13,
+          "stage": "clear",
+          "stats": {
+            "particles": 0,
+            "columns": 0,
+            "shells": 0,
+            "torpedoWakePoints": 0,
+            "muzzle": {
+              "smoke": 0,
+              "flash": 0,
+              "smokeCapacity": 512,
+              "flashCapacity": 128,
+              "smokeSpawned": 14,
+              "flashSpawned": 6,
+              "smokeRecycled": 0,
+              "flashRecycled": 0,
+              "drawCalls": 0
+            }
+          },
+          "rendererCalls": 15,
+          "rendererCallDelta": 0,
+          "screenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-clear.png"
+        }
+      ],
+      "reset": {
+        "before": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 14,
+            "flash": 6,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 28,
+            "flashSpawned": 12,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 2
+          }
+        },
+        "after": {
+          "particles": 0,
+          "columns": 0,
+          "shells": 0,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 0,
+            "flashSpawned": 0,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        }
+      },
+      "wholeShipScreenshot": "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-whole.png"
+    }
+  ],
+  "screenshots": [
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-flash.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-smoke.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-light-gray.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-residual.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_bb-clear.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-flash.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-smoke.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-light-gray.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-residual.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_bb-clear.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-flash.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-smoke.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-light-gray.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-clear-dd.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-residual.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-clear.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-us_dd-whole.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-flash.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-smoke.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-light-gray.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-clear-dd.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-residual.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-clear.png",
+    "D:\\warship-game\\art\\blender\\qa\\fire-jp_dd-whole.png"
+  ],
+  "passed": true
+}

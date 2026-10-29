@@ -1,0 +1,20 @@
+{
+  "status": "BLENDER_PREVIEW_ONLY_NOT_GAME_GEOMETRY",
+  "identity": "USS Fletcher class destroyer, 1942 gamescale interpretation",
+  "length": 114,
+  "beam": 12,
+  "draft": 4,
+  "deck": [[0, 4.68], [0.14, 4.86], [0.5, 4.94], [0.7, 5.6], [0.85, 6.4], [0.95, 7.0], [1, 7.28]],
+  "halfBreadth": [[0, 0.10], [0.02, 0.34], [0.06, 0.68], [0.14, 0.93], [0.25, 1], [0.5, 1], [0.62, 0.96], [0.7, 0.90], [0.78, 0.78], [0.85, 0.62], [0.9, 0.44], [0.95, 0.24], [1, 0]],
+  "waterlineRatio": [[0, 0.86], [0.25, 0.97], [0.6, 0.95], [0.8, 0.82], [0.9, 0.70], [1, 0.58]],
+  "sectionPower": [[0, 0.55], [0.2, 0.38], [0.6, 0.40], [0.8, 0.60], [1, 0.85]],
+  "forefootStart": 0.78,
+  "rakeStart": 0.83,
+  "waterlineSetback": 2.0,
+  "stemCurvature": 0.28,
+  "lowerLevels": [0, 0.035, 0.12, 0.28, 0.5, 0.75, 1],
+  "upperLevels": [0.2, 0.45, 0.7, 1],
+  "budgetHullDeck": 5000,
+  "budgetWholePreview": 20000,
+  "note": "Deck heights follow the simulation sheer at s=0, 0.5 and 1; bow values add a visual sheer rise. Breadths and rake are visual fit parameters, not measured lines."
+}

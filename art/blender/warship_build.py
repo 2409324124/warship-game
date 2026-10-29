@@ -899,14 +899,20 @@ def build_turret(kind, coll=None):
     t = TS[kind]
     hw, hl = t['w'] / 2, t['len'] / 2
     c = coll or coll_named('gun_' + kind)
-    if kind in ('us16t','us5d'):
-        source = r'D:\warship-game\art\blender\us_refined_guns.py'
+    if kind in ('us16t','us5d','jp14d','jp6c'):
+        japanese = kind in ('jp14d','jp6c')
+        source = (r'D:\warship-game\art\blender\jp_refined_guns.py' if japanese
+                  else r'D:\warship-game\art\blender\us_refined_guns.py')
         namespace = {}
-        exec(compile(open(source).read(),source,'exec'),namespace)
-        b,g,origin = namespace['build_us_gun'](kind,globals())
+        exec(compile(open(source,encoding='utf-8').read(),source,'exec'),namespace)
+        b,g,origin = namespace['build_jp_gun' if japanese else 'build_us_gun'](kind,globals())
         base = make_obj('base_' + kind,b,coll=c)
         barrel = make_obj('barrel_' + kind,g,origin=origin,coll=c)
+        for i in getattr(g,'smooth_faces',()):
+            face=barrel.data.polygons[i]
+            if abs(face.normal.y)<.9:face.use_smooth=True
         base['export_role']='base';barrel['export_role']='barrel'
+        if hasattr(b,'optics_style'):base['optics_style']=b.optics_style
         print(kind,'refined base',len(b.f),'barrel',len(g.f))
         return base,barrel
 
@@ -1052,7 +1058,7 @@ def preview_turrets(key, mounts=None, collection_name=None):
 OUT = r"D:\warship-game\public\models"
 
 
-def export_collection(c, path):
+def export_collection(c, path, extras=False):
     """Export works even when the single-ship workbench has hidden this collection."""
     states = [(o, o.hide_get(), o.hide_render) for o in c.objects]
     bpy.ops.object.select_all(action='DESELECT')
@@ -1065,7 +1071,7 @@ def export_collection(c, path):
         bpy.context.view_layer.update()
         bpy.ops.export_scene.gltf(filepath=path, export_format='GLB', use_selection=True,
                                   export_yup=True, export_materials='EXPORT',
-                                  export_vertex_color='ACTIVE', export_apply=True)
+                                  export_vertex_color='ACTIVE', export_apply=True, export_extras=extras)
     finally:
         for o, hidden, hidden_render in states:
             o.hide_set(hidden)

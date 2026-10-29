@@ -1,0 +1,5861 @@
+{
+  "startedAt": "2026-10-28T05:59:13.733Z",
+  "origin": "http://localhost:5173/",
+  "checks": [
+    {
+      "name": "Real __cmd.fire creates shells and records actual reloadTotal for first controlled mount",
+      "passed": true,
+      "evidence": {
+        "newShells": 3,
+        "reload": 30.10351276180749,
+        "reloadTotal": 30.10351276180749
+      }
+    },
+    {
+      "name": "initial: three main-only rows, no timers for thirteen combined mounts",
+      "passed": true,
+      "evidence": {
+        "mains": 3,
+        "secondary": 10,
+        "rows": 3,
+        "timers": 3
+      }
+    },
+    {
+      "name": "initial: no secondary battery HUD text",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "initial: independent remaining/total, countdown and aim labels match native turret data",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号30.1s已对准",
+          "time": "30.1s",
+          "aim": "已对准",
+          "scale": 0,
+          "computed": "matrix(0, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号11.0s已对准",
+          "time": "11.0s",
+          "aim": "已对准",
+          "scale": 0.5,
+          "computed": "matrix(0.5, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "initial: all row contents fit viewport",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号30.1s已对准",
+          "time": "30.1s",
+          "aim": "已对准",
+          "scale": 0,
+          "computed": "matrix(0, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号11.0s已对准",
+          "time": "11.0s",
+          "aim": "已对准",
+          "scale": 0.5,
+          "computed": "matrix(0.5, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "Controlled fixture shows just-fired, half-loaded and ready simultaneously",
+      "passed": true,
+      "evidence": [
+        {
+          "reload": 30.10351276180749,
+          "reloadTotal": 30.10351276180749,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        },
+        {
+          "reload": 11,
+          "reloadTotal": 22,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        },
+        {
+          "reload": 0,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ]
+    },
+    {
+      "name": "native-tick-1: three main-only rows, no timers for thirteen combined mounts",
+      "passed": true,
+      "evidence": {
+        "mains": 3,
+        "secondary": 10,
+        "rows": 3,
+        "timers": 3
+      }
+    },
+    {
+      "name": "native-tick-1: no secondary battery HUD text",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "native-tick-1: independent remaining/total, countdown and aim labels match native turret data",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号29.5s不在射界",
+          "time": "29.5s",
+          "aim": "不在射界",
+          "scale": 0.0199312,
+          "computed": "matrix(0.0199312, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号10.4s不在射界",
+          "time": "10.4s",
+          "aim": "不在射界",
+          "scale": 0.527273,
+          "computed": "matrix(0.527273, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "native-tick-1: all row contents fit viewport",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号29.5s不在射界",
+          "time": "29.5s",
+          "aim": "不在射界",
+          "scale": 0.0199312,
+          "computed": "matrix(0.0199312, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号10.4s不在射界",
+          "time": "10.4s",
+          "aim": "不在射界",
+          "scale": 0.527273,
+          "computed": "matrix(0.527273, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "Original World.step interval 1: text decreases and continuous fill increases",
+      "passed": true,
+      "evidence": {
+        "before": [
+          {
+            "text": "1号30.1s已对准",
+            "time": "30.1s",
+            "aim": "已对准",
+            "scale": 0,
+            "computed": "matrix(0, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 787,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "2号11.0s已对准",
+            "time": "11.0s",
+            "aim": "已对准",
+            "scale": 0.5,
+            "computed": "matrix(0.5, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 811,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "3号就绪已对准",
+            "time": "就绪",
+            "aim": "已对准",
+            "scale": 1,
+            "computed": "matrix(1, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 835,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          }
+        ],
+        "after": [
+          {
+            "text": "1号29.5s不在射界",
+            "time": "29.5s",
+            "aim": "不在射界",
+            "scale": 0.0199312,
+            "computed": "matrix(0.0199312, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 787,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "2号10.4s不在射界",
+            "time": "10.4s",
+            "aim": "不在射界",
+            "scale": 0.527273,
+            "computed": "matrix(0.527273, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 811,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "3号就绪已对准",
+            "time": "就绪",
+            "aim": "已对准",
+            "scale": 1,
+            "computed": "matrix(1, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 835,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          }
+        ],
+        "steps": 12,
+        "dt": 0.6
+      }
+    },
+    {
+      "name": "native-tick-2: three main-only rows, no timers for thirteen combined mounts",
+      "passed": true,
+      "evidence": {
+        "mains": 3,
+        "secondary": 10,
+        "rows": 3,
+        "timers": 3
+      }
+    },
+    {
+      "name": "native-tick-2: no secondary battery HUD text",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "native-tick-2: independent remaining/total, countdown and aim labels match native turret data",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "native-tick-2: all row contents fit viewport",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "Original World.step interval 2: text decreases and continuous fill increases",
+      "passed": true,
+      "evidence": {
+        "before": [
+          {
+            "text": "1号29.5s不在射界",
+            "time": "29.5s",
+            "aim": "不在射界",
+            "scale": 0.0199312,
+            "computed": "matrix(0.0199312, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 787,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "2号10.4s不在射界",
+            "time": "10.4s",
+            "aim": "不在射界",
+            "scale": 0.527273,
+            "computed": "matrix(0.527273, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 811,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "3号就绪已对准",
+            "time": "就绪",
+            "aim": "已对准",
+            "scale": 1,
+            "computed": "matrix(1, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 835,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          }
+        ],
+        "after": [
+          {
+            "text": "1号28.9s不在射界",
+            "time": "28.9s",
+            "aim": "不在射界",
+            "scale": 0.0398625,
+            "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 787,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "2号9.8s不在射界",
+            "time": "9.8s",
+            "aim": "不在射界",
+            "scale": 0.554545,
+            "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 811,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          },
+          {
+            "text": "3号就绪已对准",
+            "time": "就绪",
+            "aim": "已对准",
+            "scale": 1,
+            "computed": "matrix(1, 0, 0, 1, 0, 0)",
+            "fontSize": "11px",
+            "rect": {
+              "x": 533,
+              "y": 835,
+              "width": 294,
+              "height": 19
+            },
+            "visible": true,
+            "inside": true,
+            "partsInside": true
+          }
+        ],
+        "steps": 24,
+        "dt": 1.2000000000000004
+      }
+    },
+    {
+      "name": "Sea projection valid, visible, depth-tested and non-depth-writing",
+      "passed": true,
+      "evidence": {
+        "valid": true,
+        "segments": 96,
+        "visible": true,
+        "ribbonSegments": 96,
+        "ribbonWidth": 1,
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false
+      }
+    },
+    {
+      "name": "Debug centerline follows rendered water surface plus imported height offset and unchanged effective world sigma",
+      "passed": true,
+      "evidence": {
+        "heightOffset": 0.4,
+        "maxHeightError": 0.0000020644651314016826,
+        "maxPatternError": 0.00002916788502571599,
+        "sigma": {
+          "along": 17.77326675858616,
+          "cross": 6.982354798015992
+        }
+      }
+    },
+    {
+      "name": "Open-sea stats expose all surviving strips, one-metre width and no fog",
+      "passed": true,
+      "evidence": {
+        "valid": true,
+        "segments": 96,
+        "visible": true,
+        "ribbonSegments": 96,
+        "ribbonWidth": 1,
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false
+      }
+    },
+    {
+      "name": "Exactly ribbon mesh plus centreline stroke: six ribbon vertices and two centreline vertices per segment",
+      "passed": true,
+      "evidence": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 0.000002460065346099327,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.0330148061908562,
+        "minClearance": 0.39999825121334887,
+        "maxClearance": 0.4000024600653461,
+        "screenBounds": {
+          "minX": 708.7211025344204,
+          "maxX": 731.2555451305415,
+          "minY": 488.3074134172723,
+          "maxY": 489.42783652379484,
+          "allInClip": true,
+          "width": 22.53444259612104,
+          "height": 1.1204231065225372
+        },
+        "projectedWidthPx": {
+          "min": 0.024369137477549898,
+          "median": 0.0701071694411804,
+          "max": 1.358990036843592
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      }
+    },
+    {
+      "name": "One-pixel world outline renders the exact sigma geometry and buffer, not a second radius",
+      "passed": true,
+      "evidence": {
+        "name": "aim-sea-outline",
+        "isLineSegments": true,
+        "usesExactCenterlineGeometry": true,
+        "usesExactCenterlineBuffer": true,
+        "vertexCount": 192,
+        "materialType": "LineBasicMaterial",
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false,
+        "linewidth": 1,
+        "sameMetricBias": true,
+        "sameColour": true
+      }
+    },
+    {
+      "name": "Outline and ribbon share metric bias and colour; both retain depth testing and disable fog/depth writes",
+      "passed": true,
+      "evidence": {
+        "name": "aim-sea-outline",
+        "isLineSegments": true,
+        "usesExactCenterlineGeometry": true,
+        "usesExactCenterlineBuffer": true,
+        "vertexCount": 192,
+        "materialType": "LineBasicMaterial",
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false,
+        "linewidth": 1,
+        "sameMetricBias": true,
+        "sameColour": true
+      }
+    },
+    {
+      "name": "Actual ribbon has finite vertices, one-metre world width, wave-following corners and unchanged sigma midpoints",
+      "passed": true,
+      "evidence": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 0.000002460065346099327,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.0330148061908562,
+        "minClearance": 0.39999825121334887,
+        "maxClearance": 0.4000024600653461,
+        "screenBounds": {
+          "minX": 708.7211025344204,
+          "maxX": 731.2555451305415,
+          "minY": 488.3074134172723,
+          "maxY": 489.42783652379484,
+          "allInClip": true,
+          "width": 22.53444259612104,
+          "height": 1.1204231065225372
+        },
+        "projectedWidthPx": {
+          "min": 0.024369137477549898,
+          "median": 0.0701071694411804,
+          "max": 1.358990036843592
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      }
+    },
+    {
+      "name": "Actual ribbon material is unlit, fog-free and depth-tested",
+      "passed": true,
+      "evidence": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 0.000002460065346099327,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.0330148061908562,
+        "minClearance": 0.39999825121334887,
+        "maxClearance": 0.4000024600653461,
+        "screenBounds": {
+          "minX": 708.7211025344204,
+          "maxX": 731.2555451305415,
+          "minY": 488.3074134172723,
+          "maxY": 489.42783652379484,
+          "allInClip": true,
+          "width": 22.53444259612104,
+          "height": 1.1204231065225372
+        },
+        "projectedWidthPx": {
+          "min": 0.024369137477549898,
+          "median": 0.0701071694411804,
+          "max": 1.358990036843592
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      }
+    },
+    {
+      "name": "Actual ribbon stays at configured clearance above raster water surface, not arbitrarily airborne",
+      "passed": true,
+      "evidence": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 0.000002460065346099327,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.0330148061908562,
+        "minClearance": 0.39999825121334887,
+        "maxClearance": 0.4000024600653461,
+        "screenBounds": {
+          "minX": 708.7211025344204,
+          "maxX": 731.2555451305415,
+          "minY": 488.3074134172723,
+          "maxY": 489.42783652379484,
+          "allInClip": true,
+          "width": 22.53444259612104,
+          "height": 1.1204231065225372
+        },
+        "projectedWidthPx": {
+          "min": 0.024369137477549898,
+          "median": 0.0701071694411804,
+          "max": 1.358990036843592
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      }
+    },
+    {
+      "name": "Scope camera clears hull top plus fourteen metres including bob",
+      "passed": true,
+      "evidence": {
+        "cameraY": 53.404675300061626,
+        "minimumY": 51.8907390443367
+      }
+    },
+    {
+      "name": "Instrumented crosshair stays at screen centre",
+      "passed": true,
+      "evidence": {
+        "calls": 205,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 80,
+        "maskArcs": 240,
+        "cross": 205,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      }
+    },
+    {
+      "name": "Actual sea impact projection is separate from fixed screen-centre crosshair",
+      "passed": true,
+      "evidence": [
+        719.9883818496203,
+        488.8647836184777,
+        0.9981332961326136
+      ]
+    },
+    {
+      "name": "Overlay debug sigma is the effective projected pattern",
+      "passed": true,
+      "evidence": {
+        "along": 18,
+        "cross": 7
+      }
+    },
+    {
+      "name": "Binocular circular black field stop remains, with transparent viewing centre",
+      "passed": true,
+      "evidence": {
+        "draw": {
+          "calls": 205,
+          "ellipse": 0,
+          "sigmaText": [],
+          "maskFills": 80,
+          "maskArcs": 240,
+          "cross": 205,
+          "lastCross": {
+            "x": 720,
+            "y": 450,
+            "width": 1440,
+            "height": 900
+          },
+          "maxCrossCenterError": 0
+        },
+        "pixels": {
+          "corner": [
+            2,
+            3,
+            5,
+            240
+          ],
+          "centre": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "In-range land aim hides projection (not just a range failure)",
+      "passed": true,
+      "evidence": {
+        "land": {
+          "x": -4200,
+          "z": 2600,
+          "height": 757.038885615139,
+          "range": 6587.541105882212,
+          "max": 22000
+        },
+        "projection": {
+          "valid": false,
+          "segments": 0,
+          "visible": false,
+          "ribbonSegments": 0,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        }
+      }
+    },
+    {
+      "name": "Out-of-range aim hides projection",
+      "passed": true,
+      "evidence": {
+        "valid": false,
+        "segments": 0,
+        "visible": false,
+        "ribbonSegments": 0,
+        "ribbonWidth": 1,
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false
+      }
+    },
+    {
+      "name": "Free look hides otherwise valid sea projection",
+      "passed": true,
+      "evidence": {
+        "valid": true,
+        "segments": 96,
+        "visible": false,
+        "ribbonSegments": 96,
+        "ribbonWidth": 1,
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false
+      }
+    },
+    {
+      "name": "960x640 compact: three main-only rows, no timers for thirteen combined mounts",
+      "passed": true,
+      "evidence": {
+        "mains": 3,
+        "secondary": 10,
+        "rows": 3,
+        "timers": 3
+      }
+    },
+    {
+      "name": "960x640 compact: no secondary battery HUD text",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "960x640 compact: independent remaining/total, countdown and aim labels match native turret data",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 527,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 551,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 575,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "960x640 compact: all row contents fit viewport",
+      "passed": true,
+      "evidence": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 527,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 551,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 575,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "Compact view restores sea projection",
+      "passed": true,
+      "evidence": {
+        "valid": true,
+        "segments": 96,
+        "visible": true,
+        "ribbonSegments": 96,
+        "ribbonWidth": 1,
+        "depthTest": true,
+        "depthWrite": false,
+        "fog": false
+      }
+    },
+    {
+      "name": "Instrumented real Overlay.draw: cross present, zero Canvas2D ellipse / sigma text calls",
+      "passed": true,
+      "evidence": {
+        "calls": 411,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 141,
+        "maskArcs": 423,
+        "cross": 346,
+        "lastCross": {
+          "x": 480,
+          "y": 320,
+          "width": 960,
+          "height": 640
+        },
+        "maxCrossCenterError": 0
+      }
+    },
+    {
+      "name": "Real game fresh target lock has bounded rangefinder penalty",
+      "passed": true,
+      "evidence": {
+        "name": "吹雪",
+        "held": 0.1,
+        "converged": 0.05,
+        "err": 23,
+        "trim": 0
+      }
+    },
+    {
+      "name": "Fresh live lock: effective penalty reaches actual sea projection and overlay debug",
+      "passed": true,
+      "evidence": {
+        "base": {
+          "along": 43.6348679918622,
+          "cross": 17.14226956823158
+        },
+        "effective": {
+          "along": 49.1638180370387,
+          "cross": 20.54573509947676
+        },
+        "inferredError": 22.651253813239826,
+        "overlay": {
+          "along": 49,
+          "cross": 21
+        }
+      }
+    },
+    {
+      "name": "Live lock penalty converges downward after two seconds of normal frame time",
+      "passed": true,
+      "evidence": {
+        "fresh": {
+          "name": "吹雪",
+          "held": 0.1,
+          "converged": 0.05,
+          "err": 23,
+          "trim": 0
+        },
+        "settled": {
+          "name": "吹雪",
+          "held": 2.1,
+          "converged": 0.9,
+          "err": 5,
+          "trim": 0
+        }
+      }
+    },
+    {
+      "name": "Read-only source support: no legacy overlay ellipse path",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Read-only source support: real scatter sampler shares effective pattern",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Real main scatter sampler respects tightened 2.5-sigma tail bound",
+      "passed": true,
+      "evidence": {
+        "gun": "us406",
+        "reference": {
+          "along": 56,
+          "cross": 22,
+          "at": 10000
+        },
+        "base": {
+          "along": 17.661384181613943,
+          "cross": 6.938400928491192
+        },
+        "effective": {
+          "along": 101.5476464090161,
+          "cross": 50.479118528798494
+        },
+        "maxNormalizedRadius": 2.49840744546086,
+        "note": "Actual imported sampler, 256 points; bounded-tail check, not a statistical accuracy benchmark or historical comparison."
+      }
+    },
+    {
+      "name": "No browser page errors",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "No console/shader errors",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "No shader compilation/WebGL errors",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "No failed network requests",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "All src files and index.html hashes unchanged",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Exactly the six requested screenshots saved",
+      "passed": true,
+      "evidence": [
+        "gunnery-reload-states.png",
+        "gunnery-reload-later.png",
+        "gunnery-scope-sea.png",
+        "gunnery-land-hidden.png",
+        "gunnery-free-look.png",
+        "gunnery-compact.png"
+      ]
+    }
+  ],
+  "failures": [],
+  "screenshots": [
+    {
+      "name": "gunnery-reload-states.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\gunnery-reload-states.png",
+      "controlledFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1
+      },
+      "rows": [
+        {
+          "text": "1号30.1s已对准",
+          "time": "30.1s",
+          "aim": "已对准",
+          "scale": 0,
+          "computed": "matrix(0, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号11.0s已对准",
+          "time": "11.0s",
+          "aim": "已对准",
+          "scale": 0.5,
+          "computed": "matrix(0.5, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "gunnery-reload-later.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\gunnery-reload-later.png",
+      "controlledFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "gunnery-scope-sea.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\gunnery-scope-sea.png",
+      "controlledFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "gunnery-land-hidden.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\gunnery-land-hidden.png",
+      "controlledFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "gunnery-free-look.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\gunnery-free-look.png",
+      "controlledFixture": true,
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    },
+    {
+      "name": "gunnery-compact.png",
+      "path": "D:\\warship-game\\art\\blender\\qa\\gunnery-compact.png",
+      "controlledFixture": true,
+      "viewport": {
+        "width": 960,
+        "height": 640,
+        "deviceScaleFactor": 1
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 527,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 551,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 575,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ]
+    }
+  ],
+  "previousVisualReviews": [
+    {
+      "status": "six images inspected; visual issues remain",
+      "passed": false,
+      "images": [
+        {
+          "name": "gunnery-reload-states.png",
+          "finding": "Controlled fixture clearly shows three main rows: 30.9s empty fill, 11.0s half fill, and ready full fill. No secondary timers. HUD readable at native resolution."
+        },
+        {
+          "name": "gunnery-reload-later.png",
+          "finding": "Countdowns decreased to 29.7s and 9.8s, with both fills visibly increased; ready row remains full. Aim labels independently changed after native simulation steps."
+        },
+        {
+          "name": "gunnery-scope-sea.png",
+          "issue": true,
+          "finding": "Crosshair, range scale, main reload HUD and circular black field stop are readable. However the sea world-projection outline is not visually discernible in this screenshot despite valid/visible runtime state and verified geometry. Do not treat debug visibility as proof of readable rendered projection. Own-ship structure also intrudes at the right of the scope."
+        },
+        {
+          "name": "gunnery-land-hidden.png",
+          "finding": "Land fills the scope, crosshair and circular black mask remain; no dispersion ring is visible. Three main reload rows remain readable."
+        },
+        {
+          "name": "gunnery-free-look.png",
+          "finding": "Free-look label readable, central sight and ring absent, main rows remain readable. Sea and ship render normally."
+        },
+        {
+          "name": "gunnery-compact.png",
+          "finding": "960x640: all three main rows, seconds, fills and aim labels fit without clipping or minimap overlap. Secondary timers absent. Small 11px labels are readable at native size, but bottom control hints have low contrast."
+        }
+      ],
+      "reviewedAt": "2026-10-28T05:37:09.013Z"
+    },
+    {
+      "status": "six images inspected; visual issues remain",
+      "passed": false,
+      "images": [
+        {
+          "name": "gunnery-reload-states.png",
+          "finding": "Controlled fixture: three readable main rows show 30.1s empty, 11.0s half-loaded, and ready full. No secondary timers. Fixed centre crosshair and ship render normally."
+        },
+        {
+          "name": "gunnery-reload-later.png",
+          "finding": "First two countdowns decreased to 28.9s and 9.8s with increased fills, third remains ready; native-step aim labels independently changed. Rows readable."
+        },
+        {
+          "name": "gunnery-scope-sea.png",
+          "issue": true,
+          "finding": "Compared with prior reviewed image, the right-side own-ship superstructure intrusion is removed. Fixed screen-centre crosshair, reticle scale, circular black field stop and three main reload rows are readable. However no clearly discernible amber sea ribbon outline can be identified in the actual image. World-space geometry, one-metre width and separate projected impact position pass runtime checks, but visible/readable world projection is still not visually confirmed. Previous projection-readability issue remains open; own-ship obstruction portion is resolved. No screen-space fake circle is shown."
+        },
+        {
+          "name": "gunnery-land-hidden.png",
+          "finding": "Land is visible inside the scope; no sea ribbon appears. Fixed centre crosshair and circular black field stop retained, reload HUD readable."
+        },
+        {
+          "name": "gunnery-free-look.png",
+          "finding": "Free-look status readable; no central crosshair or sea ribbon. Ship and water render normally and all three main rows remain readable."
+        },
+        {
+          "name": "gunnery-compact.png",
+          "finding": "960x640 main rows, fills, seconds and independent aim labels fit completely without minimap overlap. Fixed centre crosshair visible, no secondary timers. Small HUD text remains readable at native size; bottom control hints remain low contrast."
+        }
+      ],
+      "reviewedAt": "2026-10-28T05:48:17.796Z"
+    },
+    {
+      "status": "six images inspected; visual issues remain",
+      "passed": false,
+      "images": [
+        {
+          "name": "gunnery-reload-states.png",
+          "finding": "Controlled fixture clearly shows three main rows: 29.4s empty fill, 11.0s half fill and ready full fill. All seconds and aim labels readable, no secondary timers."
+        },
+        {
+          "name": "gunnery-reload-later.png",
+          "finding": "Native simulation reduced countdowns to 28.2s and 9.8s and increased fills. Third row remains ready. Main-only HUD readable."
+        },
+        {
+          "name": "gunnery-scope-sea.png",
+          "issue": true,
+          "finding": "Actual image still has no readable amber ring. Projected ribbon bounds x=708.72..731.26,y=488.31..489.43: only 22.53 by 1.12 pixels. Local projected rim thickness min=0.0244px, median=0.0701px, max=1.359px (localized near ends). Already-saved PNG region x706..734,y486..492 contains zero pixels passing diagnostic amber threshold. Expected ring is below the centre crosshair (720,450), well inside clear sea aperture; own-ship intrusion remains removed and no land/ship silhouette obstructs this region. Dominant demonstrated readability constraint is grazing-angle subpixel coverage of the 1m sea-plane rim, not a screen-space fake circle. Geometry now follows renderHeight plus 0.4m (clearance 0.399998..0.400002m), depthTest remains true. No arbitrary aerial lift or depth-disable workaround. This measurement does not conclusively exclude remaining water-depth occlusion; no GPU occlusion query was performed. Prior ring-readability issue stays open."
+        },
+        {
+          "name": "gunnery-land-hidden.png",
+          "finding": "Land visible in binocular field, ring hidden; centre crosshair and circular black mask preserved. Main rows readable."
+        },
+        {
+          "name": "gunnery-free-look.png",
+          "finding": "Free-look status shown; central sight and ring absent. Ship and sea render normally, three main reload rows readable."
+        },
+        {
+          "name": "gunnery-compact.png",
+          "finding": "960x640 rows, timers, fills and aim labels fit without clipping or minimap overlap. No secondary timers. Centre crosshair readable; bottom control hints remain low contrast."
+        }
+      ],
+      "reviewedAt": "2026-10-28T05:56:57.981Z"
+    }
+  ],
+  "snapshots": {
+    "gunnery-reload-states.png": {
+      "debug": {
+        "mode": "play",
+        "time": 5,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2500
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8434,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8782,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9189,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9999999999999,
+            456.66729708944024
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5442
+          ],
+          "ship": [
+            0,
+            -2500
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 186,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 30,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 1
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 67.13057980574969,
+          "y": 76.72668980781091,
+          "z": -2162.511785013248
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -2.9452431127404313,
+          "aimRange": 3000.0000000000005,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号30.1s已对准",
+          "time": "30.1s",
+          "aim": "已对准",
+          "scale": 0,
+          "computed": "matrix(0, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号11.0s已对准",
+          "time": "11.0s",
+          "aim": "已对准",
+          "scale": 0.5,
+          "computed": "matrix(0.5, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 30.10351276180749,
+          "reloadTotal": 30.10351276180749,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        },
+        {
+          "reload": 11,
+          "reloadTotal": 22,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        },
+        {
+          "reload": 0,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号30.1s已对准2号11.0s已对准3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 101,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 0,
+        "maskArcs": 0,
+        "cross": 101,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0.000001573853771863476,
+      "maxPatternError": 0.000029999992919194085,
+      "actualSigma": {
+        "along": 17.661384181613947,
+        "cross": 6.938400928491193
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.0004790678761077416,
+        "maxRibbonHeightError": 0.0000016505875475303355,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 2.9058957871285984,
+        "minClearance": 0.3999983494124525,
+        "maxClearance": 0.40000164620567735,
+        "screenBounds": {
+          "minX": 718.0359913959791,
+          "maxX": 721.9640187405188,
+          "minY": 457.0366282355051,
+          "maxY": 457.26484328423317,
+          "allInClip": true,
+          "width": 3.9280273445397142,
+          "height": 0.22821504872808873
+        },
+        "projectedWidthPx": {
+          "min": 0.003202866494494742,
+          "median": 0.013785083250956428,
+          "max": 0.23807270518923654
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        719.9999999999999,
+        457.1488949738097,
+        0.9982728155361875
+      ],
+      "scopeMinimumY": 53.752090173087225,
+      "originalSteps": 0,
+      "simulatedDt": 0,
+      "frozen": true
+    },
+    "native-tick-1": {
+      "debug": {
+        "mode": "play",
+        "time": 5.6,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2488
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8396,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8743,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9151,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9997402083889,
+            456.66974378021047
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5431
+          ],
+          "ship": [
+            0,
+            -2488
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 184,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 30,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 1
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 67.13057980574969,
+          "y": 76.74646784767191,
+          "z": -2151.6998718756286
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -2.9452431127404313,
+          "aimRange": 3000.0000000000005,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号29.5s不在射界",
+          "time": "29.5s",
+          "aim": "不在射界",
+          "scale": 0.0199312,
+          "computed": "matrix(0.0199312, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号10.4s不在射界",
+          "time": "10.4s",
+          "aim": "不在射界",
+          "scale": 0.527273,
+          "computed": "matrix(0.527273, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 29.50351276180748,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 10.399999999999991,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -0.6,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号29.5s不在射界2号10.4s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 113,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 0,
+        "maskArcs": 0,
+        "cross": 113,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0.0000018340542016215267,
+      "maxPatternError": 0.000026064033096018235,
+      "actualSigma": {
+        "along": 17.66603154221498,
+        "cross": 6.940226677298742
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.0003609116480790542,
+        "maxRibbonHeightError": 0.0000018760602010781113,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 3.1837844456538456,
+        "minClearance": 0.39999812393979894,
+        "maxClearance": 0.40000187576543744,
+        "screenBounds": {
+          "minX": 718.0352058430187,
+          "maxX": 721.9646346321696,
+          "minY": 457.03633976874215,
+          "maxY": 457.264356632413,
+          "allInClip": true,
+          "width": 3.9294287891508475,
+          "height": 0.2280168636708595
+        },
+        "projectedWidthPx": {
+          "min": 0.002779805441309788,
+          "median": 0.013538999523103347,
+          "max": 0.24066526783411182
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        719.9999144791058,
+        457.14591160427324,
+        0.9982726311767199
+      ],
+      "scopeMinimumY": 53.7630960880041,
+      "originalSteps": 12,
+      "simulatedDt": 0.6,
+      "frozen": true
+    },
+    "native-tick-2": {
+      "debug": {
+        "mode": "play",
+        "time": 6.2,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9998910468015,
+            456.63839852392806
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5418
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 188,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 30,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 1
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 67.13057980574969,
+          "y": 76.64604218984982,
+          "z": -2138.976626932789
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -2.9452431127404313,
+          "aimRange": 3000.0000000000005,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 125,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 0,
+        "maskArcs": 0,
+        "cross": 125,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0.000001803473018979762,
+      "maxPatternError": 0.00002945706780388413,
+      "actualSigma": {
+        "along": 17.66625111386683,
+        "cross": 6.940312937590541
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.0003609116480790542,
+        "maxRibbonHeightError": 0.0000021044549517457156,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 3.057777217416387,
+        "minClearance": 0.3999978982105604,
+        "maxClearance": 0.40000210445495177,
+        "screenBounds": {
+          "minX": 718.035224465845,
+          "maxX": 721.964721978146,
+          "minY": 456.9833074004713,
+          "maxY": 457.2359670224064,
+          "allInClip": true,
+          "width": 3.9294975123010545,
+          "height": 0.25265962193509495
+        },
+        "projectedWidthPx": {
+          "min": 0.0026000558469536153,
+          "median": 0.014666041064269515,
+          "max": 0.24909907968733014
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        719.9999641336424,
+        457.0892522224665,
+        0.9982726198903876
+      ],
+      "scopeMinimumY": 53.64224995978824,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "gunnery-reload-later.png": {
+      "debug": {
+        "mode": "play",
+        "time": 6.2,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9998910468015,
+            456.63839852392806
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5418
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 188,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 30,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 1
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 67.13057980574969,
+          "y": 76.64604218984982,
+          "z": -2138.976626932789
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -2.9452431127404313,
+          "aimRange": 3000.0000000000005,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 125,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 0,
+        "maskArcs": 0,
+        "cross": 125,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0.000001803473018979762,
+      "maxPatternError": 0.00002945706780388413,
+      "actualSigma": {
+        "along": 17.66625111386683,
+        "cross": 6.940312937590541
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.0003609116480790542,
+        "maxRibbonHeightError": 0.0000021044549517457156,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 3.057777217416387,
+        "minClearance": 0.3999978982105604,
+        "maxClearance": 0.40000210445495177,
+        "screenBounds": {
+          "minX": 718.035224465845,
+          "maxX": 721.964721978146,
+          "minY": 456.9833074004713,
+          "maxY": 457.2359670224064,
+          "allInClip": true,
+          "width": 3.9294975123010545,
+          "height": 0.25265962193509495
+        },
+        "projectedWidthPx": {
+          "min": 0.0026000558469536153,
+          "median": 0.014666041064269515,
+          "max": 0.24909907968733014
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        719.9999641336424,
+        457.0892522224665,
+        0.9982726198903876
+      ],
+      "scopeMinimumY": 53.64224995978824,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "gunnery-scope-sea.png": {
+      "debug": {
+        "mode": "play",
+        "time": 10.2,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9647069269805,
+            485.2204051189468
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 1,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5442
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 204,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 14,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 1
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 11,
+          "x": 1.5515156521792615,
+          "y": 53.404675300061626,
+          "z": -2395.218013628846
+        },
+        "cameraControl": {
+          "mode": "binocular",
+          "level": 4,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -2.9468552251018063,
+          "aimRange": 3024.516525538129,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 205,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 80,
+        "maskArcs": 240,
+        "cross": 205,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0.0000020644651314016826,
+      "maxPatternError": 0.00002916788502571599,
+      "actualSigma": {
+        "along": 17.77326675858616,
+        "cross": 6.982354798015992
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 0.000002460065346099327,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.0330148061908562,
+        "minClearance": 0.39999825121334887,
+        "maxClearance": 0.4000024600653461,
+        "screenBounds": {
+          "minX": 708.7211025344204,
+          "maxX": 731.2555451305415,
+          "minY": 488.3074134172723,
+          "maxY": 489.42783652379484,
+          "allInClip": true,
+          "width": 22.53444259612104,
+          "height": 1.1204231065225372
+        },
+        "projectedWidthPx": {
+          "min": 0.024369137477549898,
+          "median": 0.0701071694411804,
+          "max": 1.358990036843592
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        719.9883818496203,
+        488.8647836184777,
+        0.9981332961326136
+      ],
+      "scopeMinimumY": 51.8907390443367,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "gunnery-land-hidden.png": {
+      "debug": {
+        "mode": "play",
+        "time": 13.2,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            720.0021351853676,
+            466.7429585140296
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 1,
+          "weapon": "guns",
+          "sigma": {
+            "along": 36,
+            "cross": 14
+          },
+          "aim": [
+            -4200,
+            2600
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 199,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        },
+        "seaProjection": {
+          "valid": false,
+          "segments": 0,
+          "visible": false,
+          "ribbonSegments": 0,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 11,
+          "x": 5.233890847222118,
+          "y": 53.422984176646985,
+          "z": -2409.26316630816
+        },
+        "cameraControl": {
+          "mode": "binocular",
+          "level": 4,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": -0.691336234389196,
+          "aimRange": 6587.541105882212,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 265,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 140,
+        "maskArcs": 420,
+        "cross": 265,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0,
+      "maxPatternError": 0,
+      "actualSigma": {
+        "along": 35.966565420743336,
+        "cross": 14.129722129577738
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0,
+        "maxRibbonHeightError": 0,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 0,
+        "minClearance": null,
+        "maxClearance": null,
+        "screenBounds": null,
+        "projectedWidthPx": {},
+        "segments": 0,
+        "vertexCount": 0,
+        "centerlineVertexCount": 0,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 0,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        720.0007028877565,
+        467.20105560144464,
+        0.9991492847622857
+      ],
+      "scopeMinimumY": 51.93165849533036,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "out-of-range": {
+      "debug": {
+        "mode": "play",
+        "time": 13.3,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": null,
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": false,
+          "zoom": 1,
+          "weapon": "guns",
+          "sigma": {
+            "along": 139,
+            "cross": 55
+          },
+          "aim": [
+            44000,
+            -2475
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 203,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        },
+        "seaProjection": {
+          "valid": false,
+          "segments": 0,
+          "visible": false,
+          "ribbonSegments": 0,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 11,
+          "x": -0.3497754422791477,
+          "y": 53.42904058904643,
+          "z": -2406.6322426518577
+        },
+        "cameraControl": {
+          "mode": "binocular",
+          "level": 4,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": 0,
+          "lookPitch": 0,
+          "follow": null,
+          "aimYaw": 1.5707963267948966,
+          "aimRange": 44000,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 266,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 141,
+        "maskArcs": 423,
+        "cross": 266,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0,
+      "maxPatternError": 0,
+      "actualSigma": {
+        "along": 138.7580342949604,
+        "cross": 54.512084901591585
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0,
+        "maxRibbonHeightError": 0,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 0,
+        "minClearance": null,
+        "maxClearance": null,
+        "screenBounds": null,
+        "projectedWidthPx": {},
+        "segments": 0,
+        "vertexCount": 0,
+        "centerlineVertexCount": 0,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 0,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        -1845.0847355188998,
+        440.150630348194,
+        0.9999111115684275
+      ],
+      "scopeMinimumY": 51.937192882814024,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "gunnery-free-look.png": {
+      "debug": {
+        "mode": "play",
+        "time": 16.5,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            719.9999999999987,
+            288.69661366471075
+          ],
+          "reticle": [
+            720,
+            450
+          ],
+          "observing": true,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5442
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 193,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": false,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 64.98152122960455,
+          "y": 87.11538913400152,
+          "z": -2145.548100775955
+        },
+        "cameraControl": {
+          "mode": "binocular",
+          "level": 4,
+          "group": 0,
+          "freeLook": true,
+          "lookYaw": -2.9468552251018068,
+          "lookPitch": 0.22,
+          "follow": null,
+          "aimYaw": -2.9468552251018063,
+          "aimRange": 3024.516525538129,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 787,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 811,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 533,
+            "y": 835,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 331,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 141,
+        "maskArcs": 423,
+        "cross": 266,
+        "lastCross": {
+          "x": 720,
+          "y": 450,
+          "width": 1440,
+          "height": 900
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 0.000002108288669644409,
+      "maxPatternError": 0.00002916788502571599,
+      "actualSigma": {
+        "along": 17.77326675858616,
+        "cross": 6.982354798015992
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 0.0000017829913963041122,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.0629593735169536,
+        "minClearance": 0.39999824936763084,
+        "maxClearance": 0.4000017829913963,
+        "screenBounds": {
+          "minX": 718.0017386041474,
+          "maxX": 721.9982533269545,
+          "minY": 288.8626261013535,
+          "maxY": 289.20608553096963,
+          "allInClip": true,
+          "width": 3.996514722807092,
+          "height": 0.3434594296161322
+        },
+        "projectedWidthPx": {
+          "min": 0.005574056959678264,
+          "median": 0.023434782122630077,
+          "max": 0.25876644414577593
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        719.9999999999993,
+        289.0114114913525,
+        0.9982522413410153
+      ],
+      "scopeMinimumY": 52.55485033066106,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "gunnery-compact.png": {
+      "debug": {
+        "mode": "play",
+        "time": 20.5,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            480,
+            324.5767544155241
+          ],
+          "reticle": [
+            480,
+            320
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 18,
+            "cross": 7
+          },
+          "aim": [
+            -585,
+            -5442
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": null,
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 185,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 66.58642388519179,
+          "y": 76.07263385503677,
+          "z": -2137.411176118072
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": -2.9468552251018068,
+          "lookPitch": 0.22,
+          "follow": null,
+          "aimYaw": -2.9468552251018063,
+          "aimRange": 3024.516525538129,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 527,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 551,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 575,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 411,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 141,
+        "maskArcs": 423,
+        "cross": 346,
+        "lastCross": {
+          "x": 480,
+          "y": 320,
+          "width": 960,
+          "height": 640
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 6.443483142604123e-7,
+      "maxPatternError": 0.00002916788502571599,
+      "actualSigma": {
+        "along": 17.77326675858616,
+        "cross": 6.982354798015992
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.00042489085113062153,
+        "maxRibbonHeightError": 5.522869636065408e-7,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.8009046874374552,
+        "minClearance": 0.39999944883452365,
+        "maxClearance": 0.40000055228696363,
+        "screenBounds": {
+          "minX": 478.6053401906523,
+          "maxX": 481.3946684418519,
+          "minY": 324.93094587148784,
+          "maxY": 325.0733802832541,
+          "allInClip": true,
+          "width": 2.7893282511995494,
+          "height": 0.14243441176625993
+        },
+        "projectedWidthPx": {
+          "min": 0.003640694867152156,
+          "median": 0.01057143791694287,
+          "max": 0.16758670857184937
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        479.9999999999998,
+        325.0062015034229,
+        0.9982858639605096
+      ],
+      "scopeMinimumY": 53.056407389081386,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "fresh-live-lock": {
+      "debug": {
+        "mode": "play",
+        "time": 20.6,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": null,
+          "reticle": [
+            480,
+            320
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 49,
+            "cross": 21
+          },
+          "aim": [
+            -3011,
+            4868
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": {
+          "name": "吹雪",
+          "held": 0.1,
+          "converged": 0.05,
+          "err": 23,
+          "trim": 0
+        },
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 191,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 93.85094417299382,
+          "y": 76.04589528348062,
+          "z": -2417.0157031955696
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": -2.9468552251018068,
+          "lookPitch": 0.22,
+          "follow": null,
+          "aimYaw": -0.3891448386875067,
+          "aimRange": 7936.417324206505,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 527,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 551,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 575,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 412,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 141,
+        "maskArcs": 423,
+        "cross": 347,
+        "lastCross": {
+          "x": 480,
+          "y": 320,
+          "width": 960,
+          "height": 640
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 5.86917288436517e-7,
+      "maxPatternError": 0.000018039831158445097,
+      "actualSigma": {
+        "along": 49.1638180370387,
+        "cross": 20.54573509947676
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.0003906059190603717,
+        "maxRibbonHeightError": 5.888320389058066e-7,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 1.5804916081306406,
+        "minClearance": 0.39999941439491127,
+        "maxClearance": 0.40000058883203893,
+        "screenBounds": {
+          "minX": 186.2157385520435,
+          "maxX": 190.27444481697887,
+          "minY": 313.66547132090227,
+          "maxY": 313.74713353908663,
+          "allInClip": true,
+          "width": 4.058706264935381,
+          "height": 0.0816622181843627
+        },
+        "projectedWidthPx": {
+          "min": 0.0007768262618232868,
+          "median": 0.0020519654285137646,
+          "max": 0.09228978952582219
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        188.2472343869895,
+        313.70604495964096,
+        0.9992312214198611
+      ],
+      "scopeMinimumY": 53.02990356497226,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    },
+    "settled-live-lock": {
+      "debug": {
+        "mode": "play",
+        "time": 22.6,
+        "side": "US",
+        "ship": "us_bb",
+        "player": {
+          "name": "华盛顿",
+          "hp": 72000,
+          "max": 72000,
+          "x": 0,
+          "z": -2475
+        },
+        "ships": [
+          {
+            "name": "华盛顿",
+            "team": "US",
+            "hp": 72000,
+            "alive": true,
+            "d": 0,
+            "fires": 0
+          },
+          {
+            "name": "吹雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8355,
+            "fires": 0
+          },
+          {
+            "name": "白雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 8703,
+            "fires": 0
+          },
+          {
+            "name": "初雪",
+            "team": "JP",
+            "hp": 10500,
+            "alive": true,
+            "d": 9110,
+            "fires": 0
+          }
+        ],
+        "shells": 3,
+        "torps": 0,
+        "overlay": {
+          "ap": [
+            479.9999999967861,
+            321.8193263705612
+          ],
+          "reticle": [
+            480,
+            320
+          ],
+          "observing": false,
+          "zoom": 0,
+          "weapon": "guns",
+          "sigma": {
+            "along": 44,
+            "cross": 17
+          },
+          "aim": [
+            -3011,
+            4868
+          ],
+          "ship": [
+            0,
+            -2475
+          ]
+        },
+        "lock": {
+          "name": "吹雪",
+          "held": 2.1,
+          "converged": 0.9,
+          "err": 5,
+          "trim": 0
+        },
+        "models": {
+          "available": [
+            "ships/us_bb_super",
+            "ships/us_bb_hull",
+            "ships/jp_dd_super",
+            "ships/jp_dd_hull",
+            "ships/jp_bb_super",
+            "ships/jp_bb_hull",
+            "ships/jp_ca_super",
+            "ships/us_ca_super",
+            "ships/us_dd_super",
+            "ships/us_dd_hull",
+            "guns/us5s",
+            "guns/us5d",
+            "guns/us6t",
+            "guns/us8t",
+            "guns/us16t",
+            "guns/jp5d",
+            "guns/jp5s",
+            "guns/jp55",
+            "guns/jp8d",
+            "guns/jp14d",
+            "guns/jp6c"
+          ],
+          "loaded": [
+            "ships/us_bb_hull",
+            "guns/us16t",
+            "ships/jp_dd_hull",
+            "ships/jp_dd_super",
+            "ships/us_bb_super",
+            "guns/us5d",
+            "guns/jp5d"
+          ]
+        },
+        "kills": 0,
+        "tons": 0,
+        "fps": 20,
+        "effects": {
+          "particles": 189,
+          "columns": 0,
+          "shells": 3,
+          "torpedoWakePoints": 0,
+          "muzzle": {
+            "smoke": 0,
+            "flash": 0,
+            "smokeCapacity": 512,
+            "flashCapacity": 128,
+            "smokeSpawned": 30,
+            "flashSpawned": 9,
+            "smokeRecycled": 0,
+            "flashRecycled": 0,
+            "drawCalls": 0
+          }
+        },
+        "seaProjection": {
+          "valid": true,
+          "segments": 96,
+          "visible": true,
+          "ribbonSegments": 96,
+          "ribbonWidth": 1,
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false
+        },
+        "camera": {
+          "fov": 54,
+          "x": 130.550621161513,
+          "y": 75.48012555726206,
+          "z": -2793.3801401984356
+        },
+        "cameraControl": {
+          "mode": "ship",
+          "level": 0,
+          "group": 0,
+          "freeLook": false,
+          "lookYaw": -2.9468552251018068,
+          "lookPitch": 0.22,
+          "follow": null,
+          "aimYaw": -0.3891448386875067,
+          "aimRange": 7936.417324206505,
+          "projectiles": [
+            {
+              "kind": "shell",
+              "id": 3
+            },
+            {
+              "kind": "shell",
+              "id": 2
+            },
+            {
+              "kind": "shell",
+              "id": 1
+            }
+          ]
+        }
+      },
+      "rows": [
+        {
+          "text": "1号28.9s不在射界",
+          "time": "28.9s",
+          "aim": "不在射界",
+          "scale": 0.0398625,
+          "computed": "matrix(0.0398625, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 527,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "2号9.8s不在射界",
+          "time": "9.8s",
+          "aim": "不在射界",
+          "scale": 0.554545,
+          "computed": "matrix(0.554545, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 551,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        },
+        {
+          "text": "3号就绪已对准",
+          "time": "就绪",
+          "aim": "已对准",
+          "scale": 1,
+          "computed": "matrix(1, 0, 0, 1, 0, 0)",
+          "fontSize": "11px",
+          "rect": {
+            "x": 162,
+            "y": 575,
+            "width": 294,
+            "height": 19
+          },
+          "visible": true,
+          "inside": true,
+          "partsInside": true
+        }
+      ],
+      "main": [
+        {
+          "reload": 28.903512761807473,
+          "reloadTotal": 30.10351276180749,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": 9.799999999999983,
+          "reloadTotal": 22,
+          "inArc": false,
+          "onTarget": false,
+          "sec": false
+        },
+        {
+          "reload": -1.2000000000000004,
+          "reloadTotal": 37,
+          "inArc": true,
+          "onTarget": true,
+          "sec": false
+        }
+      ],
+      "secondary": 10,
+      "timerCount": 3,
+      "gunPanelText": "\n            1主炮16\"/45\n            1号28.9s不在射界2号9.8s不在射界3号就绪已对准\n            装填就绪 1/3 · 发射仍需射界与指向满足\n          ",
+      "draw": {
+        "calls": 452,
+        "ellipse": 0,
+        "sigmaText": [],
+        "maskFills": 141,
+        "maskArcs": 423,
+        "cross": 387,
+        "lastCross": {
+          "x": 480,
+          "y": 320,
+          "width": 960,
+          "height": 640
+        },
+        "maxCrossCenterError": 0
+      },
+      "maxHeightError": 3.2815905293137604e-7,
+      "maxPatternError": 0.000019732248596415758,
+      "actualSigma": {
+        "along": 43.87431992837904,
+        "cross": 17.294391202859615
+      },
+      "heightOffset": 0.4,
+      "ribbon": {
+        "finite": true,
+        "maxWidthError": 0.000508318395150531,
+        "maxRibbonHeightError": 3.7431791294340044e-7,
+        "maxMidpointError": 0,
+        "maxDuplicateError": 0,
+        "usesRenderHeight": true,
+        "maxContinuousFieldDifference": 2.1523434819656364,
+        "minClearance": 0.39999962963384583,
+        "maxClearance": 0.40000037431791297,
+        "screenBounds": {
+          "minX": 478.6504301215462,
+          "maxX": 481.34957609268355,
+          "minY": 321.9238100046533,
+          "maxY": 321.99396751672214,
+          "allInClip": true,
+          "width": 2.699145971137341,
+          "height": 0.0701575120688176
+        },
+        "projectedWidthPx": {
+          "min": 0.0007899509182131112,
+          "median": 0.002224217358420446,
+          "max": 0.052902019472185764
+        },
+        "segments": 96,
+        "vertexCount": 576,
+        "centerlineVertexCount": 192,
+        "meshName": "aim-sea-ribbon",
+        "isMesh": true,
+        "renderedChildren": 2,
+        "usesRibbon": true,
+        "centerlineBufferMatches": true,
+        "outline": {
+          "name": "aim-sea-outline",
+          "isLineSegments": true,
+          "usesExactCenterlineGeometry": true,
+          "usesExactCenterlineBuffer": true,
+          "vertexCount": 192,
+          "materialType": "LineBasicMaterial",
+          "depthTest": true,
+          "depthWrite": false,
+          "fog": false,
+          "linewidth": 1,
+          "sameMetricBias": true,
+          "sameColour": true
+        },
+        "materialType": "MeshBasicMaterial",
+        "fog": false,
+        "depthTest": true,
+        "depthWrite": false,
+        "emissive": false,
+        "widthConstant": 1
+      },
+      "projectedAim": [
+        479.9999999989423,
+        321.9589757019062,
+        0.9993420787766659
+      ],
+      "scopeMinimumY": 52.4887437104542,
+      "originalSteps": 24,
+      "simulatedDt": 1.2000000000000004,
+      "frozen": true
+    }
+  },
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "warn",
+      "text": "Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+    }
+  ],
+  "pageErrors": [],
+  "networkErrors": [],
+  "visualReview": {
+    "status": "six images inspected",
+    "passed": true,
+    "images": [
+      {
+        "name": "gunnery-reload-states.png",
+        "finding": "Controlled fixture: three readable main rows show 30.1s empty, 11.0s half and ready full; no secondary timers. Fixed centre crosshair visible."
+      },
+      {
+        "name": "gunnery-reload-later.png",
+        "finding": "Countdowns decreased to 28.9s and 9.8s with increased fills; ready row unchanged. Independent aim labels and main-only HUD remain readable."
+      },
+      {
+        "name": "gunnery-scope-sea.png",
+        "finding": "Prior scope-readability issue resolved in this actual image: a distinct thin gold flattened world outline is visible below the centre crosshair around (720,489), separate from sight centre (720,450). Expected region x706..734,y486..492 now contains 24 amber pixels instead of prior zero, e.g. (714,488) RGB(228,203,113). Shape is very flat at this grazing angle, not a screen-space circle. Runtime checks prove outline uses the exact sigma centreline geometry/buffer and ribbon midpoints match it, with depthTest true and shared metric bias. Own-ship intrusion remains absent; circular black mask and readable HUD retained. Previous failed reviews remain in report history; closure is based on new image and pixel evidence."
+      },
+      {
+        "name": "gunnery-land-hidden.png",
+        "finding": "Land inside binocular field; no gold world ring visible. Centre crosshair, reticle scale, circular black field stop and main reload rows retained."
+      },
+      {
+        "name": "gunnery-free-look.png",
+        "finding": "Free-look status shown, central sight and ring absent. Ship and sea normal; all main rows readable."
+      },
+      {
+        "name": "gunnery-compact.png",
+        "finding": "960x640 three main rows, timers, fills and aim labels fit without clipping or minimap overlap; no secondary timers. Fixed centre crosshair readable. Bottom control hints remain low contrast but main reload UI is readable."
+      }
+    ],
+    "reviewedAt": "2026-10-28T06:03:05.588Z"
+  },
+  "limitations": [
+    "Controlled fixture in a new isolated headless Edge process; no connection to or changes to the user browser/tab.",
+    "Real Vite game modules, native player, Hud, Overlay, AimMarker and renderer. RAF is manually gated at 50ms.",
+    "World.step is intercepted in this test page only to capture the native player and freeze simulation during fixture screenshots. Two countdown intervals invoke the ORIGINAL World.step, without changing its dt or reload implementation.",
+    "First row is fired through __cmd.fire after runtime-only readiness/pointing setup; half-loaded/ready rows and differing reloadTotal values are controlled fixture data, not evidence of a natural 30-second battle.",
+    "Headless ANGLE SwiftShader: no hardware performance claim. Separate main-agent pure-fire/reload tests are not run by this focused browser check."
+  ],
+  "fixture": {
+    "sea": {
+      "x": -585.270966048385,
+      "z": -5442.355841209692
+    },
+    "fire": {
+      "newShells": 3,
+      "reload": 30.10351276180749,
+      "reloadTotal": 30.10351276180749
+    },
+    "player": {
+      "x": 0,
+      "z": -2500
+    },
+    "mainCount": 3,
+    "secondaryCount": 10
+  },
+  "scopePixels": {
+    "region": {
+      "x0": 706,
+      "y0": 486,
+      "x1": 735,
+      "y1": 493
+    },
+    "amberPixels": 24,
+    "samples": [
+      {
+        "x": 714,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 715,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 716,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 717,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 718,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 719,
+        "y": 488,
+        "rgb": [
+          229,
+          204,
+          112
+        ]
+      },
+      {
+        "x": 720,
+        "y": 488,
+        "rgb": [
+          229,
+          204,
+          112
+        ]
+      },
+      {
+        "x": 721,
+        "y": 488,
+        "rgb": [
+          229,
+          204,
+          112
+        ]
+      },
+      {
+        "x": 722,
+        "y": 488,
+        "rgb": [
+          230,
+          204,
+          111
+        ]
+      },
+      {
+        "x": 723,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          112
+        ]
+      },
+      {
+        "x": 724,
+        "y": 488,
+        "rgb": [
+          228,
+          203,
+          112
+        ]
+      },
+      {
+        "x": 725,
+        "y": 488,
+        "rgb": [
+          230,
+          204,
+          111
+        ]
+      },
+      {
+        "x": 726,
+        "y": 488,
+        "rgb": [
+          230,
+          204,
+          111
+        ]
+      },
+      {
+        "x": 727,
+        "y": 488,
+        "rgb": [
+          231,
+          204,
+          110
+        ]
+      },
+      {
+        "x": 728,
+        "y": 488,
+        "rgb": [
+          231,
+          204,
+          110
+        ]
+      },
+      {
+        "x": 729,
+        "y": 488,
+        "rgb": [
+          231,
+          205,
+          110
+        ]
+      },
+      {
+        "x": 712,
+        "y": 489,
+        "rgb": [
+          230,
+          204,
+          111
+        ]
+      },
+      {
+        "x": 713,
+        "y": 489,
+        "rgb": [
+          229,
+          204,
+          112
+        ]
+      },
+      {
+        "x": 714,
+        "y": 489,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 715,
+        "y": 489,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 716,
+        "y": 489,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 717,
+        "y": 489,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 718,
+        "y": 489,
+        "rgb": [
+          228,
+          203,
+          113
+        ]
+      },
+      {
+        "x": 719,
+        "y": 489,
+        "rgb": [
+          229,
+          204,
+          112
+        ]
+      }
+    ],
+    "note": "Colour threshold is diagnostic only; visual review still decides ring readability."
+  },
+  "dispersionEvidence": {
+    "gun": "us406",
+    "reference": {
+      "along": 56,
+      "cross": 22,
+      "at": 10000
+    },
+    "base": {
+      "along": 17.661384181613943,
+      "cross": 6.938400928491192
+    },
+    "effective": {
+      "along": 101.5476464090161,
+      "cross": 50.479118528798494
+    },
+    "maxNormalizedRadius": 2.49840744546086,
+    "note": "Actual imported sampler, 256 points; bounded-tail check, not a statistical accuracy benchmark or historical comparison."
+  },
+  "lockPenaltySource": [
+    "  /** Extra 1-sigma range error the moment you lock, as a fraction of the range. */",
+    "  err0?: number;",
+    "  errMin?: number;",
+    "  err: number;",
+    "  err0: number;",
+    "  errMin: number;",
+    "    this.err0 = o.err0 ?? 0.003;",
+    "    this.errMin = o.errMin ?? 0.0003;",
+    "    this.breakRange = o.breakRange ?? 0.12;",
+    "    const maxD = from.gun.range * 1.08;",
+    "      const score = diff + (d / maxD) * 0.15;",
+    "    const maxD = from.gun.range * 1.08;",
+    "  rangeError(range: number): number {",
+    "    const lo = this.errMin * r;",
+    "    return Math.min(45,lo + (this.err0 * r - lo) * Math.exp(-this.held / this.tau));",
+    "    const err = this.rangeError(range);",
+    "    return { yaw, range, baseYaw, baseRange, leadX: lx, leadZ: lz, err, converged: this.convergence(), broke };"
+  ],
+  "shaderMessages": [],
+  "finishedAt": "2026-10-28T06:02:05.742Z",
+  "passed": true,
+  "automatedPassed": true
+}

@@ -9,6 +9,8 @@ import { clamp, lerp, sstep, TAU } from '../sim/constants';
 import { deckY, halfW, hullSection, RING } from '../sim/hull';
 import type { ShipSpec } from '../sim/ships';
 import { TS, type TurretShape } from '../sim/guns';
+import { bowRake, proceduralRailPlan } from './deckOutline';
+import { buildTubeRailings } from './railings';
 
 // ------------------------------------------------------------------ small geometry helpers
 
@@ -175,10 +177,6 @@ function hullStations(spec: ShipSpec): Station[] {
   });
 }
 
-function bowRake(spec: ShipSpec, s: number): number {
-  if (spec.stem === 'clipper' && s > 0.9) return ((s - 0.9) / 0.1) * spec.B * 0.14;
-  return 0;
-}
 
 export function buildHull(spec: ShipSpec): { hull: THREE.BufferGeometry; deck: THREE.BufferGeometry } {
   const rings = hullStations(spec);
@@ -762,26 +760,13 @@ export function shipMaterials(spec: ShipSpec): ShipMaterials {
   return m;
 }
 
-/** Rail stanchions along the deck edge, so the silhouette reads at distance. */
+const railCache = new Map<string, THREE.BufferGeometry>();
+
+/** Real posts and two horizontal tubes, following the same deck edge as the hull. */
 export function buildRails(spec: ShipSpec): THREE.BufferGeometry {
-  const pos: number[] = [];
-  const idx: number[] = [];
-  const N = 60;
-  for (let i = 0; i <= N; i++) {
-    const s = i / N;
-    const z = (s - 0.5) * spec.L * 0.92 + bowRake(spec, s);
-    const y = deckY(spec, (s - 0.5) * spec.L * 0.92);
-    const w = (spec.B / 2) * Math.max(0.05, Math.cos(((clamp((s - 0.58) / 0.42, 0, 1)) * Math.PI) / 2)) * 0.98;
-    const base = pos.length / 3;
-    pos.push(-w, y, z, -w, y + 1.0, z, w, y, z, w, y + 1.0, z);
-    if (i < N) {
-      const b2 = base + 4;
-      idx.push(base, base + 1, b2 + 1, base, b2 + 1, b2);
-      idx.push(base + 2, b2 + 3, b2 + 2, base + 2, base + 3, b2 + 3);
-    }
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-  g.setIndex(idx);
-  return g;
+  const cached = railCache.get(spec.key);
+  if (cached) return cached;
+  const geometry = buildTubeRailings(proceduralRailPlan(spec));
+  railCache.set(spec.key, geometry);
+  return geometry;
 }

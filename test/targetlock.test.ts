@@ -86,7 +86,7 @@ test('push the trim too far and the lock gives out', () => {
   assert.ok(!lock.locked);
 });
 
-test('a range trim past 12% of the range also breaks it', () => {
+test('a large range trim past 35% also breaks lock, while ordinary corrections remain usable', () => {
   const { me, a } = scene();
   const lock = new TargetLock();
   lock.lock(a);
@@ -103,14 +103,15 @@ test('the rangefinder tightens the longer you hold her', () => {
   const lock = new TargetLock();
   lock.lock(a);
   const errStart = lock.rangeError(10000);
-  assert.ok(Math.abs(errStart - 800) < 1, `WT-strength start is 8% of range, got ${errStart}`);
+  assert.ok(Math.abs(errStart - 30) < 1, `initial ranging is 0.3% rather than an 800m penalty, got ${errStart}`);
   for (let i = 0; i < 60; i++) lock.update(1 / 30, me, me.gun.range * 1.08); // 2 s
   const err2 = lock.rangeError(10000);
   for (let i = 0; i < 240; i++) lock.update(1 / 30, me, me.gun.range * 1.08); // 10 s total
   const err10 = lock.rangeError(10000);
   assert.ok(err2 < errStart * 0.6, 'two seconds should already help');
-  assert.ok(err10 < 100, `ten seconds should be under 100 m, got ${err10.toFixed(0)}`);
-  assert.ok(err10 >= 60, 'but never perfectly: the rangefinder settles around 0.6%');
+  assert.ok(err2 < 7, `two seconds should settle to a small correction, got ${err2}`);
+  assert.ok(err10 < 3.1, `settled error should be about 3 m, got ${err10.toFixed(2)}`);
+  assert.ok(err10 >= 3, 'small residual correction remains rather than perfect aim');
   assert.ok(lock.convergence() > 0.95, 'and reports converged');
 });
 
@@ -123,7 +124,7 @@ test('losing her or switching targets resets the rangefinder', () => {
   lock.lock(b); // change target
   assert.equal(lock.held, 0);
   assert.ok(lock.convergence() < 0.05, 'a new target means a new solution');
-  assert.ok(Math.abs(lock.rangeError(10000) - 800) < 1);
+  assert.ok(Math.abs(lock.rangeError(10000) - 30) < 1);
   lock.unlock();
   assert.equal(lock.target, null);
   assert.equal(lock.update(1 / 30, me, 22000), null, 'no lock, no automatic solution');

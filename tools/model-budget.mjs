@@ -32,10 +32,11 @@ for (const arg of process.argv.slice(2)) {
   }
 }
 
-const [{ SPECS }, { TS, GUNS }, { RING }] = await Promise.all([
+const [{ SPECS }, { TS, GUNS }, { RING }, { proceduralRailPlan, railPlanCost }] = await Promise.all([
   import(new URL('src/sim/ships.ts', root)),
   import(new URL('src/sim/guns.ts', root)),
   import(new URL('src/sim/hull.ts', root)),
+  import(new URL('src/render/deckOutline.ts', root)),
 ]);
 const manifest = JSON.parse(await readFile(new URL('public/models/manifest.json', root), 'utf8'));
 if (!Array.isArray(manifest.models)) throw new Error('manifest.models must be an array');
@@ -118,7 +119,13 @@ async function inspect(name) {
     indices: sum(primitives, 'indices'), indexedTriangles: sum(primitives, 'indexedTriangles'),
     position: sum(primitives, 'position'), materials: (json.materials || []).length,
     storedTriangles: sum(primitives, 'triangles'), sceneCost, mounted,
-    structure: `base: ${describe(base)} | barrel: ${describe(barrel)}` };
+    structure: `base: ${describe(base)} | barrel: ${describe(barrel)}`,
+    waterlineCount: Math.max(0,...nodes.map((node) => {
+      const raw=node.extras?.waterlineStations;
+      if (!raw) return 0;
+      try { const rows=typeof raw==='string'?JSON.parse(raw):raw;return Array.isArray(rows)?rows.length:0; }
+      catch { return 0; }
+    })) };
 }
 
 // Source-formula estimate, intentionally independent of renderer/canvas imports.
@@ -129,7 +136,7 @@ function procedural(spec) {
   const hull = (stations - 1) * (RING * 2) * 2;
   const deck = (stations - 1) * 2;
   const foam = 24 * 4;
-  const rail = 60 * 4;
+  const rail = railPlanCost(proceduralRailPlan(spec));
   return { hull, deck, foam, rail, triangles: hull + deck + foam + rail, calls: 4 };
 }
 
@@ -147,7 +154,7 @@ for (const asset of assets.values()) {
 }
 console.log(`Manifest unique GLB download: ${fmt(sum([...assets.values()], 'bytes'))} bytes (${assets.size} files; excludes manifest/network overhead).`);
 console.log('\nProcedural estimate: N=round(clamp(L/2,48,96)); S=N+1+2×interior sheer points.');
-console.log(`hull=(S-1)×(2×RING=${2 * RING})×2; deck=(S-1)×2; foam=24×4; rail=60×4; 4 single-pass calls.`);
+console.log(`hull=(S-1)×(2×RING=${2 * RING})×2; deck=(S-1)×2; foam=24×4; rail=actual 3-sided posts and two rails; 4 single-pass calls.`);
 console.log('源码公式快照：src/render/shipModel.ts；不导入 renderer，不创建 canvas。仅适用 GLB 替换成功后的静态整舰。');
 console.log('\nShips (current simulation specs; Blender secondary-layout drafts are not applied):');
 function budget(label, actual, limit) {
@@ -159,13 +166,17 @@ for (const spec of Object.values(SPECS)) {
   const superName = `ships/${spec.key}_super`;
   const island = assets.get(superName);
   const unique = new Set([superName, ...spec.tur.map((t) => `guns/${t.kind}`)]);
+  const visualHull=assets.get(`ships/${spec.key}_hull`);
+  if (visualHull) unique.add(visualHull.name);
   const missing = [...unique].filter((name) => !assets.has(name));
   if (missing.length) {
     issues.push(`${spec.key}: missing manifest assets ${missing.join(', ')}; whole-ship estimate unavailable`);
     console.log(`${spec.key}: INCOMPLETE (${missing.join(', ')})`);
     continue;
   }
-  const proc = procedural(spec);
+  const proc = visualHull ? {hull:0,deck:0,rail:0,foam:(visualHull.waterlineCount-1)*4,
+    triangles:(visualHull.waterlineCount-1)*4,calls:1} : procedural(spec);
+  if (visualHull && visualHull.waterlineCount<2) issues.push(`${spec.key}: visual hull lacks waterline metadata`);
   const counts = new Map();
   for (const mount of spec.tur) {
     if (!TS[mount.kind]) issues.push(`${spec.key}: unknown turret shape ${mount.kind}`);
@@ -174,9 +185,10 @@ for (const spec of Object.values(SPECS)) {
   }
   const guns = costSum(spec.tur.map((t) => assets.get(`guns/${t.kind}`).mounted));
   const bytes = sum([...unique].map((name) => assets.get(name)), 'bytes');
-  const total = island.sceneCost.triangles + guns.triangles + proc.triangles;
-  console.log(`${spec.key} ${spec.name} (${spec.cls}): uniqueDownload=${fmt(bytes)} bytes/${unique.size} GLBs; repeated GLB tri=${fmt(island.sceneCost.triangles + guns.triangles)} calls=${island.sceneCost.calls + guns.calls}`);
-  console.log(`  procedural ~${fmt(proc.triangles)} tri: hull=${proc.hull} deck=${proc.deck} foam=${proc.foam} rail=${proc.rail}; wholeShip ~${fmt(total)} tri / ${island.sceneCost.calls + guns.calls + proc.calls} calls`);
+  const hullCost=visualHull?.sceneCost ?? {triangles:0,calls:0};
+  const total = island.sceneCost.triangles + guns.triangles + hullCost.triangles + proc.triangles;
+  console.log(`${spec.key} ${spec.name} (${spec.cls}): uniqueDownload=${fmt(bytes)} bytes/${unique.size} GLBs; repeated GLB tri=${fmt(island.sceneCost.triangles + guns.triangles + hullCost.triangles)} calls=${island.sceneCost.calls + guns.calls + hullCost.calls}`);
+  console.log(`  ${visualHull ? `visual hull ${fmt(hullCost.triangles)} tri/${hullCost.calls} calls; ` : ''}procedural ~${fmt(proc.triangles)} tri: hull=${proc.hull} deck=${proc.deck} foam=${proc.foam} rail=${proc.rail}; wholeShip ~${fmt(total)} tri / ${island.sceneCost.calls + guns.calls + hullCost.calls + proc.calls} calls`);
   for (const [key, count] of counts) {
     const [role, kind] = key.split(':');
     const gun = assets.get(`guns/${kind}`).mounted;

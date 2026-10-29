@@ -1,12 +1,12 @@
 // The only interface between Blender and the game.
 //
-// Nothing imports this yet: it is inert until a .glb is dropped into public/models/. That is on
-// purpose - modelling decisions (what exists, where it sits, how big it is) are made in Blender and
-// in the ship data, not here. All this does is fetch, cache and hand back an Object3D, and stay
-// quiet when the file is not there.
+// Loaded on demand by ShipView. Geometry and layout come from Blender; the
+// optional visual hull carries its own waterline for matching foam. Missing
+// assets leave the procedural fallback visible.
 
 import * as THREE from 'three';
 import { hasModel } from './models';
+import { waterlineFromModel, type WaterlineStation } from './visualHull';
 
 // GLTFLoader is heavy and most sessions will never need it, so it is pulled in on first use.
 let loaderPromise: Promise<import('three/examples/jsm/loaders/GLTFLoader.js').GLTFLoader> | null = null;
@@ -76,9 +76,27 @@ export async function overrideSuperstructure(
 ): Promise<boolean> {
   const obj = await loadModel(`ships/${key}_super`);
   if (!obj) return false;
+  obj.userData.overrideRole = 'superstructure';
   for (const m of hide) m.visible = false;
   group.add(obj);
   return true;
+}
+
+/** Optional full visual hull; collision and weapon mounts stay in simulation coordinates. */
+export async function overrideHull(
+  key: string,
+  group: THREE.Object3D,
+  hide: THREE.Object3D[],
+): Promise<WaterlineStation[] | null> {
+  const obj = await loadModel(`ships/${key}_hull`);
+  if (!obj) return null;
+  const waterline = waterlineFromModel(obj);
+  // A partial/malformed asset must not hide the usable procedural fallback.
+  if (!waterline) return null;
+  obj.userData.overrideRole = 'hull';
+  for (const mesh of hide) mesh.visible = false;
+  group.add(obj);
+  return waterline;
 }
 
 /**

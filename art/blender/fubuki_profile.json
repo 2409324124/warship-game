@@ -1,0 +1,20 @@
+{
+  "status": "BLENDER_PREVIEW_ONLY_NOT_GAME_GEOMETRY",
+  "target": "Fubuki Type I, post-reconstruction silhouette interpreted for a 1942 game asset",
+  "length": 118,
+  "beam": 10.4,
+  "draft": 3.2,
+  "deck": [[0,2.25],[0.14,2.35],[0.60,2.35],[0.618,2.35],[0.622,4.05],[0.76,4.15],[0.9,4.40],[1,4.65]],
+  "halfBreadth": [[0,0.10],[0.02,0.32],[0.06,0.66],[0.14,0.92],[0.25,1],[0.50,1],[0.62,0.96],[0.70,0.87],[0.78,0.72],[0.85,0.53],[0.9,0.36],[0.95,0.18],[1,0]],
+  "waterlineRatio": [[0,0.85],[0.25,0.97],[0.60,0.96],[0.80,0.82],[0.90,0.70],[1,0.58]],
+  "sectionPower": [[0,0.55],[0.2,0.38],[0.60,0.40],[0.8,0.60],[1,0.85]],
+  "forefootStart": 0.80,
+  "rakeStart": 0.83,
+  "waterlineSetback": 1.05,
+  "stemCurvature": 0.30,
+  "lowerLevels": [0,0.025,0.10,0.25,0.45,0.7,1],
+  "upperLevels": [0.18,0.40,0.65,0.85,1],
+  "budgetHullDeck": 5000,
+  "budgetWholePreview": 18000,
+  "note": "Visual freeboard is intentionally lower than the original generic game reference. Gun x/z, yaw and deck-relative offsets are retained, but absolute preview heights follow this deck. No simulation or collision edits."
+}

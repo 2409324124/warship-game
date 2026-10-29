@@ -24,6 +24,8 @@ export interface Turret {
   /** Traverse rate, radians per second. */
   trav: number;
   reload: number;
+  /** Actual duration assigned to the current reload, for per-mount HUD progress. */
+  reloadTotal: number;
   onTarget: boolean;
   inArc: boolean;
   elev: number;
@@ -156,12 +158,13 @@ export class Ship {
         z: t.z,
         home: t.face,
         rel: t.face,
-        arc: (t.sec ? 80 : side ? 100 : 148) * DEG,
+        arc: (TS[t.kind].traverseArc ?? (t.sec ? 80 : side ? 100 : 148)) * DEG,
         sec: t.sec,
         ts: TS[t.kind],
         gun,
         trav: gun.trav * DEG * (t.sec ? 1.5 : 1),
         reload: rand(0.2, 1.5),
+        reloadTotal: gun.reload,
         onTarget: false,
         inArc: false,
         elev: 0,

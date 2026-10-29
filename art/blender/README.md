@@ -3,9 +3,17 @@
 > **更新说明**：本文下方保留早期交接上下文，其中“没有模型／覆盖接口未接线”已过时。
 > 当前可重复构建与验收见 `RESCUE.md`；华盛顿号舰岛精修见 `WASHINGTON_REFINEMENT.md`。
 > 最新武器精修、核显预算和**尚未接入游戏**的副炮布局稿见 `WEAPONS_AND_BATTERY.md`。
+> 华盛顿已认可线型基线 `checkpoint_15_washington_bottom_refined.blend` 保留，见 `WASHINGTON_BOW.md`；其游戏接入已在最新轮次完成。`checkpoint_13` 为船底修复前基线。
+> 吹雪认可稿为 `checkpoint_17_fubuki_refined.blend`，详见 `FUBUKI_REFINEMENT.md`。独立 `jp_dd_refined` 集合，**尚未接入游戏**，原华盛顿基线不覆盖。
+> 雾岛1942坐标占位图：`checkpoint_18_kirishima_layout_blockout.blend`，见 `KIRISHIMA_1942_PLAN.md`。独立 `jp_bb_kiri_draft` 集合，只有占位块与标签，**先核布局再建模**。
+> 主炮测距仪认可版：`checkpoint_21_kirishima_optics_and_island.blend`，见 `KIRISHIMA_OPTICS_AND_ISLAND.md`。主炮已更新到游戏，舰岛为独立 Blender 稿。
+> 粗壮舰岛稿：`checkpoint_23_kirishima_robust_upperworks.blend`，见 `KIRISHIMA_ROBUST_UPPERWORKS.md`。舰岛加粗、烟囱间桅杆和12个有塔座的防空炮位保留。
+> **最新且已接入游戏**：`checkpoint_25_kirishima_game_ready.blend`，见 `KIRISHIMA_GAME_INTEGRATION.md`。炮廓有真实凹室，新船壳/甲板/舰岛整体替换，主炮最高45°。
+> **当前游戏集成**：`checkpoint_31_destroyers_game_integrated.blend`。弗莱彻30版与吹雪17版已接入，六舰型当前选定模型均可在游戏使用，21项GLB清单。见 `GAME_MODELS_FIRE_AND_OCEAN.md`，同时记录炮火/炮声、实时海面/爆压及广角镜头的实现和验证。
+> 弗莱彻认可原稿保留为 `checkpoint_30_fletcher_guns_and_bridge.blend`；其原先未接入限制由31版同步甲板/挂点解决。其余四舰此前选定版本保留，不将历史布局草稿叠加到现用模型。
 
 给在 Blender 里干活的人（人或 AI）看的交接文档。
-**当前状态：工作区是空的——一个模型都还没有。** 下面是"进来之前必须知道的"和"进来之后要做的"。
+**下方是早期建模约定，当前进度以顶部最新存档与说明为准。**
 
 ---
 

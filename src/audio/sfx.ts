@@ -1,208 +1,498 @@
-// Procedural audio: no samples, everything is synthesised. A gun is a noise burst through a
-// sweeping low-pass; an incoming shell is a descending whistle; the sea is filtered noise.
+// Navy Mk45 recording (CC BY 3.0) + original game-designed pressure reinforcement.
+// Source, license and processing: public/audio/ATTRIBUTION.md. Not a 16-inch recording.
+// All times (including rate limits) use the audio clock, so pausing a tab cannot
+// accumulate a wall-clock backlog of scheduled salvos.
+type VoiceKind = 'heavy' | 'light' | 'impact' | 'incoming' | 'utility';
+type Source = AudioBufferSourceNode | OscillatorNode;
+interface Voice {
+  kind: VoiceKind;
+  bus: GainNode;
+  nodes: AudioNode[];
+  sources: Set<Source>;
+  charge?: number;
+}
 
-const CLIP_GAIN: Record<string, number> = {
-  gunS: 0.5,
-  gunM: 0.62,
-  gunL: 0.78,
-  gunXL: 1.0,
-  splash: 0.55,
-  hit: 0.7,
-  boom: 0.9,
-  whistle: 0.4,
-};
+export interface GunOptions { barrels?: number; secondary?: boolean }
+
+const LIMITS: Record<VoiceKind, number> = { heavy: 24, light: 12, impact: 6, incoming: 2, utility: 2 };
+const FLOOR = 0.0001;
+const PRESSURE_MODES = [[67, .38, 1], [103, .28, .65], [163, .19, .45]] as const;
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const caliber = (cal: number) => Math.max(0, Math.min(1, ((Number.isFinite(cal) ? cal : 127) - 76) / 384));
 
 export class Sfx {
   ctx: AudioContext | null = null;
-  private master: GainNode | null = null;
-  private noise: AudioBuffer | null = null;
   muted = false;
+  private master: GainNode | null = null;
+  private mix: GainNode | null = null;
+  private noise: AudioBuffer | null = null;
+  private graph: AudioNode[] = [];
+  private ambience: AudioBufferSourceNode | null = null;
+  private voices = new Set<Voice>();
   private last = new Map<string, number>();
+  private resuming = false;
+  private reports = new Map<string, AudioBuffer>();
+  private gunSequence = 0;
+  private recording: AudioBuffer | null = null;
+  private preparing: Promise<boolean> | null = null;
+  private loadAbort: AbortController | null = null;
+  private attempts = 0;
+  private retryAfter = 0;
+  private recordedShots = 0;
+  private fallbackShots = 0;
+  private foldedShots = 0;
 
+  /** Nonblocking init also preloads; callers may await this for audio-only QA.
+   * At most 3 attempts per lifecycle, >=5s between failures. Never called by gun(). */
+  prepare(): Promise<boolean> {
+    this.init();
+    return this.preparing ?? Promise.resolve(!!this.recording);
+  }
+
+  stats() {
+    return { loaded: !!this.recording, loading: !!this.preparing, attempts: this.attempts,
+      recorded: this.recordedShots, fallback: this.fallbackShots, folded: this.foldedShots,
+      active: this.voices.size, cachedReports: this.reports.size };
+  }
+
+  private loadRecording(): void {
+    const ctx = this.ctx;
+    if (!ctx || this.recording || this.preparing || this.attempts >= 3 || Date.now() < this.retryAfter) return;
+    this.attempts++;
+    const abort = new AbortController();
+    this.loadAbort = abort;
+    // Timeout bounds fetch; decode promises are guarded against disposal/reinit.
+    const timer = setTimeout(() => abort.abort(), 4000);
+    const pending = (async () => {
+      try {
+        const response = await fetch('/audio/navy-mk45-report.wav', { signal: abort.signal });
+        if (!response.ok) throw new Error(`Audio HTTP ${response.status}`);
+        const bytes = await response.arrayBuffer();
+        if (bytes.byteLength > 1024 * 1024) throw new Error('Oversized audio asset');
+        const buffer = await ctx.decodeAudioData(bytes);
+        if (this.ctx !== ctx || abort.signal.aborted) return false;
+        if (buffer.duration < 2 || buffer.duration > 3 || buffer.numberOfChannels < 1) throw new Error('Invalid report');
+        this.recording = buffer;
+        this.reports.clear(); // replace cached fallback reports as soon as ready
+        return true;
+      } catch {
+        if (this.ctx === ctx) this.retryAfter = Date.now() + 5000;
+        return false;
+      } finally {
+        clearTimeout(timer);
+        if (this.loadAbort === abort) this.loadAbort = null;
+      }
+    })();
+    this.preparing = pending;
+    void pending.finally(() => { if (this.preparing === pending) this.preparing = null; });
+  }
+
+  /** Call from a user gesture; subsequent calls also retry autoplay unlocking. */
   init(): void {
-    if (this.ctx) return;
-    const AC: typeof AudioContext =
-      (window as unknown as { AudioContext: typeof AudioContext; webkitAudioContext: typeof AudioContext }).AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    if (!AC) return;
-    const ctx = new AC();
-    this.ctx = ctx;
-    const master = ctx.createGain();
-    master.gain.value = 0.6;
-    const comp = ctx.createDynamicsCompressor();
-    comp.threshold.value = -16;
-    comp.ratio.value = 8;
-    master.connect(comp);
-    comp.connect(ctx.destination);
-    this.master = master;
+    if (this.ctx?.state === 'closed') this.dispose();
+    if (!this.ctx) {
+      if (typeof window === 'undefined') return;
+      const host = window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
+      const AC = host.AudioContext || host.webkitAudioContext;
+      if (!AC) return;
+      try {
+        const ctx = new AC();
+        this.ctx = ctx;
+        const mix = ctx.createGain();
+        const hp = ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.value = 24; // remove DC / inaudible rumble before compression
+        hp.Q.value = 0.707;
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -6;
+        comp.knee.value = 6;
+        comp.ratio.value = 2;
+        comp.attack.value = 0.008;
+        comp.release.value = 0.3;
+        // Compressor attack alone cannot contain coincident muzzle transients.
+        // Scale the WaveShaper input domain to +/-4: WebAudio clamps inputs
+        // outside +/-1, otherwise a normal salvo would hit a hard flat endpoint
+        // despite the ostensibly soft tanh curve. Low-level gain remains unity.
+        const ceilingInput = ctx.createGain();
+        ceilingInput.gain.value = 0.25;
+        const ceiling = ctx.createWaveShaper();
+        const curve = new Float32Array(4097);
+        for (let i = 0; i < curve.length; i++) {
+          const x = i / (curve.length - 1) * 2 - 1;
+          // Nearly linear below the safety knee; do not flatten every report.
+          curve[i] = 0.8 * Math.tanh(x * 4 / 0.8);
+        }
+        ceiling.curve = curve;
+        const master = ctx.createGain();
+        master.gain.value = this.muted ? 0 : 0.72;
+        this.graph = [mix, hp, comp, ceilingInput, ceiling, master];
+        mix.connect(hp); hp.connect(comp); comp.connect(ceilingInput); ceilingInput.connect(ceiling);
+        ceiling.connect(master); master.connect(ctx.destination);
+        this.mix = mix;
+        this.master = master;
 
-    const len = ctx.sampleRate * 2;
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-    this.noise = buf;
+        const len = Math.ceil(ctx.sampleRate * 4);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+        this.noise = buf;
+        const sea = ctx.createBufferSource();
+        const lp = ctx.createBiquadFilter();
+        const bed = ctx.createGain();
+        sea.buffer = buf; sea.loop = true;
+        lp.type = 'lowpass'; lp.frequency.value = 380; lp.Q.value = 0.5;
+        bed.gain.value = 0.008;
+        this.ambience = sea;
+        this.graph.push(sea, lp, bed);
+        sea.connect(lp); lp.connect(bed); bed.connect(mix);
+        sea.start();
+      } catch {
+        // Unsupported / unavailable audio must not prevent starting the game.
+        this.dispose();
+        return;
+      }
+    }
+    this.unlock();
+    this.loadRecording();
+  }
 
-    // a low bed of sea noise
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    src.loop = true;
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.value = 420;
-    const g = ctx.createGain();
-    g.gain.value = 0.05;
-    src.connect(lp);
-    lp.connect(g);
-    g.connect(master);
-    src.start();
+  private unlock(): void {
+    const ctx = this.ctx;
+    if (!ctx || ctx.state === 'running' || ctx.state === 'closed' || this.resuming) return;
+    this.resuming = true;
+    try {
+      void ctx.resume().catch(() => {}).finally(() => {
+        if (this.ctx === ctx) this.resuming = false;
+      });
+    } catch { this.resuming = false; }
   }
 
   setMuted(m: boolean): void {
     this.muted = m;
-    if (this.master) this.master.gain.value = m ? 0 : 0.6;
+    if (!m) this.unlock();
+    if (this.master && this.ctx) {
+      const p = this.master.gain;
+      const now = this.ctx.currentTime;
+      p.cancelScheduledValues(now);
+      p.setValueAtTime(p.value, now);
+      p.linearRampToValueAtTime(m ? 0 : 0.72, now + 0.025);
+    }
+    if (m) {
+      // Do not resurrect delayed shots when sound is re-enabled.
+      for (const voice of this.voices) {
+        const now = this.ctx!.currentTime;
+        voice.bus.gain.cancelScheduledValues(now);
+        voice.bus.gain.setValueAtTime(voice.bus.gain.value, now);
+        voice.bus.gain.linearRampToValueAtTime(0, now + 0.025);
+        for (const source of voice.sources) source.stop(now + 0.03);
+      }
+      this.last.clear();
+    }
   }
 
-  private env(dist: number): { gain: number; pan: number; delay: number } {
-    const d = Math.max(60, dist);
-    const gain = Math.min(1, 900 / d) ** 1.25;
-    return { gain, pan: 0, delay: Math.min(1.4, d / 340) };
-  }
-
-  private burst(
-    t0: number,
-    dur: number,
-    f0: number,
-    f1: number,
-    vol: number,
-    type: BiquadFilterType,
-    q = 1,
-    rate = 1,
-  ): void {
+  /** Optional lifecycle hook; safe to call repeatedly, and init() can start anew. */
+  dispose(): void {
+    this.loadAbort?.abort();
+    this.loadAbort = null;
+    this.preparing = null;
+    this.recording = null;
+    this.attempts = this.retryAfter = 0;
+    this.recordedShots = this.fallbackShots = this.foldedShots = 0;
+    for (const voice of [...this.voices]) this.release(voice, true);
+    if (this.ambience) { try { this.ambience.stop(); } catch { /* already stopped */ } }
+    for (const node of this.graph) node.disconnect();
     const ctx = this.ctx;
-    if (!ctx || !this.master || !this.noise || this.muted) return;
+    this.ctx = null;
+    this.master = this.mix = this.noise = this.ambience = null;
+    this.graph = [];
+    this.last.clear();
+    this.reports.clear();
+    this.gunSequence = 0;
+    this.resuming = false;
+    if (ctx && ctx.state !== 'closed') {
+      try { void ctx.close().catch(() => {}); } catch { /* context unavailable */ }
+    }
+  }
+
+  private env(dist: number): { gain: number; delay: number; far: number } {
+    const d = Number.isFinite(dist) ? Math.max(0, dist) : 30000;
+    return {
+      gain: (1 + Math.max(0, d - 100) / 850) ** -1.15,
+      // Deliberately game-compressed propagation; retain existing responsive timing.
+      delay: Math.min(0.55, d / 340 * 0.35),
+      far: Math.min(1, d / 6500),
+    };
+  }
+
+  private begin(kind: VoiceKind, key: string, interval: number): Voice | null {
+    const ctx = this.ctx;
+    // Drop events while locked/suspended instead of replaying a backlog on resume.
+    if (!ctx || ctx.state !== 'running' || this.muted || !this.mix) return null;
+    const now = ctx.currentTime;
+    const previous = this.last.get(key);
+    if (interval > 0 && previous !== undefined && now - previous < interval) return null;
+    if (this.voices.size >= 46 || [...this.voices].filter(v => v.kind === kind).length >= LIMITS[kind]) return null;
+    this.last.set(key, now);
+    const bus = ctx.createGain();
+    bus.gain.value = 1;
+    bus.connect(this.mix);
+    const voice: Voice = { kind, bus, nodes: [bus], sources: new Set() };
+    this.voices.add(voice);
+    return voice;
+  }
+
+  private release(voice: Voice, stop = false): void {
+    if (!this.voices.delete(voice)) return;
+    for (const source of voice.sources) {
+      source.onended = null;
+      if (stop) { try { source.stop(); } catch { /* already ended */ } }
+    }
+    voice.sources.clear();
+    for (const node of voice.nodes) node.disconnect();
+  }
+
+  private schedule(voice: Voice, source: Source, nodes: AudioNode[], t0: number, dur: number): void {
+    voice.nodes.push(source, ...nodes);
+    voice.sources.add(source);
+    source.onended = () => {
+      source.onended = null;
+      source.disconnect();
+      for (const node of nodes) node.disconnect();
+      voice.sources.delete(source);
+      if (!voice.sources.size) this.release(voice);
+    };
+    if ('buffer' in source) source.start(t0, source.loop ? Math.random() * 3 : 0);
+    else source.start(t0);
+    source.stop(t0 + dur + 0.015);
+  }
+
+  private envelope(g: GainNode, t0: number, dur: number, vol: number, attack: number, tail = false): void {
+    g.gain.setValueAtTime(FLOOR, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(FLOOR, vol), t0 + attack);
+    // A single ramp to near-zero made a nominal two-second tail effectively
+    // vanish in its first half. Keep the diffuse report audible before release.
+    if (tail) g.gain.exponentialRampToValueAtTime(Math.max(FLOOR, vol * 0.22), t0 + dur * 0.65);
+    g.gain.exponentialRampToValueAtTime(FLOOR, t0 + dur);
+  }
+
+  private burst(v: Voice, t0: number, dur: number, f0: number, f1: number, vol: number,
+    type: BiquadFilterType = 'lowpass', q = 0.7, attack = 0.004, tail = false): void {
+    const ctx = this.ctx!;
     const s = ctx.createBufferSource();
     s.buffer = this.noise;
-    s.playbackRate.value = rate;
+    s.loop = true; // random offsets must not truncate the long heavy-gun tail
     const f = ctx.createBiquadFilter();
-    f.type = type;
-    f.Q.value = q;
+    f.type = type; f.Q.value = q;
     f.frequency.setValueAtTime(f0, t0);
-    f.frequency.exponentialRampToValueAtTime(Math.max(40, f1), t0 + dur);
+    f.frequency.exponentialRampToValueAtTime(f1, t0 + dur);
     const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), t0 + Math.min(0.02, dur * 0.1));
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    s.connect(f);
-    f.connect(g);
-    g.connect(this.master);
-    s.start(t0);
-    s.stop(t0 + dur + 0.05);
+    this.envelope(g, t0, dur, vol, attack, tail);
+    s.connect(f); f.connect(g); g.connect(v.bus);
+    this.schedule(v, s, [f, g], t0, dur);
   }
 
-  private tone(t0: number, dur: number, f0: number, f1: number, vol: number, type: OscillatorType = 'sine'): void {
-    const ctx = this.ctx;
-    if (!ctx || !this.master || this.muted) return;
+  private tone(v: Voice, t0: number, dur: number, f0: number, f1: number, vol: number,
+    type: OscillatorType = 'sine', attack = 0.006): void {
+    const ctx = this.ctx!;
     const o = ctx.createOscillator();
     o.type = type;
     o.frequency.setValueAtTime(f0, t0);
-    o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur);
+    o.frequency.exponentialRampToValueAtTime(f1, t0 + dur);
     const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), t0 + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    o.connect(g);
-    g.connect(this.master);
-    o.start(t0);
-    o.stop(t0 + dur + 0.05);
+    this.envelope(g, t0, dur, vol, attack);
+    o.connect(g); g.connect(v.bus);
+    this.schedule(v, o, [g], t0, dur);
   }
 
-  /** Rate-limit so a nine-gun salvo does not blow the mix apart. */
-  private throttle(key: string, ms: number): boolean {
-    const now = performance.now();
-    const prev = this.last.get(key) || 0;
-    if (now - prev < ms) return false;
-    this.last.set(key, now);
-    return true;
+  /** Recorded identity at native pitch; BB is explicitly a game-designed composite.
+   * No long synthetic noise tail on the recorded path. A few short damped modes
+   * add limited low/mid pressure, leaving the recorded onset and decay dominant. */
+  private report(k: number, barrels: number, secondary: boolean): AudioBuffer {
+    if (this.recording) return this.recordedReport(k, secondary);
+    return this.fallbackReport(k, barrels, secondary);
   }
 
-  gun(cal: number, dist: number, own: boolean): void {
-    if (!this.ctx || this.muted) return;
-    if (!this.throttle('gun' + cal + own, 30)) return;
-    const { gain, delay } = this.env(dist);
-    const k = cal / 406;
-    const t0 = this.ctx.currentTime + delay * 0.35;
-    const vol = (own ? 0.55 : 0.3) * gain * lerp(0.5, 1, k);
-    this.burst(t0, 0.5 + k * 0.9, 260 * lerp(1.6, 0.5, k), 40, vol, 'lowpass', 0.8, 0.9);
-    this.burst(t0, 0.12, 1800, 400, vol * 0.7, 'bandpass', 0.7, 1.2);
-    this.tone(t0, 0.35 + k * 0.5, 90 * lerp(1.4, 0.6, k), 28, vol * 0.9, 'triangle');
+  private recordedReport(k: number, secondary: boolean): AudioBuffer {
+    const ctx = this.ctx!;
+    const heavy = k >= 0.48 && !secondary;
+    const size = Math.round(k * 8);
+    const variant = this.gunSequence++ % 4;
+    const key = `recorded:${size}:${secondary}:${variant}`;
+    const cached = this.reports.get(key);
+    if (cached) return cached;
+    const original = this.recording!.getChannelData(0);
+    const duration = heavy ? this.recording!.duration : secondary ? 0.52 : lerp(0.75, 1.15, k);
+    const length = Math.min(original.length, Math.ceil(duration * ctx.sampleRate));
+    const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
+    const pressure = new Float32Array(length);
+    if (heavy) for (let i = 0; i < length; i++) {
+      const t = i / ctx.sampleRate;
+      let value = 0;
+      for (const [f, decay, strength] of PRESSURE_MODES) {
+        value += Math.sin(2 * Math.PI * f * t) * Math.exp(-t / decay) * strength;
+      }
+      pressure[i] = value * 0.055 * k * (1 - Math.exp(-t / .006));
+    }
+    for (let channel = 0; channel < 2; channel++) {
+      const out = buffer.getChannelData(channel);
+      const offset = Math.round((channel ? .041 : .029) * ctx.sampleRate);
+      for (let i = 0; i < length; i++) {
+        const t = i / ctx.sampleRate;
+        // Native pitch and timing, only +/-3% gain variation. Direct onset centered.
+        const dry = original[i] * (0.94 + variant * 0.02);
+        const fade = Math.min(1, (length - 1 - i) / (ctx.sampleRate * (heavy ? .12 : .18)));
+        // Very quiet late crossfeed gives stereo space without duplicating the blast.
+        const reflection = heavy && t > .15 && i >= offset
+          ? original[i - offset] * .035 * Math.min(1, (t - .15) / .025) : 0;
+        out[i] = (dry + pressure[i] + reflection) * fade;
+      }
+    }
+    if (this.reports.size >= 32) this.reports.delete(this.reports.keys().next().value!);
+    this.reports.set(key, buffer);
+    return buffer;
+  }
+
+  /** Procedural compatibility fallback only while unavailable; never fetched on fire. */
+  private fallbackReport(k: number, barrels: number, secondary: boolean): AudioBuffer {
+    const variant = this.gunSequence++ % 4;
+    const size = Math.round(k * 8);
+    const key = `${size}:${barrels}:${secondary}:${variant}`;
+    const cached = this.reports.get(key);
+    if (cached) return cached;
+    const ctx = this.ctx!;
+    const weight = size / 8;
+    const heavy = weight >= 0.48 && !secondary;
+    const duration = heavy ? lerp(2.2, 3.1, weight) : lerp(0.32, 0.85, weight);
+    const length = Math.ceil(duration * ctx.sampleRate);
+    const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
+    const dry = new Float32Array(length);
+    let seed = (173 + size * 7919 + variant * 104729 + barrels * 31) >>> 0;
+    const random = () => { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 2147483648 - 1; };
+    const a = [65, 180, 480, 1800].map(f => 1 - Math.exp(-2 * Math.PI * f / ctx.sampleRate));
+    // Each barrel has its own turbulent pressure history and 4–14ms separation.
+    for (let barrel = 0; barrel < barrels; barrel++) {
+      const offset = Math.floor((barrel * 0.009 + (random() + 1) * 0.002) * ctx.sampleRate);
+      const state = [0, 0, 0, 0];
+      let roll = 0;
+      for (let i = offset; i < length; i++) {
+        const t = (i - offset) / ctx.sampleRate;
+        const n = random();
+        for (let j = 0; j < 4; j++) state[j] += a[j] * (n - state[j]);
+        roll += 0.0018 * (random() - roll);
+        const attack = 1 - Math.exp(-t / 0.002);
+        const body = (state[1] - state[0]) * 4.8 + (state[2] - state[1]) * 2.5;
+        const crack = (n - state[3]) * Math.exp(-t / (heavy ? 0.026 : 0.016));
+        const blast = body * Math.exp(-t / (heavy ? 0.3 : 0.065));
+        const rolling = ((state[1] - state[0]) * 5 + (state[2] - state[1]) * 1.8)
+          * (0.7 + Math.min(0.6, Math.abs(roll) * 14))
+          * (1 - Math.exp(-t / 0.055)) * Math.exp(-t / (heavy ? 0.85 : 0.12));
+        const fade = Math.min(1, (length - i) / (ctx.sampleRate * 0.12));
+        dry[i] += attack * fade * (0.44 * crack + blast + (heavy ? 0.9 : 0.28) * rolling)
+          / Math.sqrt(barrels);
+      }
+    }
+    for (let channel = 0; channel < 2; channel++) {
+      const out = buffer.getChannelData(channel);
+      const taps = (heavy ? [0.093, 0.191, 0.347, 0.61] : [0.054, 0.113])
+        .map(t => Math.floor((t + channel * 0.013) * ctx.sampleRate));
+      for (let i = 0; i < length; i++) {
+        let value = dry[i];
+        for (let j = 0; j < taps.length; j++) if (i >= taps[j]) value += dry[i - taps[j]] * 0.22 / (1 + j * 0.45);
+        // Fixed gain preserves powder/voice energy instead of peak-normalizing it away.
+        out[i] = value * 0.48 * Math.min(1, (length - 1 - i) / (ctx.sampleRate * 0.1));
+      }
+    }
+    // Bounded LRU-ish cache (~32 stereo reports maximum); live sources own buffers.
+    if (this.reports.size >= 32) this.reports.delete(this.reports.keys().next().value!);
+    this.reports.set(key, buffer);
+    return buffer;
+  }
+
+  gun(cal: number, dist: number, own: boolean, options: GunOptions = {}): void {
+    const k = caliber(cal);
+    const secondary = options.secondary === true;
+    const barrels = Number.isFinite(options.barrels) ? Math.max(1, Math.min(4, Math.round(options.barrels!))) : 1;
+    const heavy = k >= 0.48 && !secondary;
+    const kind = heavy ? 'heavy' : 'light';
+    const v = this.begin(kind, `${kind}:${own}`, 0);
+    const { gain, delay, far } = this.env(dist);
+    const level = gain * (own ? 0.58 : 0.4) * (secondary ? 0.32 : lerp(0.48, 1, k)) * Math.sqrt(barrels);
+    if (!v) {
+      // Overload folds powder energy into the nearest active battery rather than
+      // allocating indefinitely. Normal salvos retain all 24 independent turrets.
+      if (!this.ctx || this.ctx.state !== 'running' || this.muted) return;
+      const target = [...this.voices].filter(v => v.kind === kind).at(-1);
+      if (target) {
+        this.foldedShots++;
+        target.charge = Math.min(4, (target.charge ?? 1) + level * level);
+        target.bus.gain.setTargetAtTime(Math.sqrt(target.charge), this.ctx.currentTime, 0.008);
+      }
+      return;
+    }
+    const ctx = this.ctx!;
+    const t = ctx.currentTime + delay + 0.003 + Math.random() * 0.018;
+    const source = ctx.createBufferSource();
+    source.buffer = this.report(k, barrels, secondary);
+    if (this.recording) this.recordedShots++;
+    else this.fallbackShots++;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = lerp(12500, 1600, far); filter.Q.value = 0.5;
+    const volume = ctx.createGain(); volume.gain.value = level;
+    source.connect(filter); filter.connect(volume); volume.connect(v.bus);
+    this.schedule(v, source, [filter, volume], t, source.buffer.duration);
   }
 
   splash(cal: number, dist: number): void {
-    if (!this.ctx || this.muted) return;
-    if (!this.throttle('splash', 40)) return;
+    const v = this.begin('impact', 'splash', 0.065);
+    if (!v) return;
     const { gain, delay } = this.env(dist);
-    const t0 = this.ctx.currentTime + delay * 0.35;
-    this.burst(t0, 0.55, 900, 120, 0.35 * gain * CLIP_GAIN.splash * lerp(0.6, 1.2, cal / 406), 'bandpass', 0.6);
+    this.burst(v, this.ctx!.currentTime + delay, lerp(0.4, 0.85, caliber(cal)),
+      1400, 180, 0.27 * gain, 'bandpass', 0.55, 0.012);
   }
 
   hit(cal: number, dist: number): void {
-    if (!this.ctx || this.muted) return;
-    if (!this.throttle('hit', 45)) return;
+    const v = this.begin('impact', 'hit', 0.065);
+    if (!v) return;
     const { gain, delay } = this.env(dist);
-    const t0 = this.ctx.currentTime + delay * 0.35;
-    const k = cal / 406;
-    this.burst(t0, 0.32, 420, 70, 0.5 * gain * lerp(0.5, 1.2, k), 'lowpass', 0.9);
-    this.tone(t0, 0.22, 160, 50, 0.35 * gain * lerp(0.5, 1.2, k), 'square');
+    const t = this.ctx!.currentTime + delay;
+    const level = gain * lerp(0.25, 0.48, caliber(cal));
+    this.burst(v, t, 0.09, 2800, 650, level, 'bandpass');
+    this.burst(v, t, 0.45, 680, 85, level);
+    this.tone(v, t + 0.006, 0.24, 190, 58, level * 0.45, 'triangle');
   }
 
   explode(big: boolean, dist: number): void {
-    if (!this.ctx || this.muted) return;
+    const v = this.begin('impact', 'explode', big ? 0.18 : 0.1);
+    if (!v) return;
     const { gain, delay } = this.env(dist);
-    const t0 = this.ctx.currentTime + delay * 0.5;
-    const k = big ? 1.5 : 1;
-    this.burst(t0, 1.5 * k, 220, 32, 0.9 * gain * k, 'lowpass', 0.7, 0.85);
-    this.burst(t0, 0.2, 1400, 300, 0.5 * gain * k, 'bandpass', 0.5);
-    this.tone(t0, 1.1 * k, 70, 22, 0.7 * gain * k, 'triangle');
+    const t = this.ctx!.currentTime + delay;
+    const k = big ? 1 : 0.65;
+    this.burst(v, t, 0.16, 1700, 350, 0.32 * gain);
+    this.burst(v, t + 0.01, 2.1 * k, 440, 45, 0.65 * gain * k, 'lowpass', 0.6, 0.012);
+    this.tone(v, t, 0.85 * k, 83, 27, 0.5 * gain * k);
   }
 
-  /** The shell passing overhead, started so the whistle ends when she lands. */
   incoming(cal: number, flightLeft: number): void {
-    if (!this.ctx || this.muted) return;
-    if (!this.throttle('incoming', 150)) return;
-    const dur = Math.max(0.4, Math.min(2.6, flightLeft));
-    const t0 = this.ctx.currentTime;
-    const k = cal / 406;
-    const o = this.ctx.createOscillator();
-    o.type = 'sawtooth';
-    o.frequency.setValueAtTime(lerp(1500, 700, k), t0);
-    o.frequency.exponentialRampToValueAtTime(lerp(500, 240, k), t0 + dur);
-    const bp = this.ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.Q.value = 6;
-    bp.frequency.value = lerp(1100, 620, k);
-    const g = this.ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(0.16 * CLIP_GAIN.whistle, t0 + dur * 0.7);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    o.connect(bp);
-    bp.connect(g);
-    g.connect(this.master!);
-    o.start(t0);
-    o.stop(t0 + dur + 0.05);
+    if (!Number.isFinite(flightLeft) || flightLeft <= 0) return;
+    const v = this.begin('incoming', 'incoming', 0.22);
+    if (!v) return;
+    const dur = Math.min(2.6, flightLeft);
+    const k = caliber(cal);
+    // No artificial minimum 0.4s: a late warning must not continue past impact.
+    this.burst(v, this.ctx!.currentTime, dur, lerp(1900, 1150, k),
+      lerp(650, 360, k), 0.065, 'bandpass', 3, dur * 0.65);
   }
 
   torpedo(): void {
-    if (!this.ctx || this.muted) return;
-    const t0 = this.ctx.currentTime;
-    this.burst(t0, 0.6, 700, 120, 0.25, 'bandpass', 0.8);
+    const v = this.begin('utility', 'torpedo', 0.15);
+    if (v) this.burst(v, this.ctx!.currentTime, 0.55, 700, 120, 0.2, 'bandpass', 0.8, 0.012);
   }
 
   alarm(): void {
-    if (!this.ctx || this.muted) return;
-    const t0 = this.ctx.currentTime;
-    this.tone(t0, 0.18, 880, 660, 0.18, 'square');
-    this.tone(t0 + 0.24, 0.18, 880, 660, 0.18, 'square');
+    const v = this.begin('utility', 'alarm', 0.8);
+    if (!v) return;
+    const t = this.ctx!.currentTime;
+    this.tone(v, t, 0.18, 880, 660, 0.1, 'triangle');
+    this.tone(v, t + 0.24, 0.18, 880, 660, 0.1, 'triangle');
   }
 }
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;

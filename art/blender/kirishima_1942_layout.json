@@ -1,0 +1,55 @@
+{
+  "status": "BLENDER_LAYOUT_BLOCKOUT_ONLY_NOT_GAME_GEOMETRY",
+  "identity": "IJN Kirishima, Kongō class fast battleship, Guadalcanal November 1942 (game-oriented interpretation)",
+  "frame": {
+    "origin": "hull centre at the waterline",
+    "x": "positive to port, negative to starboard",
+    "y": "up from the waterline; deckOffset is above the local deck, absolute y = deckY(z) + deckOffset",
+    "z": "positive toward the bow",
+    "blender": "(x, y, z) -> (x, -z, y)",
+    "length": 222,
+    "beam": 31,
+    "note": "Dimensions follow the existing simulation spec. No measured body plan is available."
+  },
+  "zones": [
+    { "id": "BOW", "z": [82, 111] },
+    { "id": "FORE_BATTERY", "z": [52, 82] },
+    { "id": "FORE_SUPER", "z": [28, 52] },
+    { "id": "MIDSHIPS", "z": [-10, 28] },
+    { "id": "AFT_CONTROL", "z": [-32, -10] },
+    { "id": "AFT_BATTERY", "z": [-75, -32] },
+    { "id": "STERN", "z": [-111, -75] }
+  ],
+  "anchors": [
+    { "id": "MAIN_01", "kind": "main", "zone": "FORE_BATTERY", "x": 0, "z": 74, "deckOffset": 0, "face": 0, "turret": "jp14d", "status": "locked_sim" },
+    { "id": "MAIN_02", "kind": "main", "zone": "FORE_BATTERY", "x": 0, "z": 60, "deckOffset": 3.6, "face": 0, "turret": "jp14d", "status": "locked_sim" },
+    { "id": "MAIN_03", "kind": "main", "zone": "AFT_BATTERY", "x": 0, "z": -42, "deckOffset": 3.6, "face": 180, "turret": "jp14d", "status": "locked_sim" },
+    { "id": "MAIN_04", "kind": "main", "zone": "AFT_BATTERY", "x": 0, "z": -58, "deckOffset": 0, "face": 180, "turret": "jp14d", "status": "locked_sim" },
+    { "id": "BRIDGE_BASE", "kind": "super", "zone": "FORE_SUPER", "x": 0, "z": 40, "deckOffset": 0, "footprint": { "len": 13, "w": 12, "h": 6 }, "status": "pending", "note": "currently a uniform five-level stack; rebuild as one continuous pagoda tower" },
+    { "id": "BRIDGE_TOWER", "kind": "envelope", "zone": "FORE_SUPER", "x": 0, "z": 40.5, "deckOffset": 0, "footprint": { "len": 10, "w": 12, "h": 30 }, "status": "pending", "note": "vertical allowance only, not a shape" },
+    { "id": "FOREMAST", "kind": "mast", "zone": "FORE_SUPER", "x": 0, "z": 37, "deckOffset": 8, "footprint": { "r": 0.7, "h": 26 }, "status": "pending" },
+    { "id": "MID_DECKHOUSE", "kind": "super", "zone": "MIDSHIPS", "x": 0, "z": 8, "deckOffset": 0, "footprint": { "len": 28, "w": 14, "h": 2.6 }, "status": "pending" },
+    { "id": "FUNNEL_01", "kind": "funnel", "zone": "MIDSHIPS", "x": 0, "z": 22, "deckOffset": 0, "footprint": { "r": 4.6, "h": 11.5, "rakeDeg": 6 }, "status": "pending" },
+    { "id": "FUNNEL_02", "kind": "funnel", "zone": "MIDSHIPS", "x": 0, "z": 6, "deckOffset": 0, "footprint": { "r": 4.3, "h": 10.5, "rakeDeg": 6 }, "status": "pending" },
+    { "id": "AFT_CONTROL_BASE", "kind": "super", "zone": "AFT_CONTROL", "x": 0, "z": -19, "deckOffset": 0, "footprint": { "len": 14, "w": 12, "h": 5 }, "status": "pending" },
+    { "id": "AFT_TOWER", "kind": "envelope", "zone": "AFT_CONTROL", "x": 0, "z": -22, "deckOffset": 0, "footprint": { "len": 9, "w": 11, "h": 20 }, "status": "pending", "note": "vertical allowance only, not a shape" },
+    { "id": "MAINMAST", "kind": "mast", "zone": "AFT_CONTROL", "x": 0, "z": -25, "deckOffset": 6, "footprint": { "r": 0.55, "h": 22 }, "status": "pending" }
+  ],
+  "secondary": [
+    { "id": "SEC_P1", "x": 15.2, "z": 30, "deckOffset": -3.5 },
+    { "id": "SEC_P2", "x": 15.3, "z": 20, "deckOffset": -3.5 },
+    { "id": "SEC_P3", "x": 15.4, "z": 10, "deckOffset": -3.5 },
+    { "id": "SEC_P4", "x": 15.3, "z": -10, "deckOffset": -3.5 }
+  ],
+  "secondaryMirror": { "starboardIds": ["SEC_S1", "SEC_S2", "SEC_S3", "SEC_S4"], "mirrorX": true },
+  "candidates": [
+    { "id": "AVIATION_A", "z": [-56, -44], "status": "unresolved", "note": "between turrets 3 and 4; overlaps No.3 superfiring sweep and muzzle blast" },
+    { "id": "AVIATION_B", "z": [-95, -72], "status": "unresolved", "note": "quarterdeck aft of turret 4; needs 1942 photo check" }
+  ],
+  "evidence": [
+    "https://www.combinedfleet.com/Kirishima.htm - reconstruction and 1942 movement record",
+    "https://upload.wikimedia.org/wikipedia/commons/5/5d/Kirishima_Tsukumowan_1937.jpg - post-second-reconstruction photograph, silhouette reference only"
+  ],
+  "uncertainty": "Anchors marked locked_sim are the existing game mount coordinates and are treated as compatibility constraints. Everything marked pending is a starting footprint from the current generic model, not a measured Kirishima dimension. Aviation position is unresolved. Radar and late-war AA are not to be added without Kirishima-specific evidence."
+}
+

@@ -4,6 +4,7 @@ import { clamp, THROTTLE } from '../sim/constants';
 import type { Campaign } from '../sim/campaign';
 import type { Ship } from '../sim/ship';
 import type { World } from '../sim/world';
+import { reloadModel } from './reloadModel';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string): T => document.getElementById(id) as T;
 
@@ -47,7 +48,7 @@ export class Hud {
 
   private bannerT = 0;
   private hintT = 0;
-  private built = 0;
+  private gunRows: { fill: HTMLElement; time: HTMLElement; aim: HTMLElement }[] = [];
 
   show(v: boolean): void {
     this.el.root.hidden = !v;
@@ -132,21 +133,41 @@ export class Hud {
 
     // ---- weapons
     const mains = P.mainTurrets.length;
-    if (this.built !== mains) {
-      this.el.gunPips.innerHTML = '';
-      for (let i = 0; i < mains; i++) this.el.gunPips.appendChild(document.createElement('i'));
-      this.built = mains;
+    if (this.gunRows.length !== mains) {
+      this.el.gunPips.replaceChildren();
+      this.gunRows = Array.from({ length: mains }, (_, i) => {
+        const row = document.createElement('div');
+        row.className = 'reload-row';
+        const label = document.createElement('span');
+        label.className = 'reload-number';
+        label.textContent = `${i + 1}号`;
+        const track = document.createElement('div');
+        track.className = 'reload-track';
+        track.setAttribute('aria-hidden', 'true');
+        const fill = document.createElement('i');
+        fill.className = 'reload-fill';
+        track.appendChild(fill);
+        const time = document.createElement('span');
+        time.className = 'reload-time';
+        const aim = document.createElement('span');
+        aim.className = 'reload-aim';
+        row.append(label, track, time, aim);
+        this.el.gunPips.appendChild(row);
+        return { fill, time, aim };
+      });
     }
-    let minReload = Infinity;
+    let loaded = 0;
     P.mainTurrets.forEach((t, i) => {
-      const pip = this.el.gunPips.children[i] as HTMLElement;
-      pip.classList.toggle('on', t.reload <= 0);
-      minReload = Math.min(minReload, t.reload);
+      const model = reloadModel(t);
+      const row = this.gunRows[i];
+      row.fill.style.transform = `scaleX(${model.progress})`;
+      if (row.time.textContent !== model.reloadText) row.time.textContent = model.reloadText;
+      if (row.aim.textContent !== model.aimText) row.aim.textContent = model.aimText;
+      if (model.loaded) loaded++;
     });
     this.el.gunName.textContent = P.gun.label;
-    const aimed = P.mainTurrets.filter((t) => t.onTarget).length;
-    this.el.gunSub.textContent =
-      minReload > 0 ? `装填 ${minReload.toFixed(1)}s` : aimed ? `${aimed}/${mains} 炮塔指向目标` : '炮塔转向中';
+    const gunSummary = mains ? `装填就绪 ${loaded}/${mains} · 发射仍需射界与指向满足` : '本舰无主炮';
+    if (this.el.gunSub.textContent !== gunSummary) this.el.gunSub.textContent = gunSummary;
 
     const hasTorp = !!P.torp;
     this.el.wTorp.classList.toggle('off', !hasTorp);

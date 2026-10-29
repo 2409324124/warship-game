@@ -1,95 +1,88 @@
-// The fall-of-shot ellipse drawn on the water where the captain is pointing, so the "散布圈" is
-// something you can see before you fire, not just a number in a table.
-
+// A single physical, one-sigma outline on the sea; the overlay owns only the sight.
 import * as THREE from 'three';
 import { sigmaAt, type GunSpec } from '../sim/ballistics';
-
-const SEG = 72;
+import { terrainH } from '../sim/terrain';
+import type { Water } from './water';
+import { projectAimRing, projectAimRibbon, AIM_PROJECTION_MAX_SEGMENTS, AIM_PROJECTION_RIBBON_WIDTH } from './aimProjection';
 
 export class AimMarker {
   readonly group = new THREE.Group();
-  private ring: THREE.LineLoop;
-  private inner: THREE.LineLoop;
-  private cross: THREE.LineSegments;
-  private pos: Float32Array;
-  private posIn: Float32Array;
+  /** Physical centreline and one-pixel world-space edge; never a screen ellipse. */
+  readonly positions = new Float32Array(AIM_PROJECTION_MAX_SEGMENTS * 6);
+  readonly geometry = new THREE.BufferGeometry();
+  /** Surface-width part of the same outline: six vertices per surviving segment. */
+  readonly ribbonGeometry = new THREE.BufferGeometry();
+  private readonly ribbonPositions = new Float32Array(AIM_PROJECTION_MAX_SEGMENTS * 18);
+  private readonly material = new THREE.MeshBasicMaterial({
+    color: 0xffc247, transparent: true, opacity: 0.86, fog: false,
+    depthTest: true, depthWrite: false, side: THREE.DoubleSide,
+  });
+  private requestedVisible = true;
+  private valid = false;
+  private segments = 0;
+  private ribbonSegments = 0;
 
   constructor(scene: THREE.Scene) {
-    this.pos = new Float32Array((SEG + 1) * 3);
-    this.posIn = new Float32Array((SEG + 1) * 3);
-    const mk = (arr: Float32Array, color: number, opacity: number) => {
-      const g = new THREE.BufferGeometry();
-      g.setAttribute('position', new THREE.BufferAttribute(arr, 3).setUsage(THREE.DynamicDrawUsage));
-      g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1e6);
-      const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity, depthTest: false });
-      const l = new THREE.LineLoop(g, m);
-      l.frustumCulled = false;
-      l.renderOrder = 20;
-      return l;
+    this.geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3).setUsage(THREE.DynamicDrawUsage));
+    this.geometry.setDrawRange(0, 0);
+    this.ribbonGeometry.setAttribute('position', new THREE.BufferAttribute(this.ribbonPositions, 3).setUsage(THREE.DynamicDrawUsage));
+    this.ribbonGeometry.setDrawRange(0, 0);
+    // Use a small, metric eye-space bias,
+    // rather than an NDC offset that would pull distant lines through ships/islands.
+    this.material.onBeforeCompile = (shader) => {
+      shader.vertexShader = shader.vertexShader.replace('#include <project_vertex>',
+        '#include <project_vertex>\nmvPosition.z += 0.25;\ngl_Position = projectionMatrix * mvPosition;');
     };
-    this.ring = mk(this.pos, 0xffc247, 0.85);
-    this.inner = mk(this.posIn, 0xffc247, 0.35);
-
-    const cg = new THREE.BufferGeometry();
-    cg.setAttribute(
-      'position',
-      new THREE.BufferAttribute(new Float32Array([-1, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 1]), 3),
-    );
-    cg.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1e6);
-    this.cross = new THREE.LineSegments(
-      cg,
-      new THREE.LineBasicMaterial({ color: 0xffc247, transparent: true, opacity: 0.7, depthTest: false }),
-    );
-    this.cross.frustumCulled = false;
-    this.cross.renderOrder = 20;
-
-    this.group.add(this.ring, this.inner, this.cross);
-    this.group.renderOrder = 20;
+    const ring = new THREE.Mesh(this.ribbonGeometry, this.material);
+    ring.name = 'aim-sea-ribbon';
+    ring.frustumCulled = false;
+    // A one-pixel centre stroke keeps the SAME physical outline legible at
+    // grazing angles, where a metre-wide sea ribbon can cover <0.1 pixel.
+    // Its radius is still world-space sigma, and ships still depth-occlude it.
+    const strokeMaterial=new THREE.LineBasicMaterial({color:0xffc247,opacity:.94,
+      transparent:true,fog:false,depthTest:true,depthWrite:false});
+    strokeMaterial.onBeforeCompile=this.material.onBeforeCompile;
+    const stroke=new THREE.LineSegments(this.geometry,strokeMaterial);
+    stroke.name='aim-sea-outline';
+    stroke.frustumCulled=false;
+    stroke.renderOrder=1;
+    this.group.add(ring,stroke);
+    this.group.visible = false;
     scene.add(this.group);
   }
 
-  /**
-   * @param aimX,aimZ where the guns are laid
-   * @param fromX,fromZ the ship
-   * @param sigma 1-sigma along/cross in metres
-   */
-  update(aimX: number, aimZ: number, fromX: number, fromZ: number, sigma: { along: number; cross: number }): void {
-    const dx = aimX - fromX,
-      dz = aimZ - fromZ;
-    const d = Math.hypot(dx, dz) || 1;
-    const ux = dx / d,
-      uz = dz / d;
-    const write = (arr: Float32Array, k: number) => {
-      for (let i = 0; i <= SEG; i++) {
-        const a = (i / SEG) * Math.PI * 2;
-        const al = Math.cos(a) * sigma.along * k;
-        const cr = Math.sin(a) * sigma.cross * k;
-        const o = i * 3;
-        arr[o] = aimX + ux * al - uz * cr;
-        arr[o + 1] = 2.5;
-        arr[o + 2] = aimZ + uz * al + ux * cr;
-      }
-    };
-    // the drawn ring is one sigma; the faint inner ring is where half the shells land
-    write(this.pos, 1);
-    write(this.posIn, 0.5);
-    for (const attr of [
-      (this.ring.geometry as THREE.BufferGeometry).attributes.position,
-      (this.inner.geometry as THREE.BufferGeometry).attributes.position,
-    ] as THREE.BufferAttribute[]) {
-      attr.needsUpdate = true;
-    }
-    const c = this.cross.geometry.attributes.position as THREE.BufferAttribute;
-    const arm = Math.max(45, sigma.cross * 1.4);
-    c.setXYZ(0, aimX - ux * arm, 2.5, aimZ - uz * arm);
-    c.setXYZ(1, aimX + ux * arm, 2.5, aimZ + uz * arm);
-    c.setXYZ(2, aimX - uz * arm, 2.5, aimZ + ux * arm);
-    c.setXYZ(3, aimX + uz * arm, 2.5, aimZ - ux * arm);
-    c.needsUpdate = true;
+  /** First five arguments remain compatible; sigma is in world metres (one sigma). */
+  update(
+    aimX: number, aimZ: number, fromX: number, fromZ: number,
+    sigma: { along: number; cross: number },
+    water?: Pick<Water, 'height' | 'renderHeight'>, time = 0, reachable = true,
+  ): void {
+    const surface=water?.renderHeight ? {height:(x:number,z:number,t:number)=>water.renderHeight!(x,z,t)} : water;
+    const result = projectAimRing(this.positions, aimX, aimZ, fromX, fromZ, sigma,
+      surface, time, reachable, terrainH);
+    const ribbon = projectAimRibbon(this.ribbonPositions, this.positions, result.segments, surface, time, terrainH);
+    this.valid = result.valid && ribbon.valid;
+    this.segments = result.segments;
+    this.ribbonSegments = ribbon.segments;
+    this.geometry.setDrawRange(0, this.segments * 2);
+    this.ribbonGeometry.setDrawRange(0, this.ribbonSegments * 6);
+    if (this.segments) this.geometry.attributes.position.needsUpdate = true;
+    if (this.ribbonSegments) this.ribbonGeometry.attributes.position.needsUpdate = true;
+    this.group.visible = this.requestedVisible && this.valid;
   }
 
   setVisible(v: boolean): void {
-    this.group.visible = v;
+    this.requestedVisible = v;
+    this.group.visible = v && this.valid;
+  }
+
+  get stats(): Readonly<{
+    valid: boolean; segments: number; ribbonSegments: number; ribbonWidth: number;
+    visible: boolean; depthTest: boolean; depthWrite: boolean; fog: boolean;
+  }> {
+    return { valid: this.valid, segments: this.segments, visible: this.group.visible,
+      ribbonSegments: this.ribbonSegments, ribbonWidth: AIM_PROJECTION_RIBBON_WIDTH,
+      depthTest: this.material.depthTest, depthWrite: this.material.depthWrite, fog: this.material.fog };
   }
 
   static sigmaFor(gun: GunSpec, d: number): { along: number; cross: number } {

@@ -40,8 +40,8 @@ test('the solved shell lands where it was aimed, at the right time', () => {
 test('dispersion tightens as the range closes, and the 10 km pattern is the one we promised', () => {
   const g = GUNS.us406;
   const s10 = sigmaAt(g, 10000);
-  assert.ok(Math.abs(s10.along - 90) < 0.5, `along sigma at 10 km: ${s10.along.toFixed(1)}`);
-  assert.ok(Math.abs(s10.cross - 40) < 0.5, `cross sigma at 10 km: ${s10.cross.toFixed(1)}`);
+  assert.ok(Math.abs(s10.along - 56) < 0.5, `along sigma at 10 km: ${s10.along.toFixed(1)}`);
+  assert.ok(Math.abs(s10.cross - 22) < 0.5, `cross sigma at 10 km: ${s10.cross.toFixed(1)}`);
   assert.ok(sigmaAt(g, 4000).along < s10.along, 'closer range must be tighter');
   assert.ok(sigmaAt(g, 2000).along > sigmaAt(g, 2000).cross, 'the pattern is longer than it is wide');
 });
