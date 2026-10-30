@@ -1,5 +1,6 @@
-// Navy Mk45 recording (CC BY 3.0) + original game-designed pressure reinforcement.
-// Source, license and processing: public/audio/ATTRIBUTION.md. Not a 16-inch recording.
+// Procedural audio: no samples, everything is synthesised. The battery report is an
+// offline-rendered composite (crack + blast + sub-bass pressure column + damped modes +
+// rolling thunder), cached per calibre class, barrel count and variant.
 // All times (including rate limits) use the audio clock, so pausing a tab cannot
 // accumulate a wall-clock backlog of scheduled salvos.
 type VoiceKind = 'heavy' | 'light' | 'impact' | 'incoming' | 'utility';
@@ -16,7 +17,6 @@ export interface GunOptions { barrels?: number; secondary?: boolean }
 
 const LIMITS: Record<VoiceKind, number> = { heavy: 24, light: 12, impact: 6, incoming: 2, utility: 2 };
 const FLOOR = 0.0001;
-const PRESSURE_MODES = [[67, .38, 1], [103, .28, .65], [163, .19, .45]] as const;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const caliber = (cal: number) => Math.max(0, Math.min(1, ((Number.isFinite(cal) ? cal : 127) - 76) / 384));
 
@@ -33,58 +33,18 @@ export class Sfx {
   private resuming = false;
   private reports = new Map<string, AudioBuffer>();
   private gunSequence = 0;
-  private recording: AudioBuffer | null = null;
-  private preparing: Promise<boolean> | null = null;
-  private loadAbort: AbortController | null = null;
-  private attempts = 0;
-  private retryAfter = 0;
-  private recordedShots = 0;
-  private fallbackShots = 0;
+  private proceduralShots = 0;
   private foldedShots = 0;
 
-  /** Nonblocking init also preloads; callers may await this for audio-only QA.
-   * At most 3 attempts per lifecycle, >=5s between failures. Never called by gun(). */
+  /** Nonblocking init; callers may await this for audio-only QA. Never called by gun(). */
   prepare(): Promise<boolean> {
     this.init();
-    return this.preparing ?? Promise.resolve(!!this.recording);
+    return Promise.resolve(!!this.ctx);
   }
 
   stats() {
-    return { loaded: !!this.recording, loading: !!this.preparing, attempts: this.attempts,
-      recorded: this.recordedShots, fallback: this.fallbackShots, folded: this.foldedShots,
+    return { procedural: this.proceduralShots, folded: this.foldedShots,
       active: this.voices.size, cachedReports: this.reports.size };
-  }
-
-  private loadRecording(): void {
-    const ctx = this.ctx;
-    if (!ctx || this.recording || this.preparing || this.attempts >= 3 || Date.now() < this.retryAfter) return;
-    this.attempts++;
-    const abort = new AbortController();
-    this.loadAbort = abort;
-    // Timeout bounds fetch; decode promises are guarded against disposal/reinit.
-    const timer = setTimeout(() => abort.abort(), 4000);
-    const pending = (async () => {
-      try {
-        const response = await fetch('/audio/navy-mk45-report.wav', { signal: abort.signal });
-        if (!response.ok) throw new Error(`Audio HTTP ${response.status}`);
-        const bytes = await response.arrayBuffer();
-        if (bytes.byteLength > 1024 * 1024) throw new Error('Oversized audio asset');
-        const buffer = await ctx.decodeAudioData(bytes);
-        if (this.ctx !== ctx || abort.signal.aborted) return false;
-        if (buffer.duration < 2 || buffer.duration > 3 || buffer.numberOfChannels < 1) throw new Error('Invalid report');
-        this.recording = buffer;
-        this.reports.clear(); // replace cached fallback reports as soon as ready
-        return true;
-      } catch {
-        if (this.ctx === ctx) this.retryAfter = Date.now() + 5000;
-        return false;
-      } finally {
-        clearTimeout(timer);
-        if (this.loadAbort === abort) this.loadAbort = null;
-      }
-    })();
-    this.preparing = pending;
-    void pending.finally(() => { if (this.preparing === pending) this.preparing = null; });
   }
 
   /** Call from a user gesture; subsequent calls also retry autoplay unlocking. */
@@ -153,7 +113,7 @@ export class Sfx {
       }
     }
     this.unlock();
-    this.loadRecording();
+    this.prewarm();
   }
 
   private unlock(): void {
@@ -192,12 +152,7 @@ export class Sfx {
 
   /** Optional lifecycle hook; safe to call repeatedly, and init() can start anew. */
   dispose(): void {
-    this.loadAbort?.abort();
-    this.loadAbort = null;
-    this.preparing = null;
-    this.recording = null;
-    this.attempts = this.retryAfter = 0;
-    this.recordedShots = this.fallbackShots = this.foldedShots = 0;
+    this.proceduralShots = this.foldedShots = 0;
     for (const voice of [...this.voices]) this.release(voice, true);
     if (this.ambience) { try { this.ambience.stop(); } catch { /* already stopped */ } }
     for (const node of this.graph) node.disconnect();
@@ -304,56 +259,28 @@ export class Sfx {
     this.schedule(v, o, [g], t0, dur);
   }
 
-  /** Recorded identity at native pitch; BB is explicitly a game-designed composite.
-   * No long synthetic noise tail on the recorded path. A few short damped modes
-   * add limited low/mid pressure, leaving the recorded onset and decay dominant. */
+  /** Common battery reports rendered ahead of time, staggered so the first salvo never
+   * hitches on synthesis. Variants cycle mod 4, so four renders per combo cover them all. */
+  private prewarm(): void {
+    const combos: [number, number, boolean][] = [[406, 3, false], [356, 3, false], [127, 1, true]];
+    let i = 0;
+    const step = () => {
+      if (i >= combos.length || !this.ctx) return;
+      const [cal, barrels, secondary] = combos[i++];
+      for (let v = 0; v < 4; v++) this.report(caliber(cal), barrels, secondary);
+      setTimeout(step, 40);
+    };
+    setTimeout(step, 0);
+  }
+
   private report(k: number, barrels: number, secondary: boolean): AudioBuffer {
-    if (this.recording) return this.recordedReport(k, secondary);
-    return this.fallbackReport(k, barrels, secondary);
+    return this.synthesizeReport(k, barrels, secondary);
   }
 
-  private recordedReport(k: number, secondary: boolean): AudioBuffer {
-    const ctx = this.ctx!;
-    const heavy = k >= 0.48 && !secondary;
-    const size = Math.round(k * 8);
-    const variant = this.gunSequence++ % 4;
-    const key = `recorded:${size}:${secondary}:${variant}`;
-    const cached = this.reports.get(key);
-    if (cached) return cached;
-    const original = this.recording!.getChannelData(0);
-    const duration = heavy ? this.recording!.duration : secondary ? 0.52 : lerp(0.75, 1.15, k);
-    const length = Math.min(original.length, Math.ceil(duration * ctx.sampleRate));
-    const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
-    const pressure = new Float32Array(length);
-    if (heavy) for (let i = 0; i < length; i++) {
-      const t = i / ctx.sampleRate;
-      let value = 0;
-      for (const [f, decay, strength] of PRESSURE_MODES) {
-        value += Math.sin(2 * Math.PI * f * t) * Math.exp(-t / decay) * strength;
-      }
-      pressure[i] = value * 0.055 * k * (1 - Math.exp(-t / .006));
-    }
-    for (let channel = 0; channel < 2; channel++) {
-      const out = buffer.getChannelData(channel);
-      const offset = Math.round((channel ? .041 : .029) * ctx.sampleRate);
-      for (let i = 0; i < length; i++) {
-        const t = i / ctx.sampleRate;
-        // Native pitch and timing, only +/-3% gain variation. Direct onset centered.
-        const dry = original[i] * (0.94 + variant * 0.02);
-        const fade = Math.min(1, (length - 1 - i) / (ctx.sampleRate * (heavy ? .12 : .18)));
-        // Very quiet late crossfeed gives stereo space without duplicating the blast.
-        const reflection = heavy && t > .15 && i >= offset
-          ? original[i - offset] * .035 * Math.min(1, (t - .15) / .025) : 0;
-        out[i] = (dry + pressure[i] + reflection) * fade;
-      }
-    }
-    if (this.reports.size >= 32) this.reports.delete(this.reports.keys().next().value!);
-    this.reports.set(key, buffer);
-    return buffer;
-  }
-
-  /** Procedural compatibility fallback only while unavailable; never fetched on fire. */
-  private fallbackReport(k: number, barrels: number, secondary: boolean): AudioBuffer {
+  /** Fully procedural battery report: a sharp crack, the main blast, a falling sub-bass
+   * pressure column, damped hull resonances, and a long rolling-thunder tail — rendered
+   * once into a stereo buffer and cached per size/barrels/variant. */
+  private synthesizeReport(k: number, barrels: number, secondary: boolean): AudioBuffer {
     const variant = this.gunSequence++ % 4;
     const size = Math.round(k * 8);
     const key = `${size}:${barrels}:${secondary}:${variant}`;
@@ -362,18 +289,27 @@ export class Sfx {
     const ctx = this.ctx!;
     const weight = size / 8;
     const heavy = weight >= 0.48 && !secondary;
-    const duration = heavy ? lerp(2.2, 3.1, weight) : lerp(0.32, 0.85, weight);
+    const duration = heavy ? lerp(2.6, 3.4, weight) : lerp(0.32, 0.85, weight);
     const length = Math.ceil(duration * ctx.sampleRate);
     const buffer = ctx.createBuffer(2, length, ctx.sampleRate);
     const dry = new Float32Array(length);
     let seed = (173 + size * 7919 + variant * 104729 + barrels * 31) >>> 0;
     const random = () => { seed = (1664525 * seed + 1013904223) >>> 0; return seed / 2147483648 - 1; };
     const a = [65, 180, 480, 1800].map(f => 1 - Math.exp(-2 * Math.PI * f / ctx.sampleRate));
+    // Damped hull resonances carry the roar of a heavy broadside; per-variant ±6%
+    // frequency jitter is what makes the four cached variants distinguishable.
+    const modes: [number, number, number][] = heavy
+      ? [[38, 0.75, 0.30], [57, 0.55, 0.22], [83, 0.38, 0.15]]
+      : [[38, 0.30, 0.15], [57, 0.22, 0.11], [83, 0.15, 0.075]];
+    const modeJit = modes.map(() => 1 + random() * 0.06);
+    const subAmp = (heavy ? 0.55 : 0.15) * k;
     // Each barrel has its own turbulent pressure history and 4–14ms separation.
     for (let barrel = 0; barrel < barrels; barrel++) {
       const offset = Math.floor((barrel * 0.009 + (random() + 1) * 0.002) * ctx.sampleRate);
       const state = [0, 0, 0, 0];
       let roll = 0;
+      let subPhase = random() * 0.63; // ±10% of a cycle between barrels
+      const modePhase = modes.map(() => random() * Math.PI);
       for (let i = offset; i < length; i++) {
         const t = (i - offset) / ctx.sampleRate;
         const n = random();
@@ -381,25 +317,51 @@ export class Sfx {
         roll += 0.0018 * (random() - roll);
         const attack = 1 - Math.exp(-t / 0.002);
         const body = (state[1] - state[0]) * 4.8 + (state[2] - state[1]) * 2.5;
-        const crack = (n - state[3]) * Math.exp(-t / (heavy ? 0.026 : 0.016));
-        const blast = body * Math.exp(-t / (heavy ? 0.3 : 0.065));
+        const crack = (n - state[3]) * Math.exp(-t / (heavy ? 0.02 : 0.012));
+        const blast = body * Math.exp(-t / (heavy ? 0.38 : 0.065));
+        // Mid-pressure bridge: the roar must not sag between the onset and the thunder.
+        const mid = heavy ? body * 0.35 * (1 - Math.exp(-t / 0.03)) * Math.exp(-t / 0.6) : 0;
         const rolling = ((state[1] - state[0]) * 5 + (state[2] - state[1]) * 1.8)
           * (0.7 + Math.min(0.6, Math.abs(roll) * 14))
-          * (1 - Math.exp(-t / 0.055)) * Math.exp(-t / (heavy ? 0.85 : 0.12));
+          * (1 - Math.exp(-t / 0.055)) * Math.exp(-t / (heavy ? 1.05 : 0.12));
+        // Sub-bass pressure column: a falling 58→26 Hz sweep, felt as much as heard.
+        const fSub = 26 + 32 * Math.exp(-t / 0.55);
+        subPhase += 2 * Math.PI * fSub / ctx.sampleRate;
+        const sub = subAmp * (1 - Math.exp(-t / 0.008)) * Math.exp(-t / 0.45)
+          * (Math.sin(subPhase) + 0.2 * Math.sin(2 * subPhase));
+        let modeSum = 0;
+        for (let m = 0; m < modes.length; m++) {
+          const [f, tau, amp] = modes[m];
+          modeSum += amp * Math.sin(2 * Math.PI * f * modeJit[m] * t + modePhase[m])
+            * (1 - Math.exp(-t / 0.008)) * Math.exp(-t / tau);
+        }
         const fade = Math.min(1, (length - i) / (ctx.sampleRate * 0.12));
-        dry[i] += attack * fade * (0.44 * crack + blast + (heavy ? 0.9 : 0.28) * rolling)
+        dry[i] += attack * fade * (0.44 * crack + blast + mid + (heavy ? 0.9 : 0.28) * rolling + sub + modeSum)
           / Math.sqrt(barrels);
       }
     }
     for (let channel = 0; channel < 2; channel++) {
       const out = buffer.getChannelData(channel);
-      const taps = (heavy ? [0.093, 0.191, 0.347, 0.61] : [0.054, 0.113])
+      const taps = (heavy ? [0.093, 0.191, 0.347, 0.61, 0.92] : [0.054, 0.113])
         .map(t => Math.floor((t + channel * 0.013) * ctx.sampleRate));
       for (let i = 0; i < length; i++) {
         let value = dry[i];
         for (let j = 0; j < taps.length; j++) if (i >= taps[j]) value += dry[i - taps[j]] * 0.22 / (1 + j * 0.45);
         // Fixed gain preserves powder/voice energy instead of peak-normalizing it away.
         out[i] = value * 0.48 * Math.min(1, (length - 1 - i) / (ctx.sampleRate * 0.1));
+      }
+    }
+    // Soft cap only: the heavy/light energy difference is a feature, but no buffer may clip.
+    let peak = 0;
+    for (let c = 0; c < 2; c++) {
+      const d = buffer.getChannelData(c);
+      for (let i = 0; i < length; i++) peak = Math.max(peak, Math.abs(d[i]));
+    }
+    if (peak > 0.9) {
+      const s = 0.9 / peak;
+      for (let c = 0; c < 2; c++) {
+        const d = buffer.getChannelData(c);
+        for (let i = 0; i < length; i++) d[i] *= s;
       }
     }
     // Bounded LRU-ish cache (~32 stereo reports maximum); live sources own buffers.
@@ -433,8 +395,7 @@ export class Sfx {
     const t = ctx.currentTime + delay + 0.003 + Math.random() * 0.018;
     const source = ctx.createBufferSource();
     source.buffer = this.report(k, barrels, secondary);
-    if (this.recording) this.recordedShots++;
-    else this.fallbackShots++;
+    this.proceduralShots++;
     const filter = ctx.createBiquadFilter();
     filter.type = 'lowpass'; filter.frequency.value = lerp(12500, 1600, far); filter.Q.value = 0.5;
     const volume = ctx.createGain(); volume.gain.value = level;

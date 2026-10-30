@@ -1,5 +1,5 @@
 // Pure geometry: compact surviving independent edges, never join across a rejected shore edge.
-export const AIM_PROJECTION_MAX_SEGMENTS = 1024;
+export const AIM_PROJECTION_MAX_SEGMENTS = 384;
 export const AIM_PROJECTION_HEIGHT_OFFSET = 0.4;
 export const AIM_PROJECTION_RIBBON_WIDTH = 1;
 
@@ -26,7 +26,7 @@ export function projectAimRing(
   // Resolve waves and shores at metre scale, with bounded per-frame work. This only
   // changes tessellation, never the physical radii or their apparent screen size.
   const count = Math.min(AIM_PROJECTION_MAX_SEGMENTS, Math.floor(positions.length / 6),
-    Math.max(96, Math.ceil(2 * Math.PI * Math.max(sigma.along, sigma.cross) / 4)));
+    Math.max(96, Math.ceil(2 * Math.PI * Math.max(sigma.along, sigma.cross) / 8)));
   if (count < 3) return hidden;
   let segments = 0;
   const point = (angle: number) => {
@@ -84,8 +84,8 @@ export function projectAimRibbon(
     let wet = true;
     // Check both edges and center across the whole strip: widening must not put a
     // wet centerline onto dry land. Rejected strips are never joined to neighbours.
-    for (let k = 0; k <= 4; k++) {
-      const f = k / 4;
+    for (let k = 0; k <= 2; k++) {
+      const f = k / 2;
       for (const side of [-1, 0, 1]) {
         const x = ax + dx * f + nx * side, z = az + dz * f + nz * side;
         const sea = water.height(x, z, time), land = terrainHeight(x, z);

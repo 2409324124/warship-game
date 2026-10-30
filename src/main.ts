@@ -660,7 +660,7 @@ for (const b of document.querySelectorAll<HTMLButtonElement>('#diffSeg button'))
     $('homeBest').textContent = `难度：${DIFF[G.diff].name} · 敌舰命中误差 ×${DIFF[G.diff].aiErr} · 我舰受伤 ×${DIFF[G.diff].dmgTaken}`;
   });
 }
-$('startBtn').addEventListener('click', () => startBattle());
+$('startBtn').addEventListener('click', () => void loadModelManifest().then(startBattle));
 $('guideBtn').addEventListener('click', () => ($('guide').hidden = false));
 $('guideClose').addEventListener('click', () => ($('guide').hidden = true));
 $('soundBtn').addEventListener('click', () => {
@@ -673,7 +673,7 @@ $('debugBtn').addEventListener('click', () => {
 });
 $('resumeBtn').addEventListener('click', () => pause(false));
 $('quitBtn').addEventListener('click', () => toMenu());
-$('againBtn').addEventListener('click', () => startBattle());
+$('againBtn').addEventListener('click', () => void loadModelManifest().then(startBattle));
 $('portBtn').addEventListener('click', () => toMenu());
 
 addEventListener('resize', () => {
@@ -728,7 +728,8 @@ function frame(now: number): void {
         } else {
           lockSol = null;
         }
-        resolveAimFromView(P);
+        // Aim is resolved once per frame after the camera update (below); doing it here
+        // too would double the ray-march cost for a result that is discarded.
       }
       world.step(dt, true);
       G.camp?.update(dt);
@@ -805,7 +806,12 @@ function frame(now: number): void {
       const [x,y,z] = muzzleWorld(P,t,0);
       return solveShot(P.gun,x,y,z,P.aimX,P.aimZ).reachable;
     });
-    aimMarker.update(P.aimX, P.aimZ, P.x, P.z, sig,water,G.time,reachable);
+    // The ring is a slow-moving visual aid: 30 Hz updates are invisible at battle pace,
+    // while the projection costs thousands of wave-height samples per call.
+    if ((engine.frame & 1) === 0 || Math.hypot(P.aimX - aimMarkX, P.aimZ - aimMarkZ) > 3) {
+      aimMarkX = P.aimX; aimMarkZ = P.aimZ;
+      aimMarker.update(P.aimX, P.aimZ, P.x, P.z, sig,water,G.time,reachable);
+    }
     aimMarker.setVisible(G.weapon === 'guns' && P.alive && !cameraControls.freeLook && !cameraControls.follow);
   } else {
     aimMarker.setVisible(false);
@@ -820,7 +826,7 @@ function frame(now: number): void {
     if (G.endT <= 0 && $('end').hidden) showEnd();
   }
 
-  renderer.render(scene, camera);
+  engine.render();
 }
 
 function updateCamera(dt: number): void {
@@ -1104,9 +1110,18 @@ function updateUI(dt: number, world: World, P: Ship): void {
       }
     : null,
   models: { available: modelList(), loaded: loadedModelsFn() },
+  // Scene-graph weight per ship: GLB-covered ships should show zero leftover procedural meshes.
+  shipNodes: [...views.values()].map((v) => {
+    let nodes = 0;
+    const procedural: string[] = [];
+    v.group.traverse((o) => { nodes++; if (/^(hull|deck|struct|dark|rails):/.test(o.name)) procedural.push(o.name); });
+    return { nodes, procedural };
+  }),
   kills: G.camp?.kills.length ?? 0,
   tons: G.camp?.tons ?? 0,
   fps: Math.round(1 / Math.max(0.0001, lastDt)),
+  render: { calls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
+    geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures },
   effects: fx.stats(),
   audio: sfx.stats(),
   seaProjection: aimMarker.stats,
@@ -1121,6 +1136,7 @@ function updateUI(dt: number, world: World, P: Ship): void {
 });
 
 let lastDt = 0.016;
+let aimMarkX = 0, aimMarkZ = 0;
 
 // a small console remote, handy for the smoke test and for tuning
 (window as unknown as { __cmd: Record<string, (...a: number[]) => void> }).__cmd = {

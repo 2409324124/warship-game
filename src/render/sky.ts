@@ -54,12 +54,14 @@ export function createSky(scene: THREE.Scene): THREE.Mesh {
     },
     side: THREE.BackSide,
     depthWrite: false,
-    depthTest: false,
+    // Drawn last among opaques at the far plane: fragments behind terrain/water/ships
+    // fail the depth test and cost nothing, instead of filling the whole screen first.
+    depthTest: true,
     fog: false,
   });
   const mesh = new THREE.Mesh(new THREE.SphereGeometry(50000, 40, 20), mat);
   mesh.frustumCulled = false;
-  mesh.renderOrder = -100;
+  mesh.renderOrder = 500;
   scene.add(mesh);
   return mesh;
 }

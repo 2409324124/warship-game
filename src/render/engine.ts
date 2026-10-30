@@ -4,6 +4,7 @@ import * as THREE from 'three';
 
 export interface Engine {
   renderer: THREE.WebGLRenderer;
+  frame: number;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   sun: THREE.DirectionalLight;
@@ -23,16 +24,18 @@ export const FOG_DENSITY = 0.000075;
 export function createEngine(canvas: HTMLCanvasElement): Engine {
   const renderer = new THREE.WebGLRenderer({
     canvas,
-    antialias: true,
+    antialias: false, // MSAA resolve is costly on iGPUs; at dpr >= 1.25 the aliasing is marginal
     powerPreference: 'high-performance',
     stencil: false,
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+  // Shadow refresh at half rate: ships move slowly enough that 30 Hz shadows are invisible.
+  renderer.shadowMap.autoUpdate = false;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(55, 1, 3, 90000);
@@ -40,7 +43,7 @@ export function createEngine(canvas: HTMLCanvasElement): Engine {
   const sun = new THREE.DirectionalLight(0xffc9a0, 2.4);
   sun.position.copy(SUN_DIR).multiplyScalar(4000);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(1024, 1024);
   const sc = sun.shadow.camera;
   sc.near = 100;
   sc.far = 2600;
@@ -61,6 +64,7 @@ export function createEngine(canvas: HTMLCanvasElement): Engine {
 
   const engine: Engine = {
     renderer,
+    frame: 0,
     scene,
     camera,
     sun,
@@ -76,6 +80,7 @@ export function createEngine(canvas: HTMLCanvasElement): Engine {
       camera.updateProjectionMatrix();
     },
     render() {
+      renderer.shadowMap.needsUpdate = (this.frame++ & 1) === 0;
       renderer.render(scene, camera);
     },
   };

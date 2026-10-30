@@ -60,9 +60,6 @@ class Context {
 
 function fixture(t) {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'window');
-  const fetchDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
-  Object.defineProperty(globalThis, 'fetch', { configurable: true, writable: true,
-    value: async () => { throw new Error('Intentional unavailable asset in fallback unit fixture'); } });
   Object.defineProperty(globalThis, 'window', { configurable: true, value: { AudioContext: Context } });
   const sfx = new Sfx(); sfx.init();
   const ctx = Context.instances.at(-1);
@@ -72,7 +69,6 @@ function fixture(t) {
     sfx.dispose();
     if (descriptor) Object.defineProperty(globalThis, 'window', descriptor);
     else delete globalThis.window;
-    Object.defineProperty(globalThis, 'fetch', fetchDescriptor);
   });
   return { sfx, ctx, sea, sources };
 }
@@ -207,43 +203,45 @@ test('final peak curve is finite, monotonic, symmetric and bounded with unity ou
   assert.ok(Math.max(...curve) * master.gain.value < 0.6);
 });
 
-test('preload deduplicates, gun never fetches, loaded path replaces fallback cache', async t => {
+test('procedural reports are cached per size/barrels/variant and never touch the network', async t => {
   const { sfx, sources } = fixture(t);
-  await sfx.prepare(); // settle intentional initial failure
-  let requests = 0;
-  globalThis.fetch = async () => { requests++; return { ok: true, arrayBuffer: async () => new ArrayBuffer(44) }; };
-  sfx.gun(406, 60, true);
-  assert.equal(sfx.stats().fallback, 1);
-  sfx.retryAfter = 0;
-  const pending = sfx.prepare();
-  const same = sfx.prepare();
-  assert.equal(pending, same);
-  assert.equal(await pending, true);
-  for (let i = 0; i < 4; i++) sfx.gun(406, 60, true, { barrels: 3 });
-  assert.equal(requests, 1);
-  assert.equal(sfx.stats().recorded, 4);
-  assert.equal(sfx.stats().fallback, 1);
-  assert.equal(sources().length, 5);
-  assert.ok([...sfx.reports.keys()].every(k => k.startsWith('recorded:')));
+  assert.equal(await sfx.prepare(), true);
+  const fetchDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
+  let fetches = 0;
+  Object.defineProperty(globalThis, 'fetch', { configurable: true, writable: true,
+    value: async () => { fetches++; throw new Error('procedural audio must never fetch'); } });
+  t.after(() => { Object.defineProperty(globalThis, 'fetch', fetchDescriptor); });
+  for (let i = 0; i < 8; i++) sfx.gun(406, 60, true, { barrels: 3 });
+  assert.equal(fetches, 0);
+  assert.equal(sfx.stats().procedural, 8);
+  assert.ok(sfx.reports.size > 0 && sfx.reports.size <= 32);
+  assert.equal(sources().length, 8);
 });
 
-test('preparation failure has cooldown and bounded retries, disposal ignores stale decode', async t => {
-  const { sfx, ctx } = fixture(t);
-  await sfx.prepare();
-  assert.equal(sfx.stats().attempts, 1);
-  await sfx.prepare();
-  assert.equal(sfx.stats().attempts, 1, 'cooldown prevents immediate retry');
-  for (let i = 0; i < 5; i++) { sfx.retryAfter = 0; await sfx.prepare(); }
-  assert.equal(sfx.stats().attempts, 3);
-  sfx.dispose();
-  let finish;
-  globalThis.fetch = async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(44) });
-  Context.prototype.decodeAudioData = function () { return new Promise(resolve => { finish = () => resolve(ctx.createBuffer(1, 20600, 8000)); }); };
-  t.after(() => { Context.prototype.decodeAudioData = function () { return Promise.resolve(this.createBuffer(1, this.sampleRate * 2.575, this.sampleRate)); }; });
-  const pending = sfx.prepare();
-  await new Promise(resolve => setImmediate(resolve));
-  sfx.dispose();
-  finish();
-  assert.equal(await pending, false);
-  assert.equal(sfx.stats().loaded, false);
+test('heavy buffers carry sub-bass pressure and a long rolling tail that light guns lack', t => {
+  const { sfx, sources } = fixture(t);
+  sfx.gun(127, 0, true);
+  sfx.gun(406, 0, true);
+  const [lightSrc, heavySrc] = sources();
+  const light = lightSrc.buffer.getChannelData(0), heavy = heavySrc.buffer.getChannelData(0);
+  const sr = 8000; // fixture context clock
+  const dft = (d, f, from, to) => {
+    let re = 0, im = 0;
+    for (let i = from; i < to; i++) {
+      const p = 2 * Math.PI * f * i / sr;
+      re += d[i] * Math.cos(p); im -= d[i] * Math.sin(p);
+    }
+    return Math.hypot(re, im) / (to - from);
+  };
+  const bandE = (d) => {
+    let e = 0;
+    for (let f = 25; f <= 90; f += 5) { const v = dft(d, f, 0, Math.min(d.length, sr / 2)); e += v * v; }
+    return e;
+  };
+  const subHeavy = bandE(heavy), subLight = bandE(light);
+  t.diagnostic(`25-90Hz band energy: heavy ${subHeavy.toFixed(5)} vs light ${subLight.toFixed(5)}`);
+  assert.ok(subHeavy > subLight * 3,
+    `sub-bass pressure column dominates heavy reports: ${subHeavy.toFixed(5)} vs ${subLight.toFixed(5)}`);
+  const tailE = (d, from) => { let e = 0; for (let i = from; i < d.length; i++) e += d[i] * d[i]; return e; };
+  assert.ok(tailE(heavy, Math.floor(heavy.length * 0.6)) > 0, 'rolling tail persists into the final third');
 });

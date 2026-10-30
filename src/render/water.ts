@@ -55,7 +55,9 @@ void wavelet(inout vec2 slope, vec2 p, vec2 dir, float k, float amp, float speed
 }
 // Short optical roughness/pressure depression only: like fine wavelets this does not move
 // vertices or ships. Independent of foam perforation, so a heavy salvo reads on dark water.
-float pressureActivity(vec2 p) {
+float pressureActivity(vec2 p, float dist) {
+  // Blast rings are at most ~100 m across; past a few km they are subpixel anyway.
+  if (uBlastCount == 0 || dist > 3500.0) return 0.0;
   float energy = 0.0;
   for (int i = 0; i < ${BLAST_CAPACITY}; i++) {
     if (i >= uBlastCount) break;
@@ -88,11 +90,15 @@ float landH(vec2 p) {
 void main() {
   vec2 p = vWorld.xz;
   float dist = length(uEye - vWorld);
-  vec4 sea = oceanSurface(p), blast = blastSurface(p);
+  vec4 sea = oceanSurface(p);
+  vec4 blast = dist < 3500.0 ? blastSurface(p) : vec4(0.0);
   vec2 grad = sea.yz + blast.yz;
   float footprint = max(length(dFdx(p)), length(dFdy(p)));
-  // Analytic short-wave detail below mesh resolution, faded before it can alias.
-  grad += detailSlope(p) * (1.0 - smoothstep(2.0, 5.0, footprint));
+  float distFade = exp(-dist * 0.0016);
+  // Analytic short-wave detail below mesh resolution, faded before it can alias;
+  // beyond ~1.4 km the footprint term has already nulled it, so do not evaluate it at all.
+  if (distFade > 0.10)
+    grad += detailSlope(p) * (1.0 - smoothstep(2.0, 5.0, footprint));
   // Wind frame: every fine band and streak aligns to this heading, never against it.
   vec2 windDir = vec2(0.93937, 0.34290);
   vec2 windSide = vec2(-windDir.y, windDir.x);
@@ -104,7 +110,6 @@ void main() {
   // Fine ripples ride the swell: stretched and livelier on crests, compressed in troughs.
   float kMod = 1.0 - 0.25 * clamp(sea.x / 1.2, -1.0, 1.0);
   float aMod = (0.7 + 0.6 * smoothstep(-0.3, 1.2, sea.x)) * (1.0 + streak * 0.15);
-  float distFade = exp(-dist * 0.0016);
   vec2 fine = vec2(0.0);
   wavelet(fine, q, windDir, 0.22 * kMod, 0.085 * aMod, 0.37, vec2(3.7, 17.1));
   wavelet(fine, q, vec2(0.76484, 0.64422), 0.47 * kMod, 0.037 * aMod, 0.59, vec2(31.8, -9.2));
@@ -114,8 +119,8 @@ void main() {
     wavelet(fine, q, vec2(0.90045, -0.43497), 4.31 * kMod, 0.0025 * aMod, 1.55, vec2(55.1, 2.8));
   }
   fine *= mix(0.35, 1.0, distFade);
-  float pressure = pressureActivity(p);
-  vec3 churn = noiseD(p * 0.46 + vec2(-uTime * 2.6, uTime * 1.9));
+  float pressure = pressureActivity(p, dist);
+  vec3 churn = pressure > 0.001 ? noiseD(p * 0.46 + vec2(-uTime * 2.6, uTime * 1.9)) : vec3(0.0);
   grad += fine * (1.0 - pressure * 0.6) + churn.yz * (0.12 * pressure);
   vec3 n = normalize(vec3(-grad.x, 1.0, -grad.y));
   vec3 v = normalize(uEye - vWorld);
@@ -138,31 +143,38 @@ void main() {
   col *= 1.0 - pressure * 0.48;
   // Sun glitter: a sparse high-frequency sparkle field breaks the specular path into
   // individual flashes; three lobes merge it into a broad sheen with viewing distance.
-  float sparkAA = 1.0 - smoothstep(0.06, 0.30, footprint);
-  float sparkle = smoothstep(0.55, 0.95, noiseD(p * 8.5 + wind * 3.1).x) * sparkAA * exp(-dist * 0.004);
+  float sparkle = 0.0;
+  if (dist < 900.0) {
+    float sparkAA = 1.0 - smoothstep(0.06, 0.30, footprint);
+    sparkle = smoothstep(0.55, 0.95, noiseD(p * 8.5 + wind * 3.1).x) * sparkAA * exp(-dist * 0.004);
+  }
   vec3 hv = normalize(normalize(uSun) + v);
   float nh = max(dot(n, hv), 0.0);
   col += vec3(1.0, 0.86, 0.66) * (pow(nh, 700.0) * (1.2 * sparkle + 0.25)
     + pow(nh, 48.0) * 0.10 + pow(nh, 10.0) * 0.03);
   // Thin crest ribbons with perforated edges and individual grains, rather than filled blobs.
   float foamAA = 1.0 - smoothstep(0.8, 3.0, footprint);
-  vec2 fq = vec2(dot(p, vec2(0.94, 0.342)), dot(p, vec2(-0.342, 0.94)));
-  float lace = noiseD(fq * vec2(1.3, 0.48) - wind).x;
-  float grains = noiseD(p * 2.7 - wind + 73.2).x;
-  float grainAA = 1.0 - smoothstep(0.15, 0.65, footprint);
-  float pores = mix(0.31, smoothstep(-0.1, 0.42, grains), grainAA);
-  float broken = smoothstep(-0.12, 0.42, lace) * pores;
-  float patches = smoothstep(-0.05, 0.35, noiseD(p * 0.11 - wind * 0.5 + 19.4).x);
-  float crest = smoothstep(0.001, 0.006, sea.w) * broken * patches * foamAA;
-  // Lee-slope residue: a just-broken crest leaves a fading tail downwind of the crest line.
-  float trail = smoothstep(0.0, 0.05, -dot(sea.yz, windDir))
-    * smoothstep(0.001, 0.004, sea.w) * broken * patches * foamAA;
-  float shoreFoam = shore * broken * 0.35 * foamAA;
-  float pressureBreakup = smoothstep(-0.4, 0.45, noiseD(p * 0.64 - wind * 2.0 + 11.6).x);
-  float pressureFoam = blast.w * (0.24 + 0.76 * pressureBreakup) * (0.6 + 0.4 * pores) * foamAA;
-  float foam = clamp((crest + trail * 0.55) * 0.38 + shoreFoam, 0.0, 0.46);
-  // Muzzle pressure shreds whitecaps; the torn turbidity is rendered by pressureFoam instead.
-  foam *= 1.0 - pressure * 0.5;
+  float foam = 0.0, pressureFoam = 0.0;
+  // Foam perforation costs four noiseD calls; past ~1.6 km haze hides it entirely.
+  if (foamAA > 0.001 && dist < 1600.0) {
+    vec2 fq = vec2(dot(p, vec2(0.94, 0.342)), dot(p, vec2(-0.342, 0.94)));
+    float lace = noiseD(fq * vec2(1.3, 0.48) - wind).x;
+    float grains = noiseD(p * 2.7 - wind + 73.2).x;
+    float grainAA = 1.0 - smoothstep(0.15, 0.65, footprint);
+    float pores = mix(0.31, smoothstep(-0.1, 0.42, grains), grainAA);
+    float broken = smoothstep(-0.12, 0.42, lace) * pores;
+    float patches = smoothstep(-0.05, 0.35, noiseD(p * 0.11 - wind * 0.5 + 19.4).x);
+    float crest = smoothstep(0.001, 0.006, sea.w) * broken * patches * foamAA;
+    // Lee-slope residue: a just-broken crest leaves a fading tail downwind of the crest line.
+    float trail = smoothstep(0.0, 0.05, -dot(sea.yz, windDir))
+      * smoothstep(0.001, 0.004, sea.w) * broken * patches * foamAA;
+    float shoreFoam = shore * broken * 0.35 * foamAA;
+    float pressureBreakup = smoothstep(-0.4, 0.45, noiseD(p * 0.64 - wind * 2.0 + 11.6).x);
+    pressureFoam = blast.w * (0.24 + 0.76 * pressureBreakup) * (0.6 + 0.4 * pores) * foamAA;
+    foam = clamp((crest + trail * 0.55) * 0.38 + shoreFoam, 0.0, 0.46);
+    // Muzzle pressure shreds whitecaps; the torn turbidity is rendered by pressureFoam instead.
+    foam *= 1.0 - pressure * 0.5;
+  }
   // Diffuse foam, never emissive: blast rings disappear into the water in about a second.
   col = mix(col, vec3(0.30, 0.39, 0.41), foam);
   col = mix(col, vec3(0.22, 0.31, 0.33), min(0.20, pressureFoam));

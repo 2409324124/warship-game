@@ -55,7 +55,7 @@ test('shore edges are omitted and compacted without reconnecting across dry arcs
       const f = k / 20, x = positions[i] + (positions[i + 3] - positions[i]) * f;
       assert.ok(shore(x) <= 0);
     }
-    assert.ok(Math.hypot(positions[i + 3] - positions[i], positions[i + 5] - positions[i + 2]) < 4.1);
+    assert.ok(Math.hypot(positions[i + 3] - positions[i], positions[i + 5] - positions[i + 2]) < 8.1);
   }
 });
 

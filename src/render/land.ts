@@ -43,7 +43,8 @@ export function createLand(scene: THREE.Scene): THREE.Mesh {
   const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, metalness: 0 });
   const mesh = new THREE.Mesh(g, mat);
   mesh.receiveShadow = true;
-  mesh.castShadow = true;
+  // 115k triangles of terrain self-shadowing is not worth a second pass on iGPUs.
+  mesh.castShadow = false;
   scene.add(mesh);
   return mesh;
 }

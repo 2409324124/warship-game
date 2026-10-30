@@ -77,7 +77,9 @@ export async function overrideSuperstructure(
   const obj = await loadModel(`ships/${key}_super`);
   if (!obj) return false;
   obj.userData.overrideRole = 'superstructure';
-  for (const m of hide) m.visible = false;
+  // Detach rather than hide: a hidden mesh still costs matrix updates, GPU memory and
+  // camera raycasts. Geometry stays in the shared shipModel caches, so nothing is disposed.
+  for (const m of hide) m.removeFromParent();
   group.add(obj);
   return true;
 }
@@ -94,7 +96,7 @@ export async function overrideHull(
   // A partial/malformed asset must not hide the usable procedural fallback.
   if (!waterline) return null;
   obj.userData.overrideRole = 'hull';
-  for (const mesh of hide) mesh.visible = false;
+  for (const mesh of hide) mesh.removeFromParent();
   group.add(obj);
   return waterline;
 }

@@ -6,68 +6,20 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { transpileModule, ModuleKind, ScriptTarget } from 'typescript';
 import puppeteer from 'puppeteer-core';
-import { createServer } from 'node:http';
 
 const browserPath = process.env.BROWSER || 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 
-test('real WAV decode → recorded gun source → native final mix, salvo and cleanup', {
+test('procedural gun reports → native final mix: salvo, stress, cleanup', {
   skip: !existsSync(browserPath) && 'Set BROWSER to a Chromium executable for real WebAudio verification',
-  timeout: 60000,
+  timeout: 90000,
 }, async t => {
-  const asset = readFileSync(new URL('../public/audio/navy-mk45-report.wav', import.meta.url));
-  let requests = 0;
-  const server = createServer((req, res) => {
-    if (req.url === '/audio/navy-mk45-report.wav') {
-      requests++;
-      res.writeHead(200, { 'Content-Type': 'audio/wav' }); res.end(asset);
-    } else { res.writeHead(200, { 'Content-Type': 'text/html' }); res.end('<title>Audio-only QA</title>'); }
+  const browser = await puppeteer.launch({
+    executablePath: browserPath, headless: true, args: ['--no-sandbox', '--mute-audio'],
+    timeout: 15000,
   });
-  let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
-  let cleanupPromise: Promise<void> | undefined;
-  const cleanup = () => cleanupPromise ??= (async () => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    try {
-      if (browser) {
-        const ownedBrowser = browser;
-        await Promise.race([
-          ownedBrowser.close(),
-          new Promise<never>((_, reject) => {
-            timer = setTimeout(() => {
-              // Only the headless process launched by this test, never user browsers.
-              ownedBrowser.process()?.kill();
-              reject(new Error('Audio QA browser.close exceeded 5 seconds'));
-            }, 5000);
-          }),
-        ]);
-      }
-    } finally {
-      if (timer) clearTimeout(timer);
-      // One ordered cleanup: browser first, then HTTP keepalive/active sockets.
-      server.closeIdleConnections();
-      server.closeAllConnections();
-      if (server.listening) await new Promise<void>((resolve, reject) => {
-        server.close(error => error ? reject(error) : resolve());
-      });
-    }
-  })();
-  t.after(cleanup);
-  await new Promise<void>((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', resolve);
-  });
-  let launched = false;
-  try {
-    browser = await puppeteer.launch({
-      executablePath: browserPath, headless: true, args: ['--no-sandbox', '--mute-audio'],
-      timeout: 15000,
-    });
-    launched = true;
-  } finally {
-    // Also release the listening server if launch throws before browser exists.
-    if (!launched) await cleanup();
-  }
+  t.after(() => browser.close());
   const page = await browser.newPage();
-  await page.goto(`http://127.0.0.1:${server.address().port}`);
+  await page.goto('about:blank');
   const source = transpileModule(readFileSync(new URL('../src/audio/sfx.ts', import.meta.url), 'utf8'), {
     compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ES2022 },
   }).outputText.replace('export class Sfx', 'window.AudioTestSfx = class Sfx');
@@ -105,17 +57,8 @@ test('real WAV decode → recorded gun source → native final mix, salvo and cl
       const sfx = new window.AudioTestSfx();
       try {
         sfx.init();
-        const loaded = await sfx.prepare();
-        if (!loaded || !sfx.stats().loaded) throw new Error('Recorded WAV failed to decode; fallback is not acceptance');
+        await sfx.prepare();
         const initialConnections = [...connections.values()].reduce((sum, set) => sum + set.size, 0);
-        // Check the composite still derives primarily from the actual decoded WAV.
-        const original = sfx.recording.getChannelData(0);
-        const composite = sfx.recordedReport((406 - 76) / 384, false).getChannelData(0);
-        let referenceEnergy = 0, residualEnergy = 0;
-        for (let i = 0; i < Math.min(original.length, rate); i++) {
-          referenceEnergy += (original[i] * .94) ** 2;
-          residualEnergy += (composite[i] - original[i] * .94) ** 2;
-        }
         if (mode === 'muted') {
           sfx.gun(406, 5000, true, { barrels: 3 });
           sfx.setMuted(true);
@@ -153,12 +96,20 @@ test('real WAV decode → recorded gun source → native final mix, salvo and cl
         const lp = analysis.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500; lp.Q.value = -3.0103;
         src.connect(hp); hp.connect(lp); lp.connect(analysis.destination); src.start();
         const band = (await analysis.startRendering()).getChannelData(0);
-        let peak = 0, energy = 0, lowEnergy = 0, tail = 0, late = 0, nearCeiling = 0;
+        // Sub-band for the pressure column: below 80 Hz only.
+        const subAnalysis = new OfflineAudioContext(1, data.length, rate);
+        const subLeft = subAnalysis.createBuffer(1, data.length, rate);
+        subLeft.copyToChannel(data, 0);
+        const subSrc = subAnalysis.createBufferSource(); subSrc.buffer = subLeft;
+        const subLp = subAnalysis.createBiquadFilter(); subLp.type = 'lowpass'; subLp.frequency.value = 80; subLp.Q.value = -3.0103;
+        subSrc.connect(subLp); subLp.connect(subAnalysis.destination); subSrc.start();
+        const sub = (await subAnalysis.startRendering()).getChannelData(0);
+        let peak = 0, energy = 0, lowEnergy = 0, subEnergy = 0, tail = 0, late = 0, nearCeiling = 0;
         for (let i = 0; i < data.length; i++) {
           if (!Number.isFinite(data[i])) throw new Error('Non-finite sample');
           peak = Math.max(peak, Math.abs(data[i]));
           peak = Math.max(peak, Math.abs(rendered.getChannelData(1)[i]));
-          if (i < rate * 0.6) { energy += data[i] ** 2; lowEnergy += band[i] ** 2; }
+          if (i < rate * 0.6) { energy += data[i] ** 2; lowEnergy += band[i] ** 2; subEnergy += sub[i] ** 2; }
           if (i >= rate && i < rate * 2) tail += band[i] ** 2;
           if (i >= rate * 2 && i < rate * 2.6) late += band[i] ** 2;
           if (Math.abs(data[i]) > .5759) nearCeiling++;
@@ -168,9 +119,9 @@ test('real WAV decode → recorded gun source → native final mix, salvo and cl
         const stats = sfx.stats();
         sfx.dispose();
         return { peak, rms: Math.sqrt(energy / (rate * .6)), lowRms: Math.sqrt(lowEnergy / (rate * .6)),
+          subRms: Math.sqrt(subEnergy / (rate * .6)),
           tailRms: Math.sqrt(tail / rate), lateRms: Math.sqrt(late / (rate * .6)), active, preview, transientConnections,
-          nearCeilingFraction: nearCeiling / data.length,
-          stats, reinforcementRatio: Math.sqrt(residualEnergy / referenceEnergy),
+          nearCeilingFraction: nearCeiling / data.length, stats,
           disposed: sfx.ctx === null && sfx.graph.length === 0 && sfx.reports.size === 0
             && [...connections.values()].every(set => set.size === 0) };
       } finally { Math.random = random; sfx.dispose(); }
@@ -191,26 +142,23 @@ test('real WAV decode → recorded gun source → native final mix, salvo and cl
     wav.write('data', 36); wav.writeUInt32LE(samples[0].length * 4, 40);
     for (let i = 0; i < samples[0].length; i++) for (let c = 0; c < 2; c++)
       wav.writeInt16LE(Math.round(Math.max(-1, Math.min(1, samples[c][i])) * 32767), 44 + i * 4 + c * 2);
-    const previewPath = join(tmpdir(), 'opencode', `warship-recorded-${mode}-finalmix.wav`);
+    const previewPath = join(tmpdir(), 'opencode', `warship-procedural-${mode}-finalmix.wav`);
     await mkdir(join(tmpdir(), 'opencode'), { recursive: true });
     await writeFile(previewPath, wav);
-    t.diagnostic(`Recorded composite ${mode} stereo finalmix preview (not subjective acceptance): ${previewPath}`);
+    t.diagnostic(`Procedural ${mode} stereo finalmix preview (not subjective acceptance): ${previewPath}`);
   }
   t.diagnostic(JSON.stringify(result));
-  assert.equal(requests, 9, 'one preload per context, no network/decode on fire');
   for (const metrics of Object.values(result)) {
     assert.ok(metrics.peak < 0.65, 'mix retains peak headroom');
     assert.equal(metrics.active, 0, 'native onended releases every transient voice');
     assert.equal(metrics.transientConnections, 0, 'all transient native node connections are released');
     assert.ok(metrics.disposed, 'dispose clears graph and cached reports');
-    assert.equal(metrics.stats.loaded, true);
-    assert.equal(metrics.stats.fallback, 0, 'every scheduled gun uses recorded asset');
-    assert.ok(metrics.reinforcementRatio < 0.25, 'synthetic reinforcement remains subordinate to recorded signal');
   }
   assert.ok(result.heavy.peak > 0.01, 'audible signal was rendered');
   assert.ok(result.muted.rms < result.baseline.rms * 1.05, 'muted delayed shot never resurrects after unmute');
   assert.ok(result.heavy.lowRms > result.light.lowRms * 1.3, 'heavy gun carries more low-frequency energy');
-  assert.ok(result.heavy.tailRms > result.light.tailRms * 2, 'BB retains more recorded late tail than DD');
+  assert.ok(result.heavy.subRms > result.light.subRms * 2, 'sub-bass pressure column is a heavy-gun feature');
+  assert.ok(result.heavy.tailRms > result.light.tailRms * 2, 'BB retains more rolling tail than DD');
   assert.ok(result.heavy.lowRms > 0.01, '80–500Hz body survives the final chain');
   assert.ok(result.heavy.lowRms / result.heavy.rms > 0.2, 'body is not merely sub-bass or treble');
   assert.ok(result.heavy.tailRms > result.baseline.tailRms * 5
@@ -218,8 +166,8 @@ test('real WAV decode → recorded gun source → native final mix, salvo and cl
   assert.ok(result.triple.rms > result.heavy.rms * 1.3, 'additional barrels retain powder energy');
   assert.ok(result.salvo.rms > result.triple.rms * 1.35, 'same-frame turret events are not swallowed');
   assert.ok(result.secondary.rms < result.heavy.rms * 0.5, 'secondary fire stays behind the main battery');
-  assert.equal(result.heavy.stats.recorded, 1);
-  assert.equal(result.triple.stats.recorded, 1);
-  assert.equal(result.salvo.stats.recorded, 4, 'all same-frame turret events retain recorded identity');
+  assert.equal(result.heavy.stats.procedural, 1);
+  assert.equal(result.triple.stats.procedural, 1);
+  assert.equal(result.salvo.stats.procedural, 4, 'all same-frame turret events are scheduled');
   assert.ok(result.salvo.nearCeilingFraction < 0.001, 'ordinary salvo is not flattened against the final ceiling');
 });

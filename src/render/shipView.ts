@@ -24,11 +24,11 @@ export class ShipView {
   readonly group = new THREE.Group();
   readonly turrets: { pivot: THREE.Group; base: THREE.Object3D; barrel: THREE.Object3D; geo: TurretGeo }[] = [];
   private foam: THREE.Mesh;
-  private hull: THREE.Mesh;
-  private struct: THREE.Mesh;
-  private dark: THREE.Mesh;
-  private deck: THREE.Mesh;
-  private rails: THREE.Mesh;
+  private hull: THREE.Mesh | null = null;
+  private struct: THREE.Mesh | null = null;
+  private dark: THREE.Mesh | null = null;
+  private deck: THREE.Mesh | null = null;
+  private rails: THREE.Mesh | null = null;
   private customFoam: THREE.BufferGeometry | null = null;
   private disposed = false;
 
@@ -39,26 +39,11 @@ export class ShipView {
     const m = shipMaterials(spec);
     this.group.rotation.order = 'YXZ';
 
-    this.hull = new THREE.Mesh(g.hull, m.hull);
-    this.deck = new THREE.Mesh(g.deck, m.deck);
-    this.struct = new THREE.Mesh(g.struct, m.struct);
-    this.dark = new THREE.Mesh(g.dark, m.dark);
-    this.hull.name = `hull:${spec.key}`;
-    this.deck.name = `deck:${spec.key}`;
-    this.struct.name = `struct:${spec.key}`;
-    this.dark.name = `dark:${spec.key}`;
-    for (const mesh of [this.hull, this.deck, this.struct, this.dark]) {
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      this.group.add(mesh);
-    }
-
-    const rails = this.rails = new THREE.Mesh(
-      buildRails(spec),
-      new THREE.MeshStandardMaterial({ color: 0xa2adb4, roughness: 0.7, metalness: 0.12 }),
-    );
-    rails.name = `rails:${spec.key}`;
-    this.group.add(rails);
+    // When a Blender export covers a layer, the procedural layer is never built: it would
+    // only be detached on arrival while still costing build time, memory and scene-graph
+    // traversal. A missing/malformed GLB lazily builds the fallback in the override callback.
+    if (!hasModel(`ships/${spec.key}_hull`)) this.buildProceduralHull(g, m);
+    if (!hasModel(`ships/${spec.key}_super`)) this.buildProceduralSuper(g, m);
 
     for (const t of g.turrets) {
       const mount = spec.tur[t.mount];
@@ -99,14 +84,17 @@ export class ShipView {
     if (!wanted.some(hasModel)) return;
 
     const group = this.group;
-    const hide = [this.struct, this.dark];
     const turrets = this.turrets;
+    const live = (m: THREE.Mesh | null): m is THREE.Mesh => !!m;
     void assets().then((a) => {
       if (this.disposed) return;
-      void a.overrideSuperstructure(spec.key, group, hide);
+      void a.overrideSuperstructure(spec.key, group, [this.struct, this.dark].filter(live)).then((ok) => {
+        if (!ok && !this.struct && !this.disposed) this.buildProceduralSuper();
+      });
       if (hasModel(`ships/${spec.key}_hull`)) {
-        void a.overrideHull(spec.key, group, [this.hull, this.deck, this.rails]).then((waterline) => {
+        void a.overrideHull(spec.key, group, [this.hull, this.deck, this.rails].filter(live)).then((waterline) => {
           if (waterline && !this.disposed) this.foam.geometry = this.customFoam = buildVisualFoam(waterline);
+          if (!waterline && !this.hull && !this.disposed) this.buildProceduralHull();
         });
       }
       for (let i = 0; i < turrets.length; i++) {
@@ -116,6 +104,45 @@ export class ShipView {
         });
       }
     });
+  }
+
+  /** Procedural hull/deck/rails fallback; geometry and materials come from the shared caches. */
+  private buildProceduralHull(
+    g = shipGeometry(this.ship.spec),
+    m = shipMaterials(this.ship.spec),
+  ): void {
+    const spec = this.ship.spec;
+    this.hull = new THREE.Mesh(g.hull, m.hull);
+    this.deck = new THREE.Mesh(g.deck, m.deck);
+    this.rails = new THREE.Mesh(
+      buildRails(spec),
+      new THREE.MeshStandardMaterial({ color: 0xa2adb4, roughness: 0.7, metalness: 0.12 }),
+    );
+    this.hull.name = `hull:${spec.key}`;
+    this.deck.name = `deck:${spec.key}`;
+    this.rails.name = `rails:${spec.key}`;
+    for (const mesh of [this.hull, this.deck]) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    }
+    this.group.add(this.hull, this.deck, this.rails);
+  }
+
+  /** Procedural superstructure fallback: all light parts merged, all dark parts merged. */
+  private buildProceduralSuper(
+    g = shipGeometry(this.ship.spec),
+    m = shipMaterials(this.ship.spec),
+  ): void {
+    const spec = this.ship.spec;
+    this.struct = new THREE.Mesh(g.struct, m.struct);
+    this.dark = new THREE.Mesh(g.dark, m.dark);
+    this.struct.name = `struct:${spec.key}`;
+    this.dark.name = `dark:${spec.key}`;
+    for (const mesh of [this.struct, this.dark]) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    }
+    this.group.add(this.struct, this.dark);
   }
 
   update(_dt: number, t: number, water: Water): void {
