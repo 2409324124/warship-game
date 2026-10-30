@@ -173,6 +173,7 @@ test('fixed pool survives saturation, retires oldest, compacts and resets on clo
   assert.ok(pool.data.every(v => v === 0));
 });
 
+
 test('invalid/extreme inputs remain finite and large-clock blast ages keep precision', () => {
   const pool = new OceanBlasts();
   for (const v of [NaN, Infinity, -Infinity, 1e308, -1e308, 0]) {
