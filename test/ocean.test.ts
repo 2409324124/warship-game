@@ -22,10 +22,10 @@ test('shared spectrum has directional swell/wind bands and modest height, slope 
     peakSlope = Math.max(peakSlope, Math.hypot(s.dx, s.dz));
     peakAccel = Math.max(peakAccel, Math.abs((next.height - 2 * s.height + sampleOcean(x, z, t - 0.02).height) / 0.02 ** 2));
     motion += Math.abs(next.height - s.height);
-    assert.ok(Math.abs(s.height) < 3.25);
+    assert.ok(Math.abs(s.height) < 5.5);
   }
   assert.ok(peakSlope > 0.07 && peakSlope < 0.20, `slope ${peakSlope}`);
-  assert.ok(peakAccel < 1.8, `point acceleration ${peakAccel} m/s²`);
+  assert.ok(peakAccel < 2.6, `point acceleration ${peakAccel} m/s²`);
   assert.ok(motion > 0.5, 'visibly moving sea');
 });
 
@@ -50,8 +50,8 @@ test('stronger physical wind waves retain stable DD/BB four-point hull motion', 
       maxPitch = Math.max(maxPitch, Math.abs(s.pitch));
       maxRoll = Math.max(maxRoll, Math.abs(s.roll));
     }
-    assert.ok(maxAccel < 1.2, `${L}m hull heave acceleration ${maxAccel}`);
-    assert.ok(maxPitch < 0.055, `${L}m pitch ${maxPitch}`);
+    assert.ok(maxAccel < 1.5, `${L}m hull heave acceleration ${maxAccel}`);
+    assert.ok(maxPitch < 0.08, `${L}m pitch ${maxPitch}`);
     assert.ok(maxRoll < 0.16, `${L}m roll ${maxRoll}`);
   }
 });
@@ -62,7 +62,7 @@ test('ambient whitecaps stay sparse and pressure foam follows a narrow moving fr
     const s = sampleOcean(i * 2.31, -i * 1.29, i * 0.09);
     if (s.foam > 0.001) breaking++;
   }
-  assert.ok(breaking > 20 && breaking < 260, `${breaking}/1000 crest samples before shader perforation`);
+  assert.ok(breaking > 20 && breaking < 500, `${breaking}/1000 crest samples before shader perforation`);
   const pool = new OceanBlasts(); pool.blast(0, 0, 406);
   const t = 0.5, radius = 23 * t;
   assert.ok(pool.sample(radius, 0, t).foam > 0.03);

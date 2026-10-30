@@ -3,6 +3,14 @@ import * as THREE from 'three';
 import { terrainH } from '../sim/terrain';
 import { FOG_COLOR, SUN_DIR } from './engine';
 import { OceanBlasts, OCEAN_GLSL, sampleOcean, oceanPhases, BLAST_CAPACITY } from './oceanModel';
+
+/** Ships close enough to churn foam around their hulls. */
+export const HULL_FOAM_CAPACITY = 12;
+/** Minimal structural view of a ship for hull foam / wake trails (avoid importing sim types). */
+export interface FoamShip {
+  id: number; x: number; z: number; heading: number; speed: number; maxV: number;
+  alive: boolean; removed: boolean; spec: { L: number; B: number };
+}
 import { waterTriangleHeight } from './oceanSurfaceGeometry';
 
 const VERT = /* glsl */ `
@@ -55,6 +63,54 @@ void wavelet(inout vec2 slope, vec2 p, vec2 dir, float k, float amp, float speed
 }
 // Short optical roughness/pressure depression only: like fine wavelets this does not move
 // vertices or ships. Independent of foam perforation, so a heavy salvo reads on dark water.
+uniform int uShipCount;
+uniform vec4 uShipA[${HULL_FOAM_CAPACITY}]; // x, z, sin(heading), cos(heading)
+uniform vec4 uShipB[${HULL_FOAM_CAPACITY}]; // L, B, speed fraction, unused
+// White churn around a moving hull: bow breakwater, side wash and stern turbulence,
+// torn by along-hull streaks. Scales with speed squared; a stopped ship makes none.
+float hullFoam(vec2 p, float t) {
+  float foam = 0.0;
+  for (int i = 0; i < ${HULL_FOAM_CAPACITY}; i++) {
+    if (i >= uShipCount) break;
+    vec4 sa = uShipA[i];
+    float L = uShipB[i].x, B = uShipB[i].y, spd = uShipB[i].z;
+    vec2 d = p - sa.xy;
+    float rr = L * 0.72;
+    if (dot(d, d) > rr * rr || spd < 0.03) continue;
+    vec2 fwd = sa.zw;
+    vec2 sideDir = vec2(-fwd.y, fwd.x);
+    float u = dot(d, fwd);
+    float v0 = dot(d, sideDir);
+    float s = clamp(u / L + 0.5, -0.12, 1.02);
+    // half-beam profile echoing the analytic hull (sim/hull.ts halfW); the cos() base
+    // is clamped non-negative because pow(negative, fraction) is undefined in GLSL.
+    float hw = s < 0.16 ? max(0.42, pow(max(cos((0.16 - s) / 0.16 * 1.5708), 0.0), 0.55))
+      : s > 0.58 ? max(0.02, pow(max(cos((s - 0.58) / 0.42 * 1.5708), 0.0), 0.8)) : 1.0;
+    float e = abs(v0) - hw * B * 0.5; // metres outside the plating
+    float streak = 0.25 + 0.75 * smoothstep(-0.2, 0.5,
+      noiseD(vec2(u * 0.33 - t * spd * 7.0, v0 * 1.2)).x);
+    // Bow breakwater: a bright torn sheet at the stem.
+    float bow = smoothstep(0.72, 0.92, s) * (1.0 - smoothstep(0.99, 1.02, s))
+      * exp(-e * e / (1.5 + spd * 8.0));
+    // Kelvin divergent arms: foam ridges along |v| = tan(19.5°) · (L/2 − u), travelling
+    // with the ship and fading aft. The hull itself occludes the arms' inboard part.
+    float aft = 0.5 * L - u; // metres behind the bow
+    float armD = 0.354 * aft;
+    float armW = 1.1 + aft * 0.025;
+    float arm = exp(-pow((abs(v0) - armD) / armW, 2.0))
+      * smoothstep(0.0, 8.0, aft) * (1.0 - smoothstep(0.55 * L, 0.9 * L, aft));
+    // Stern turbulence: a widening churned wash that hands off to the wake ribbon.
+    float back = max(0.0, -u - 0.5 * L);
+    float washW = B * 0.35 + back * 0.09;
+    float wash = (1.0 - smoothstep(0.0, washW, abs(v0)))
+      * exp(-back * back / (2.0 * pow(0.35 * L, 2.0)));
+    // Side wash amidships, torn hard so it never reads as a neon outline.
+    float sideW = (1.0 - smoothstep(0.0, 2.4, abs(e)))
+      * smoothstep(0.04, 0.3, s) * (1.0 - smoothstep(0.72, 0.95, s));
+    foam += (bow * 1.3 + arm * 0.8 + wash * 1.15 + sideW * 0.55) * streak * spd * spd;
+  }
+  return min(foam, 1.0);
+}
 float pressureActivity(vec2 p, float dist) {
   // Blast rings are at most ~100 m across; past a few km they are subpixel anyway.
   if (uBlastCount == 0 || dist > 3500.0) return 0.0;
@@ -78,9 +134,12 @@ float pressureActivity(vec2 p, float dist) {
 }
 vec3 skyCol(vec3 d) {
   float h = clamp(d.y, 0.0, 1.0);
-  vec3 c = mix(uFog, uZenith, pow(h, 0.55));
   float sd = max(dot(d, normalize(uSun)), 0.0);
-  return c + vec3(1.0, 0.78, 0.55) * (pow(sd, 22.0) * 0.5 + pow(sd, 4.0) * 0.1);
+  // Saturated golden-hour sky: deep slate blue away from the sun, warm gold toward it.
+  // The grey uFog haze is only applied as distance fog later, never as a reflection color.
+  vec3 horizon = mix(vec3(0.30, 0.42, 0.55), vec3(0.72, 0.48, 0.32), pow(sd, 3.5));
+  vec3 c = mix(horizon, uZenith * 0.85, pow(h, 0.5));
+  return c + vec3(1.0, 0.78, 0.55) * (pow(sd, 24.0) * 0.7 + pow(sd, 9.0) * 0.16);
 }
 float landH(vec2 p) {
   vec2 uv = p / (2.0 * uLandScale) + 0.5;
@@ -111,33 +170,44 @@ void main() {
   float kMod = 1.0 - 0.25 * clamp(sea.x / 1.2, -1.0, 1.0);
   float aMod = (0.7 + 0.6 * smoothstep(-0.3, 1.2, sea.x)) * (1.0 + streak * 0.15);
   vec2 fine = vec2(0.0);
-  wavelet(fine, q, windDir, 0.22 * kMod, 0.085 * aMod, 0.37, vec2(3.7, 17.1));
-  wavelet(fine, q, vec2(0.76484, 0.64422), 0.47 * kMod, 0.037 * aMod, 0.59, vec2(31.8, -9.2));
-  wavelet(fine, q, vec2(1.0, 0.0), 1.03 * kMod, 0.016 * aMod, 0.86, vec2(-18.3, 5.4));
+  wavelet(fine, q, windDir, 0.22 * kMod, 0.15 * aMod, 0.37, vec2(3.7, 17.1));
+  wavelet(fine, q, vec2(0.76484, 0.64422), 0.47 * kMod, 0.068 * aMod, 0.59, vec2(31.8, -9.2));
+  wavelet(fine, q, vec2(1.0, 0.0), 1.03 * kMod, 0.028 * aMod, 0.86, vec2(-18.3, 5.4));
   if (distFade > 0.02) {
     wavelet(fine, q, vec2(0.40849, 0.91276), 2.17 * kMod, 0.0065 * aMod, 1.12, vec2(7.9, 43.2));
     wavelet(fine, q, vec2(0.90045, -0.43497), 4.31 * kMod, 0.0025 * aMod, 1.55, vec2(55.1, 2.8));
   }
-  fine *= mix(0.35, 1.0, distFade);
+  fine *= mix(0.18, 1.0, distFade);
   float pressure = pressureActivity(p, dist);
   vec3 churn = pressure > 0.001 ? noiseD(p * 0.46 + vec2(-uTime * 2.6, uTime * 1.9)) : vec3(0.0);
   grad += fine * (1.0 - pressure * 0.6) + churn.yz * (0.12 * pressure);
   vec3 n = normalize(vec3(-grad.x, 1.0, -grad.y));
+  // Wave-scale normal (swell + blast only): fine ripples must not wash out the swell's form lighting.
+  vec2 gradBig = sea.yz + blast.yz;
+  vec3 nBig = normalize(vec3(-gradBig.x, 1.0, -gradBig.y));
   vec3 v = normalize(uEye - vWorld);
   if (dot(n, v) < 0.0) n = -n;
   float h = landH(p);
   float shallow = smoothstep(-70.0, 8.0, h);
   float shore = smoothstep(-34.0, 2.0, h) * (1.0 - smoothstep(2.0, 46.0, h));
-  vec3 base = mix(vec3(0.025, 0.066, 0.089), vec3(0.075, 0.22, 0.23), shallow);
-  base *= 1.0 + streak * 0.04;
+  vec3 base = mix(vec3(0.008, 0.034, 0.048), vec3(0.045, 0.15, 0.15), shallow);
+  base *= 1.0 + streak * 0.015;
+  // Swell form shading on the wave-scale normal: faces leaning toward the low sun catch
+  // scattered light, faces leaning away fall off hard — this is what makes swell read as 3D.
+  float sunFace = max(dot(nBig, normalize(uSun)), 0.0);
+  base *= 0.45 + 1.35 * sunFace;
   // Forward-scattered emerald only where a crest is both tall and steep, against the sun.
-  base += vec3(0.02, 0.10, 0.075) * smoothstep(0.6, 1.6, sea.x)
-    * smoothstep(0.05, 0.12, length(sea.yz)) * max(0.0, dot(v, -uSun));
-  float fresnel = 0.035 + 0.94 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
+  base += vec3(0.015, 0.065, 0.055) * smoothstep(0.8, 2.3, sea.x)
+    * smoothstep(0.06, 0.14, length(sea.yz)) * max(0.0, dot(v, -uSun));
+  float fresnel = 0.03 + 0.78 * pow(1.0 - max(dot(n, v), 0.0), 5.0);
   vec3 refl = reflect(-v, n); refl.y = abs(refl.y);
-  vec3 col = mix(base, skyCol(refl), fresnel);
+  // Wave form must survive into the reflected sky too, or distant swell washes out to flat haze.
+  // Stronger ribs on the sun side so the glitter path keeps dark wave faces running through it.
+  float glareSide = smoothstep(0.2, 0.7, dot(refl, normalize(uSun)));
+  float skyForm = mix(0.78 + 0.38 * sunFace, 0.58 + 0.72 * sunFace, glareSide);
+  vec3 col = mix(base, skyCol(refl) * skyForm, fresnel);
   // Troughs absorb: less sky is seen and the path through water is longer.
-  col *= 1.0 - 0.18 * (1.0 - smoothstep(-1.4, 0.2, sea.x)) * (1.0 - fresnel);
+  col *= 1.0 - 0.34 * (1.0 - smoothstep(-2.2, 0.2, sea.x)) * (1.0 - fresnel);
   // A dark compressed face beside brighter torn foam makes the transient region legible,
   // without adding emitted light or changing the displacement/boat height cap.
   col *= 1.0 - pressure * 0.48;
@@ -150,20 +220,20 @@ void main() {
   }
   vec3 hv = normalize(normalize(uSun) + v);
   float nh = max(dot(n, hv), 0.0);
-  col += vec3(1.0, 0.86, 0.66) * (pow(nh, 700.0) * (1.2 * sparkle + 0.25)
-    + pow(nh, 48.0) * 0.10 + pow(nh, 10.0) * 0.03);
+  col += vec3(1.0, 0.86, 0.66) * (pow(nh, 700.0) * (1.2 * sparkle + 0.22)
+    + pow(nh, 48.0) * 0.05 + pow(nh, 10.0) * 0.02);
   // Thin crest ribbons with perforated edges and individual grains, rather than filled blobs.
   float foamAA = 1.0 - smoothstep(0.8, 3.0, footprint);
   float foam = 0.0, pressureFoam = 0.0;
   // Foam perforation costs four noiseD calls; past ~1.6 km haze hides it entirely.
   if (foamAA > 0.001 && dist < 1600.0) {
     vec2 fq = vec2(dot(p, vec2(0.94, 0.342)), dot(p, vec2(-0.342, 0.94)));
-    float lace = noiseD(fq * vec2(1.3, 0.48) - wind).x;
-    float grains = noiseD(p * 2.7 - wind + 73.2).x;
+    float lace = noiseD(fq * vec2(1.0, 0.30) - wind).x;
+    float grains = noiseD(p * 1.7 - wind + 73.2).x;
     float grainAA = 1.0 - smoothstep(0.15, 0.65, footprint);
-    float pores = mix(0.31, smoothstep(-0.1, 0.42, grains), grainAA);
+    float pores = mix(0.31, smoothstep(0.0, 0.5, grains), grainAA);
     float broken = smoothstep(-0.12, 0.42, lace) * pores;
-    float patches = smoothstep(-0.05, 0.35, noiseD(p * 0.11 - wind * 0.5 + 19.4).x);
+    float patches = smoothstep(-0.05, 0.30, noiseD(p * 0.07 - wind * 0.5 + 19.4).x);
     float crest = smoothstep(0.001, 0.006, sea.w) * broken * patches * foamAA;
     // Lee-slope residue: a just-broken crest leaves a fading tail downwind of the crest line.
     float trail = smoothstep(0.0, 0.05, -dot(sea.yz, windDir))
@@ -178,8 +248,15 @@ void main() {
   // Diffuse foam, never emissive: blast rings disappear into the water in about a second.
   col = mix(col, vec3(0.30, 0.39, 0.41), foam);
   col = mix(col, vec3(0.22, 0.31, 0.33), min(0.20, pressureFoam));
+  // Bright churn around moving hulls: bow breakwater, side wash, stern turbulence.
+  if (dist < 900.0) {
+    float hf = hullFoam(p, uTime) * foamAA;
+    col = mix(col, vec3(0.62, 0.70, 0.71), min(0.6, hf));
+  }
   float fog = 1.0 - exp(-uFogDensity * dist * 0.85);
-  gl_FragColor = vec4(mix(col, uFog, clamp(fog, 0.0, 1.0)), 1.0);
+  // Water fades toward a blue sea haze, never the grey sky fog.
+  vec3 seaFog = mix(uFog, vec3(0.14, 0.26, 0.35), 0.55);
+  gl_FragColor = vec4(mix(col, seaFog, clamp(fog, 0.0, 1.0)), 1.0);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
 }
@@ -204,7 +281,7 @@ function landTexture(scale: number): THREE.DataTexture {
 
 export interface Water {
   mesh: THREE.Mesh;
-  update(t: number, eye: THREE.Vector3): void;
+  update(t: number, eye: THREE.Vector3, ships?: readonly FoamShip[]): void;
   /** Exact world-space vertex height field; fine shading-only ripples do not bob ships. */
   height(x: number, z: number, t: number): number;
   /** Height of the rendered triangles, including distant mesh interpolation. */
@@ -242,6 +319,9 @@ export function createWater(scene: THREE.Scene, fogDensity: number): Water {
       uFog: { value: FOG_COLOR.clone() }, uZenith: { value: new THREE.Color(0x4d78a8) },
       uFogDensity: { value: fogDensity }, uLand: { value: landTexture(14000) },
       uLandScale: { value: 14000 },
+      uShipCount: { value: 0 },
+      uShipA: { value: new Float32Array(HULL_FOAM_CAPACITY * 4) },
+      uShipB: { value: new Float32Array(HULL_FOAM_CAPACITY * 4) },
     },
     fog: false,
   });
@@ -251,7 +331,19 @@ export function createWater(scene: THREE.Scene, fogDensity: number): Water {
   scene.add(mesh);
   return {
     mesh,
-    update(t, eye) {
+    update(t, eye, ships?: readonly FoamShip[]) {
+      if (ships) {
+        const A = mat.uniforms.uShipA.value as Float32Array;
+        const B = mat.uniforms.uShipB.value as Float32Array;
+        let n = 0;
+        for (const s of ships) {
+          if (n >= HULL_FOAM_CAPACITY || !s.alive || s.removed) continue;
+          A.set([s.x, s.z, Math.sin(s.heading), Math.cos(s.heading)], n * 4);
+          B.set([s.spec.L, s.spec.B, Math.min(1, Math.abs(s.speed) / s.maxV), 0], n * 4);
+          n++;
+        }
+        mat.uniforms.uShipCount.value = n;
+      }
       blasts.update(t);
       mat.uniforms.uTime.value = blasts.time;
       oceanPhases(blasts.time, mat.uniforms.uWavePhase.value as Float32Array);

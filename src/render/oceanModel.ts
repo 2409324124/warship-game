@@ -33,10 +33,12 @@ export interface OceanWave {
 // Pierson-Moskowitz peak, log-normal energy envelope (tight on the swell side, broad on the
 // wind-wave side), directions spread around the wind plus two off-wind swell trains.
 // Total energy ΣA² = 2.2 reproduces the previous sea's height/slope/hull-motion invariants.
-const SPECTRUM_ENERGY = 2.2;
+const SPECTRUM_ENERGY = 6.5;
 const SPECTRUM = (() => {
-  const PEAK = 220, RATIO = 0.7, WIND = 0.35;
-  const OFFSETS = [-1.0, 0.8, 0.08, -0.08, 0.2, -0.2, 0.36, -0.36, 0.55, -0.55, 0.2, -0.36];
+  const PEAK = 260, RATIO = 0.7, WIND = 0.35;
+  // Long components stay near-parallel to the wind — coherent rolling crest lines instead
+  // of a confused sea; only the short chop gets a wide spread.
+  const OFFSETS = [-0.10, 0.12, 0.05, -0.07, 0.10, -0.12, 0.18, -0.18, 0.30, -0.30, 0.24, -0.26];
   const raw = OFFSETS.map((off, i) => {
     const length = PEAK * RATIO ** (i - 2);
     const s = Math.log(length / PEAK);
@@ -54,9 +56,9 @@ export const OCEAN_WAVES: readonly OceanWave[] = SPECTRUM.map(w => Object.freeze
   omega: Math.sqrt(9.81 * TAU / w.length), amplitude: w.amplitude,
   // Deterministic phases: reproducible seas without a seeded RNG dependency.
   phase: ((Math.sin(w.i * 12.9898) * 43758.5453) % 1 + 1) % 1 * TAU,
-  harmonic: 0.22 * Math.min(60 / w.length, 1),
+  harmonic: 0.26 * Math.min(60 / w.length, 1),
   // Only wind waves break; broad swells never become whitecaps.
-  foamWeight: w.i <= 8 && w.length < 90 ? Math.min(0.55, 18 / w.length) : 0,
+  foamWeight: w.i <= 8 && w.length < 90 ? Math.min(0.75, 18 / w.length) : 0,
   displace: w.i <= 8,
 }));
 
@@ -83,7 +85,7 @@ export function sampleOcean(x: number, z: number, t: number): OceanSample {
     const slope = w.amplitude * w.k * (Math.cos(f) + 2 * w.harmonic * Math.sin(2 * f));
     out.dx += w.dx * slope; out.dz += w.dz * slope;
     // Only the narrow crest of each wind wave can break; broad swell faces never become decals.
-    out.foam += w.foamWeight * Math.max(0, Math.sin(f) - 0.985);
+    out.foam += w.foamWeight * Math.max(0, Math.sin(f) - 0.962);
   }
   return out;
 }
@@ -197,7 +199,7 @@ vec4 oceanSurface(vec2 p) {
   s.x += ${f(w.amplitude)} * (sin(phase) - ${f(w.harmonic)} * cos(2.0 * phase));
   slope = ${f(w.amplitude * w.k)} * (cos(phase) + ${f(2 * w.harmonic)} * sin(2.0 * phase));
   s.yz += vec2(${f(w.dx)}, ${f(w.dz)}) * slope;${w.foamWeight > 0 ? `
-  s.w += ${f(w.foamWeight)} * max(0.0, sin(phase) - 0.985);` : ''}`).join('\n')}
+  s.w += ${f(w.foamWeight)} * max(0.0, sin(phase) - 0.962);` : ''}`).join('\n')}
   return s;
 }
 // Shading-only short waves: normal detail below mesh resolution; they never move vertices or ships.

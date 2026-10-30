@@ -15,6 +15,7 @@ import type { Ship } from './sim/ship';
 import { createEngine } from './render/engine';
 import { createSky } from './render/sky';
 import { createWater } from './render/water';
+import { createWakes } from './render/wake';
 import { createLand } from './render/land';
 import { FX } from './render/fx';
 import { AimMarker } from './render/aimMarker';
@@ -46,6 +47,7 @@ const engine = createEngine($<HTMLCanvasElement>('gl'));
 const { scene, camera, renderer } = engine;
 createSky(scene);
 const water = createWater(scene, engine.fogDensity);
+const wakes = createWakes(scene);
 createLand(scene);
 const fx = new FX(scene);
 const aimMarker = new AimMarker(scene);
@@ -272,6 +274,7 @@ function startBattle(): void {
   G.inspect = 0;
   fx.reset();
   water.resetBlasts();
+  wakes.reset();
   for (const v of views.values()) v.dispose(scene);
   views.clear();
   spots = [];
@@ -796,7 +799,8 @@ function frame(now: number): void {
   } else {
     updateCamera(dt);
   }
-  water.update(G.time, camera.position);
+  water.update(G.time, camera.position, world?.ships);
+  if (world) wakes.update(dt, G.time, world.ships, water, camera.position);
   if(P&&G.mode==='play')resolveAimFromView(P);
 
   if (P && G.mode === 'play') {
