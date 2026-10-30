@@ -7,4 +7,12 @@ shots/
 .DS_Store
 Thumbs.db
 *.blend
+!art/blender/checkpoint_30_fletcher_guns_and_bridge.blend
+!art/blender/checkpoint_27_washington_game_bow_and_rails.blend
+!art/blender/checkpoint_25_kirishima_game_ready.blend
+!art/blender/checkpoint_17_fubuki_refined.blend
 *.blend1
+
+# 大型归档仅存本地，不进仓库
+art/warship_model_bundle.zip
+art/deliveries/**/warship_models_through_checkpoint_30.zip

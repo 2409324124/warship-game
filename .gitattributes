@@ -4,3 +4,4 @@
 *.glb binary
 *.gltf binary
 *.zip filter=lfs diff=lfs merge=lfs -text
+*.blend binary
