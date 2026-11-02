@@ -5,6 +5,7 @@ import { clampElevation, flightTime, scatterPoint, solveShot } from './ballistic
 import { halfW } from './hull.ts';
 import { leadPoint, type Ship, type Turret } from './ship.ts';
 import { shellClear, terrainH } from './terrain.ts';
+import { killPlane, type Plane } from './aircraft.ts';
 import type { World } from './world.ts';
 
 export interface Shell {
@@ -24,13 +25,18 @@ export interface Shell {
   g: number;
   t: number;
   T: number;
-  owner: Ship;
+  /** Null for aircraft-dropped ordnance. */
+  owner: Ship | null;
   team: string;
   gun: import('./ballistics').GunSpec;
   sec: boolean;
   /** Which salvo it belongs to, so the spotter can score the fall of shot. */
   salvo: number;
   alive: boolean;
+  /** AA rounds: no sea/ship collision, detonate at fuze time or on a direct plane hit. */
+  aa?: boolean;
+  /** Seconds after firing at which an airburst round detonates. */
+  fuze?: number;
 }
 
 export function turretWorld(s: Ship, t: Turret): [number, number] {
@@ -183,6 +189,17 @@ export function fireTurret(w: World, s: Ship, t: Turret, tx: number, tz: number,
 
 // ------------------------------------------------------------------ shell flight
 
+/** Distance from a point to a segment, sphere test for aircraft hits. */
+function segSphere(p: Plane, a: number[], b: number[], radius: number): boolean {
+  const dx = b[0] - a[0], dy = b[1] - a[1], dz = b[2] - a[2];
+  const len2 = dx * dx + dy * dy + dz * dz;
+  const t = len2 > 1e-9
+    ? Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.y - a[1]) * dy + (p.z - a[2]) * dz) / len2))
+    : 0;
+  const cx = a[0] + dx * t - p.x, cy = a[1] + dy * t - p.y, cz = a[2] + dz * t - p.z;
+  return cx * cx + cy * cy + cz * cz <= radius * radius;
+}
+
 /** Slab test in the target's hull frame; returns the parameter along the segment or -1. */
 export function segHitShip(sh: Ship, a: number[], b: number[]): number {
   const spec = sh.spec;
@@ -239,6 +256,41 @@ export function updateShells(w: World, dt: number): void {
     s.y = s.y0 + s.vy * s.t - 0.5 * s.g * s.t * s.t;
     const A = [s.px, s.py, s.pz],
       B = [s.x, s.y, s.z];
+    if (s.aa) {
+      // Airburst: flak cloud at the fuze time, damaging planes inside the burst radius.
+      if (s.fuze !== undefined && s.t >= s.fuze) {
+        s.alive = false;
+        const R = s.gun.cal >= 100 ? 34 : 22;
+        for (const p of w.planes) {
+          if (!p.alive || p.team === s.team) continue;
+          const d = Math.hypot(p.x - s.x, p.y - s.y, p.z - s.z);
+          if (d >= R) continue;
+          // A burst that goes off on the aircraft is a kill: the flak cloud is lethal inside
+          // its core, and only near-misses at the rim do partial damage.
+          if (d < R * 0.30) { p.hp = 0; }
+          else p.hp -= (s.gun.aaDmg ?? s.gun.dmg) * (1 - d / R) ** 2;
+          if (p.hp <= 0) killPlane(w, p);
+        }
+        w.emit('flak', { x: s.x, y: s.y, z: s.z, cal: s.gun.cal, team: s.team, r: R });
+        continue;
+      }
+      // Impact fuze: direct hit test against planes only (never ships, never terrain).
+      if (s.fuze === undefined) {
+        let struck = false;
+        for (const p of w.planes) {
+          if (!p.alive || p.team === s.team) continue;
+          if (!segSphere(p, A, B, 5)) continue;
+          p.hp -= (s.gun.aaDmg ?? s.gun.dmg) * rand(0.85, 1.15);
+          if (p.hp <= 0) killPlane(w, p);
+          struck = true;
+          w.emit('flak', { x: s.x, y: s.y, z: s.z, cal: s.gun.cal, team: s.team, hit: 1, r: 4 });
+          break;
+        }
+        if (struck) { s.alive = false; continue; }
+      }
+      if (s.t > s.T + 0.6) s.alive = false;
+      continue;
+    }
     let hit: Ship | null = null,
       ht = 2;
     if (s.y < 70) {
@@ -280,7 +332,7 @@ export function updateShells(w: World, dt: number): void {
         y: 0,
         cal: s.gun.cal,
         team: s.team,
-        owner: s.owner.id,
+        owner: s.owner?.id ?? 0,
         salvo: s.salvo,
         sec: s.sec ? 1 : 0,
         over: s.t >= s.T ? 1 : 0,
@@ -298,11 +350,11 @@ export function shellHit(w: World, ship: Ship, s: Shell, x: number, y: number, z
   let dmg = gun.dmg * rand(0.85, 1.15);
   if (ship.spec.cls === 'BB') dmg *= 0.9;
   const dealt = ship.damage(dmg, s.owner, 'shell');
-  s.owner.stats.hits++;
+  if (s.owner) s.owner.stats.hits++;
   if (Math.random() < gun.fire) ship.startFire(lz, s.owner);
   w.emit('hit', {
     id: ship.id,
-    by: s.owner.id,
+    by: s.owner?.id ?? 0,
     dmg: dealt,
     x,
     y,

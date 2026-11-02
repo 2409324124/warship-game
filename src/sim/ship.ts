@@ -7,6 +7,7 @@ import { GUNS, TORPS, TS, type TorpSpec, type TurretShape } from './guns.ts';
 import { SPECS, type ShipSpec } from './ships.ts';
 import { terrainH } from './terrain.ts';
 import type { World } from './world.ts';
+import { deriveAaMounts, type AaMount } from './aa.ts';
 
 export interface Turret {
   x: number;
@@ -114,6 +115,8 @@ export class Ship {
   turrets: Turret[];
   mainTurrets: Turret[];
   secTurrets: Turret[];
+  /** Automatic AA mounts (never part of turrets[]; they have their own firing pipeline). */
+  aaTurrets: AaMount[];
 
   ai: { update(dt: number): void } | null = null;
 
@@ -172,6 +175,7 @@ export class Ship {
     });
     this.mainTurrets = this.turrets.filter((t) => !t.sec);
     this.secTurrets = this.turrets.filter((t) => t.sec);
+    this.aaTurrets = deriveAaMounts(spec);
   }
 
   toWorld(lx: number, lz: number): [number, number] {

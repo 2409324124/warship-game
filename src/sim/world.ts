@@ -5,6 +5,8 @@ import { angDiff, clamp, DEG, rand } from './constants.ts';
 import { fireTurret, updateShells, updateTurrets, secondaryLogic } from './gunnery.ts';
 import { launchFan, updateTorps } from './torpedo.ts';
 import { Ship } from './ship.ts';
+import { updatePlanes } from './aircraft.ts';
+import { aaLogic } from './aa.ts';
 import type { Shell } from './gunnery.ts';
 import type { Torpedo } from './torpedo.ts';
 import type { Campaign } from './campaign.ts';
@@ -38,11 +40,13 @@ export class World {
   ships: Ship[] = [];
   shells: Shell[] = [];
   torps: Torpedo[] = [];
+  planes: import('./aircraft.ts').Plane[] = [];
 
   time = 0;
   seq = 0;
   sseq = 0;
   tseq = 0;
+  pseq = 0;
   salvoSeq = 0;
 
   constructor(o: WorldOpts = {}) {
@@ -101,6 +105,8 @@ export class World {
     }
     updateShells(this, dt);
     updateTorps(this, dt);
+    updatePlanes(this, dt);
+    if (play) for (const s of this.ships) if (s.alive) aaLogic(this, s, dt);
     if (this.ships.some((s) => s.removed)) this.ships = this.ships.filter((s) => !s.removed || s.isPlayer);
   }
 }

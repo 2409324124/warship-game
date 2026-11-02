@@ -130,6 +130,47 @@ export class Overlay {
       }
     }
 
+    // ---- aircraft. A 10 m plane at 4 km is a few pixels, so the sky needs markers or the
+    // player cannot tell an attack from an empty sky.
+    const planes = s.world.planes
+      .filter((p) => p.alive && p.team !== P.team)
+      .map((p) => ({ p, d: Math.hypot(p.x - P.x, p.z - P.z) }))
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 6);
+    for (const { p, d } of planes) {
+      const pp = s.project(p.x, p.y, p.z);
+      if (!pp) continue;
+      const ahead = s.project(p.x + Math.sin(p.heading) * 60, p.y, p.z + Math.cos(p.heading) * 60);
+      const ang = ahead ? Math.atan2(ahead[1] - pp[1], ahead[0] - pp[0]) : -Math.PI / 2;
+      const hot = p.state === 'attack' || p.state === 'runIn';
+      const col = hot ? FOE : p.state === 'egress' ? 'rgba(215,222,228,0.5)' : AMBER;
+      c.save();
+      c.translate(pp[0], pp[1]);
+      c.rotate(ang);
+      c.strokeStyle = col;
+      c.lineWidth = 1.6;
+      c.beginPath();
+      c.moveTo(10, 0);
+      c.lineTo(-6, 6);
+      c.lineTo(-2, 0);
+      c.lineTo(-6, -6);
+      c.closePath();
+      c.stroke();
+      c.restore();
+      c.fillStyle = col;
+      c.font = '600 10px monospace';
+      c.textAlign = 'center';
+      c.fillText(`${(d / 1000).toFixed(1)}km`, pp[0], pp[1] + 20);
+      if (hot) {
+        c.strokeStyle = col;
+        c.globalAlpha = 0.5 + 0.5 * Math.sin(s.time * 6);
+        c.beginPath();
+        c.arc(pp[0], pp[1], 14, 0, Math.PI * 2);
+        c.stroke();
+        c.globalAlpha = 1;
+      }
+    }
+
     // ---- torpedoes
     for (const t of s.torpedoes) {
       const sp = s.project(t.x, 2, t.z);

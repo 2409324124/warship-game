@@ -16,7 +16,8 @@ export interface Torpedo {
   trav: number;
   range: number;
   spec: TorpSpec;
-  owner: Ship;
+  /** Null for aircraft-dropped torpedoes. */
+  owner: Ship | null;
   team: string;
   /** Per-team countdown of "we have seen her wake". */
   seen: Record<string, number>;
@@ -85,9 +86,9 @@ export function updateTorps(w: World, dt: number): void {
         // a battleship's torpedo bulkheads earn their keep
         const dmg = t.spec.dmg * rand(0.9, 1.1) * (sh.spec.cls === 'BB' ? 0.55 : 1);
         const dealt = sh.damage(dmg, t.owner, 'torp');
-        t.owner.stats.torpHits++;
+        if (t.owner) t.owner.stats.torpHits++;
         if (Math.random() < 0.35) sh.startFire(clamp(lz, -half, half), t.owner);
-        w.emit('torpHit', { id: sh.id, by: t.owner.id, dmg: dealt, x: nx, z: nz });
+        w.emit('torpHit', { id: sh.id, by: t.owner?.id ?? 0, dmg: dealt, x: nx, z: nz });
         break;
       }
       // spotted: her wake gives her away to anyone close enough

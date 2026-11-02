@@ -15,6 +15,8 @@ import type { Ship } from './sim/ship';
 import { createEngine } from './render/engine';
 import { createSky } from './render/sky';
 import { createWater } from './render/water';
+import { createAircraftView } from './render/aircraftView';
+import { spawnAirRaid } from './sim/aircraft';
 import { createLand } from './render/land';
 import { FX } from './render/fx';
 import { AimMarker } from './render/aimMarker';
@@ -46,6 +48,7 @@ const engine = createEngine($<HTMLCanvasElement>('gl'));
 const { scene, camera, renderer } = engine;
 createSky(scene);
 const water = createWater(scene, engine.fogDensity);
+const aircraftView = createAircraftView(scene);
 createLand(scene);
 const fx = new FX(scene);
 const aimMarker = new AimMarker(scene);
@@ -134,7 +137,8 @@ function onEvent(e: SimEvent): void {
         const mx = pose?.x ?? shell[1], my = pose?.y ?? shell[2], mz = pose?.z ?? shell[3];
         fx.muzzle(mx, my, mz,
           pose?.bearing ?? (e.b as number), cal, pose?.elevation ?? (e.elevation as number) ?? 0);
-        water.blast(mx, mz, cal, Math.max(0, my - water.height(mx, mz, G.time)));
+        // AA fire happens overhead; it must not punch a water blast ring under the muzzle.
+        if (!e.aa) water.blast(mx, mz, cal, Math.max(0, my - water.height(mx, mz, G.time)));
       }
       sfx.gun(cal, dist(e.x as number, e.z as number) + 60, own,
         { barrels: e.n as number, secondary: !!e.sec });
@@ -185,6 +189,27 @@ function onEvent(e: SimEvent): void {
       if (rec) rec.hits++;
       const victim = world.byId(e.id as number);
       if (victim && victim.isPlayer) shakeBy(clamp((e.dmg as number) / 2600, 0.1, 1), false);
+      break;
+    }
+    case 'flak': {
+      const cal = e.cal as number;
+      fx.flak(e.x as number, e.y as number, e.z as number, cal >= 100);
+      break;
+    }
+    case 'planeDown': {
+      fx.explosion(e.x as number, e.y as number, e.z as number, false);
+      hud.feed('击落敌机', 'good');
+      break;
+    }
+    case 'planeSplash': {
+      const x = e.x as number, z = e.z as number;
+      fx.splash(x, z, 250, true);
+      sfx.splash(250, dist(x, z) + 40);
+      break;
+    }
+    case 'airRaid': {
+      hud.hint('敌机来袭');
+      sfx.alarm();
       break;
     }
     case 'torpLaunch':
@@ -294,6 +319,7 @@ function startBattle(): void {
   // the other side gets a captain too
   for (const s of G.world.ships) if (!s.isPlayer && !s.ai) s.ai = new AI(G.world, s);
 
+  hud.hint('按 B 呼叫一波敌机演示防空');
   aim.yaw = G.P.heading;
   aim.range = clamp(9000, 800, spec ? G.P.gun.range : 22000);
   G.P.aimX=G.P.x+Math.sin(aim.yaw)*aim.range;
@@ -422,6 +448,11 @@ addEventListener('keydown', (e) => {
   if (e.code === 'KeyZ' && !e.repeat) toggleProjectileCamera();
   if (e.code === 'KeyL') G.showLead = !G.showLead;
   if (e.code === 'KeyX' && !e.repeat) toggleLock();
+  if (e.code === 'KeyB' && !e.repeat && G.world && G.P && G.P.alive) {
+    // Demo trigger: one torpedo-bomber wave on the player.
+    const foe = G.P.team === 'US' ? 'JP' : 'US';
+    spawnAirRaid(G.world, foe, G.P, 8, 0);
+  }
   if (e.code === 'Tab' && !e.repeat) {
     e.preventDefault();
     cycleLock();
@@ -797,6 +828,7 @@ function frame(now: number): void {
     updateCamera(dt);
   }
   water.update(G.time, camera.position);
+  aircraftView.sync(world ? world.planes : []);
   if(P&&G.mode==='play')resolveAimFromView(P);
 
   if (P && G.mode === 'play') {
@@ -1098,6 +1130,7 @@ function updateUI(dt: number, world: World, P: Ship): void {
       fires: s.fires.length,
     })) ?? [],
   shells: G.world?.shells.filter((s) => s.alive).length ?? 0,
+  planes: G.world?.planes.length ?? 0,
   torps: G.world?.torps.filter((t) => t.alive).length ?? 0,
   overlay: overlay.dbg,
   lock: lock.locked
@@ -1142,6 +1175,12 @@ let aimMarkX = 0, aimMarkZ = 0;
 (window as unknown as { __cmd: Record<string, (...a: number[]) => void> }).__cmd = {
   fire: () => {
     firePlayerGuns();
+  },
+  /** Demo trigger for an air raid (also bound to V in play). */
+  airRaid: () => {
+    if (!G.world || !G.P || !G.P.alive) return;
+    const foe = G.P.team === 'US' ? 'JP' : 'US';
+    spawnAirRaid(G.world, foe, G.P, 8, 0);
   },
   aimAt: (x: number, z: number) => {
     if (!G.P) return;

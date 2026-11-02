@@ -54,10 +54,13 @@ export const GUNS: Record<string, GunSpec> = {
     reload: 4.5,
     range: 5000,
     v0: 830,
-    arc: 0.08,
+    arc: 60 * 5000 / (8 * 830 * 830),
     fire: 0.03,
     trav: 20,
     elevMax: 80,
+    aa: true,
+    fuze: 'airburst',
+    aaDmg: 45,
     disp: { along: 55, cross: 24, at: 5000 },
   }),
 
@@ -116,6 +119,44 @@ export const GUNS: Record<string, GunSpec> = {
     elevMax: 20,
     disp: { along: 58, cross: 25, at: 5000 },
   }),
+
+  // ---- Anti-air ----------------------------------------------------------
+  // dmg is per-aircraft damage. airburst fuzes throw a flak cloud at the intercept
+  // point; impact fuzes only count direct hits. Dispersion is the main balance knob.
+  // AA arcs are tuned so the derived virtual gravity is ~60 m/s^2: with the game's 2.5x
+  // time compression that is realistic gravity, and tracers fly like flak, not mortars.
+  aa40: makeGun({
+    id: 'aa40', cal: 40, label: '40mm Bofors', dmg: 38, reload: 1.2,
+    range: 2800, v0: 880, arc: 60 * 2800 / (8 * 880 * 880), fire: 0, trav: 45, elevMax: 85,
+    aa: true, fuze: 'airburst',
+    disp: { along: 24, cross: 24, at: 2000 },
+  }),
+  aa20: makeGun({
+    id: 'aa20', cal: 20, label: '20mm Oerlikon', dmg: 10, reload: 0.4,
+    range: 1800, v0: 830, arc: 60 * 1800 / (8 * 830 * 830), fire: 0, trav: 60, elevMax: 85,
+    aa: true, fuze: 'impact',
+    disp: { along: 38, cross: 38, at: 1200 },
+  }),
+  aa25: makeGun({
+    id: 'aa25', cal: 25, label: '25mm 96式', dmg: 15, reload: 0.55,
+    range: 1800, v0: 800, arc: 60 * 1800 / (8 * 800 * 800), fire: 0, trav: 40, elevMax: 80,
+    aa: true, fuze: 'impact',
+    disp: { along: 34, cross: 34, at: 1500 },
+  }),
+  aah127: makeGun({
+    id: 'aah127', cal: 127, label: '12.7cm 89式', dmg: 90, reload: 4.0,
+    range: 5200, v0: 830, arc: 60 * 5200 / (8 * 830 * 830), fire: 0, trav: 18, elevMax: 85,
+    aa: true, fuze: 'airburst',
+    disp: { along: 40, cross: 40, at: 4000 },
+  }),
+};
+
+/** Dropped bomb: no gun, just a ballistic body with a heavy punch. Owner is the aircraft. */
+export const BOMB: GunSpec = {
+  id: 'bomb250', cal: 250, label: '250kg bomb', dmg: 1800,
+  reload: 0, range: 4000, v0: 300, arc: 0.2, fire: 0.35, trav: 0,
+  disp: { along: 40, cross: 40, at: 2000 },
+  g: 22, elevMin: -90, elevMax: 90,
 };
 
 // --------------------------------------------------------------------------- torpedoes
@@ -147,6 +188,17 @@ export const TORPS: Record<string, TorpSpec> = {
     salvo: 5,
     spread: 3.0,
     visR: 1e9,
+  },
+  airTorp: {
+    id: 'airTorp',
+    label: '航空魚雷',
+    speed: 45,
+    range: 1800,
+    dmg: 5200,
+    reload: 0,
+    salvo: 1,
+    spread: 0,
+    visR: 2200,
   },
   t93: {
     id: 't93',
@@ -194,4 +246,9 @@ export const TS: Record<string, TurretShape> = {
   jp8d: { len: 8.2, h: 3.3, w: 7.0, bl: 10, br: 0.38, n: 2, cf: 0.45, fs: 0.22, ss: 0.16, rs: 0.06 },
   jp14d: { len: 13, h: 4.4, w: 10.5, bl: 15, br: 0.62, n: 2, cf: 0.3, fs: 0.2, ss: 0.1, rs: 0.06, rr: 0.35, ears: 1 },
   jp6c: { len: 2.6, h: 1.6, w: 2.2, bl: 5, br: 0.16, n: 1, cf: 0.3, fs: 0.2, ss: 0.1, rs: 0.08, traverseArc: 35 },
+  // AA mount shapes: only used to place muzzles, the visible mounts stay in the merged hull mesh.
+  aa40: { len: 1.6, h: 1.3, w: 2.2, bl: 2.2, br: 0.05, n: 4, cf: 0.1, fs: 0.1, ss: 0.1, rs: 0.1 },
+  aa20: { len: 1.1, h: 1.0, w: 1.1, bl: 1.8, br: 0.028, n: 1, cf: 0.1, fs: 0.1, ss: 0.1, rs: 0.1 },
+  aa25: { len: 1.4, h: 1.1, w: 1.8, bl: 2.0, br: 0.032, n: 3, cf: 0.1, fs: 0.1, ss: 0.1, rs: 0.1 },
+  aah127: { len: 3.6, h: 2.2, w: 3.2, bl: 5.0, br: 0.13, n: 2, cf: 0.2, fs: 0.15, ss: 0.1, rs: 0.1 },
 };

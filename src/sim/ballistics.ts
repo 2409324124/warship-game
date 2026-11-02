@@ -50,6 +50,12 @@ export interface GunSpec {
   /** Mechanical depression/elevation limits, degrees. */
   elevMin: number;
   elevMax: number;
+  /** Anti-air mounts: higher rate of fire, tracer-heavy streams, no sea splash budget. */
+  aa?: boolean;
+  /** airburst = timed flak cloud at the intercept point; impact = direct hits only. */
+  fuze?: 'airburst' | 'impact';
+  /** Damage per burst against aircraft; defaults to dmg. Keeps DP guns' surface damage intact. */
+  aaDmg?: number;
 }
 
 export function makeGun(g: Omit<GunSpec, 'g' | 'elevMin' | 'elevMax'> & Partial<Pick<GunSpec, 'elevMin' | 'elevMax'>>): GunSpec {
@@ -161,6 +167,65 @@ export function solveShot(gun: GunSpec, mx: number, my: number, mz: number, tx: 
   const reachable = Math.abs(wanted - elev) < 1e-9;
   const vy = reachable ? wantedVy : horizontal * Math.tan(elev);
   return { T, vx, vy, vz, elev, reachable };
+}
+
+export interface AaShot extends Shot {
+  /** Intercept time, seconds. */
+  fuze: number;
+}
+
+/**
+ * Lay a gun on a moving aerial point. Fixed-point iteration on the intercept time with the
+ * gun's virtual gravity folded in; the returned velocity has exactly the muzzle speed v0.
+ * Iterations converge fast because aircraft speed is far below muzzle speed.
+ */
+export function solveAA(
+  gun: GunSpec,
+  mx: number, my: number, mz: number,
+  tx: number, ty: number, tz: number,
+  tvx = 0, tvy = 0, tvz = 0,
+): AaShot {
+  const v2 = gun.v0 * gun.v0;
+  let T = clamp(Math.hypot(tx - mx, ty - my, tz - mz) / gun.v0, 0.05, 30);
+  let disc = -1, theta = 0, horiz = 1, X = 0;
+  for (let i = 0; i < 5; i++) {
+    const ax = tx + tvx * T - mx;
+    const ay = ty + tvy * T - my;
+    const az = tz + tvz * T - mz;
+    X = Math.hypot(ax, az) || 1e-6;
+    // Low-arc solution of the exact ballistic problem: tan(theta) = (v2 - sqrt(disc)) / (g X).
+    disc = v2 * v2 - gun.g * (gun.g * X * X + 2 * ay * v2);
+    if (disc < 0) { disc = -1; break; }
+    theta = Math.atan2(v2 - Math.sqrt(disc), gun.g * X);
+    horiz = ax / X;
+    T = X / (gun.v0 * Math.cos(theta));
+    if (!Number.isFinite(T) || T <= 0) return { T: 0, vx: 0, vy: 0, vz: 0, elev: 0, reachable: false, fuze: 0 };
+  }
+  const vX = gun.v0 * Math.cos(theta);
+  const clamped = clampElevation(gun, theta);
+  const reachable = disc >= 0 && Math.abs(clamped - theta) < 1e-9 && X <= gun.range && T <= 30;
+  // Rebuild the horizontal direction from the final intercept estimate.
+  const fx = tx + tvx * T - mx, fz = tz + tvz * T - mz;
+  const fh = Math.hypot(fx, fz) || 1;
+  const vx = (fx / fh) * vX, vz = (fz / fh) * vX;
+  const vy = gun.v0 * Math.sin(theta);
+  void horiz;
+  return { T, vx, vy, vz, elev: clamped, reachable, fuze: T };
+}
+
+/** Scatter an aerial aim point: along/cross in the horizontal plane plus a vertical offset. */
+export function scatterAim(
+  gun: GunSpec,
+  mx: number, mz: number,
+  tx: number, ty: number, tz: number,
+  err = 0,
+): [number, number, number] {
+  const dx = tx - mx, dz = tz - mz;
+  const d = Math.hypot(dx, dz) || 1;
+  const ux = dx / d, uz = dz / d;
+  const s = dispersionAt(gun, Math.min(d, gun.range), err);
+  const a = randn() * s.along, c = randn() * s.cross, v = randn() * s.cross * 0.7;
+  return [tx + ux * a - uz * c, ty + v, tz + uz * a + ux * c];
 }
 
 /** Where the shell is after `t` seconds. */

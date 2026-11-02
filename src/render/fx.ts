@@ -268,7 +268,8 @@ class ShellLayer {
       this.col[o] = lerp3(0.55, 1.0, k);
       this.col[o + 1] = lerp3(0.5, 0.92, k);
       this.col[o + 2] = lerp3(0.42, 0.72, k);
-      this.size[n] = 2.4 + (s.gun.cal / 406) * 3.4;
+      // AA streams read as bright tracer lines: slightly larger points than their calibre implies.
+      this.size[n] = (2.4 + (s.gun.cal / 406) * 3.4) * (s.aa ? 1.9 : 1);
       n++;
     }
     const g = this.points.geometry as THREE.BufferGeometry;
@@ -532,6 +533,36 @@ export class FX {
           a0: 0.85,
         });
     }
+  }
+
+  /** A flak burst: a sooty puff that hangs and disperses, with a one-frame core flash. */
+  flak(x: number, y: number, z: number, heavy: boolean): void {
+    const n = heavy ? 10 : 6;
+    for (let i = 0; i < n; i++) {
+      const a = rand(0, TAU), rr = rand(0, heavy ? 10 : 6);
+      this.pool.spawn({
+        x: x + Math.cos(a) * rr,
+        y: y + rand(-3, 3),
+        z: z + Math.sin(a) * rr,
+        vx: rand(-2.5, 2.5),
+        vy: rand(-1.2, 1.2),
+        vz: rand(-2.5, 2.5),
+        max: rand(1.2, heavy ? 1.8 : 1.5),
+        // Point sizes are "pixels at 420 m": flak must read as a 10-20 m cloud from 3 km.
+        size: (heavy ? 92 : 68) + rand(0, 18),
+        grow: heavy ? 120 : 88,
+        grav: 0.6,
+        drag: 1.4,
+        r: 0.12,
+        g: 0.115,
+        b: 0.11,
+        a0: 0.85,
+      });
+    }
+    this.pool.spawn({
+      x, y, z, max: 0.18, size: heavy ? 70 : 48, grow: 10, grav: 0, drag: 2,
+      r: 1, g: 0.86, b: 0.6, a0: 0.9,
+    });
   }
 
   /** A hit: orange flash, black smoke, and debris. */
