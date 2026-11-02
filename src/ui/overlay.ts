@@ -136,7 +136,7 @@ export class Overlay {
       .filter((p) => p.alive && p.team !== P.team)
       .map((p) => ({ p, d: Math.hypot(p.x - P.x, p.z - P.z) }))
       .sort((a, b) => a.d - b.d)
-      .slice(0, 6);
+      .slice(0, 12); // one marker per plane: a raided crew must see every attacker
     for (const { p, d } of planes) {
       const pp = s.project(p.x, p.y, p.z);
       if (!pp) continue;
