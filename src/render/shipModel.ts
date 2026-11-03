@@ -5,8 +5,8 @@
 // list the simulation uses, so what you see is what you can hit.
 
 import * as THREE from 'three';
-import { clamp, lerp, sstep, TAU } from '../sim/constants';
-import { deckY, halfW, hullSection, RING } from '../sim/hull';
+import { clamp, lerp, TAU } from '../sim/constants';
+import { deckY, hullSection, RING } from '../sim/hull';
 import type { ShipSpec } from '../sim/ships';
 import { TS, type TurretShape } from '../sim/guns';
 import { bowRake, proceduralRailPlan } from './deckOutline';
@@ -239,42 +239,6 @@ export function buildHull(spec: ShipSpec): { hull: THREE.BufferGeometry; deck: T
   deck.setAttribute('uv', new THREE.Float32BufferAttribute(duv, 2));
   deck.computeVertexNormals();
   return { hull, deck };
-}
-
-/**
- * Bow wave: a flat band of broken water lying on the surface around the hull. It stays close to the
- * waterline - a tall "curtain" reads as a grey sheet hanging off the ship at any distance.
- */
-export function buildFoam(spec: ShipSpec): THREE.BufferGeometry {
-  const N = 24;
-  const pos: number[] = [];
-  const uv: number[] = [];
-  const idx: number[] = [];
-  // Only the bow wave. A band running the whole length of the hull is a flat sheet at a fixed
-  // height, and against a wavy sea it reads as a grey plank glued to the side of the ship.
-  for (let i = 0; i <= N; i++) {
-    const s = lerp(0.55, 1, i / N);
-    const z = (s - 0.5) * spec.L * 0.97 + bowRake(spec, s);
-    // the inner edge follows the hull plan; the outer edge is only a few metres of broken water.
-    // Anything much wider than that reads as a grey sheet glued to the side of the ship.
-    const hull = (spec.B / 2) * Math.max(0.14, halfW(s));
-    const flare = 1.5 + 7 * sstep((s - 0.62) / 0.36);
-    const wIn = hull * 0.9;
-    const wOut = hull + flare;
-    const base = pos.length / 3;
-    pos.push(-wIn, 0.2, z, wIn, 0.2, z, -wOut, 0.2, z, wOut, 0.2, z);
-    uv.push(0, s, 1, s, 0, s, 1, s);
-    if (i < N) {
-      const b2 = base + 4;
-      idx.push(base, base + 1, b2 + 1, base, b2 + 1, b2);
-      idx.push(base + 2, b2 + 3, b2 + 2, base + 2, base + 3, b2 + 3);
-    }
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-  g.setIndex(idx);
-  return g;
 }
 
 // ------------------------------------------------------------------ superstructure and fittings
@@ -709,7 +673,6 @@ export interface ShipGeometry {
   deck: THREE.BufferGeometry;
   struct: THREE.BufferGeometry;
   dark: THREE.BufferGeometry;
-  foam: THREE.BufferGeometry;
   turrets: { mount: number; geo: TurretGeo }[];
 }
 
@@ -725,7 +688,6 @@ export function shipGeometry(spec: ShipSpec): ShipGeometry {
     deck,
     struct,
     dark,
-    foam: buildFoam(spec),
     turrets: spec.tur.map((t, i) => ({ mount: i, geo: turretGeo(t.kind) })),
   };
   geoCache.set(spec.key, g);

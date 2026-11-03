@@ -9,7 +9,6 @@ import { shipGeometry, shipMaterials, buildRails, type TurretGeo, type ShipMater
 // Loaded on demand: until a .glb exists there is nothing to fetch, and GLTFLoader is a big module
 // that has no business sitting in the base bundle.
 import { hasModel } from './models';
-import { buildVisualFoam } from './visualHull';
 
 type Assets = typeof import('./assets');
 let assetsPromise: Promise<Assets> | null = null;
@@ -41,13 +40,11 @@ export class ShipView {
   readonly ship: Ship;
   readonly group = new THREE.Group();
   readonly turrets: { pivot: THREE.Group; base: THREE.Object3D; barrel: THREE.Object3D; geo: TurretGeo }[] = [];
-  private foam: THREE.Mesh;
   private hull: THREE.Mesh | null = null;
   private struct: THREE.Mesh | null = null;
   private dark: THREE.Mesh | null = null;
   private deck: THREE.Mesh | null = null;
   private rails: THREE.Mesh | null = null;
-  private customFoam: THREE.BufferGeometry | null = null;
   private disposed = false;
   private fade = 1;
   private fadeMats: THREE.Material[] | null = null;
@@ -82,19 +79,6 @@ export class ShipView {
       this.turrets.push({ pivot, base, barrel: bp, geo: t.geo });
     }
 
-    this.foam = new THREE.Mesh(
-      g.foam,
-      new THREE.MeshBasicMaterial({
-        color: 0xdfe9ef,
-        transparent: true,
-        opacity: 0.12,
-        depthWrite: false,
-        side: THREE.DoubleSide,
-      }),
-    );
-    this.foam.name = `foam:${spec.key}`;
-    this.group.add(this.foam);
-
     scene.add(this.group);
 
     // Blender overrides. Both are no-ops until the .glb exists, so the procedural ship stays
@@ -112,9 +96,8 @@ export class ShipView {
         if (!ok && !this.struct && !this.disposed) this.buildProceduralSuper();
       });
       if (hasModel(`ships/${spec.key}_hull`)) {
-        void a.overrideHull(spec.key, group, [this.hull, this.deck, this.rails].filter(live)).then((waterline) => {
-          if (waterline && !this.disposed) this.foam.geometry = this.customFoam = buildVisualFoam(waterline);
-          if (!waterline && !this.hull && !this.disposed) this.buildProceduralHull();
+        void a.overrideHull(spec.key, group, [this.hull, this.deck, this.rails].filter(live)).then((okHull) => {
+          if (!okHull && !this.hull && !this.disposed) this.buildProceduralHull();
         });
       }
       for (let i = 0; i < turrets.length; i++) {
@@ -196,13 +179,8 @@ export class ShipView {
       roll += s.sinkRoll * e * 1.5;
       pitch += s.sinkPitch * e;
       this.group.position.set(s.x, heave - e * (spec.D + spec.F + 6), s.z);
-      this.foam.visible = s.sinkT < 6;
-      (this.foam.material as THREE.MeshBasicMaterial).opacity = 0.12 * (1 - e) * this.fade;
     } else {
       this.group.position.set(s.x, heave, s.z);
-      this.foam.visible = true;
-      const spd = clamp(Math.abs(s.speed) / s.maxV, 0, 1);
-      (this.foam.material as THREE.MeshBasicMaterial).opacity = (0.05 + 0.16 * spd) * this.fade;
     }
 
     // the pooled hull decals rebuild their matrices from these, so they list and roll with her
@@ -264,8 +242,6 @@ export class ShipView {
 
   dispose(scene: THREE.Scene): void {
     this.disposed = true;
-    this.customFoam?.dispose();
-    this.customFoam = null;
     scene.remove(this.group);
   }
 }

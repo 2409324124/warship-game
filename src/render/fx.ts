@@ -10,6 +10,7 @@ import type { Torpedo } from '../sim/torpedo';
 import type { Water } from './water';
 import { MuzzleEffects } from './muzzle';
 import { DecalPool } from './decals.ts';
+import { Spray } from './spray.ts';
 
 function dotTexture(): THREE.Texture {
   const S = 64;
@@ -451,6 +452,7 @@ export class FX {
   private muzzleEffects: MuzzleEffects;
   private glow: Pool;
   private decals: DecalPool;
+  private spray: Spray;
   private wakeT = 0;
   private smokeEmit = 0;
   private smokeT = new Map<number, number>();
@@ -459,13 +461,14 @@ export class FX {
 
   constructor(scene: THREE.Scene) {
     const tex = dotTexture();
-    this.pool = new Pool(scene, 3600, tex);
+    this.pool = new Pool(scene, 4096, tex);
     this.glow = new Pool(scene, 320, tex, true);
     this.shells = new ShellLayer(scene, 600, tex);
     this.torps = new TorpLayer(scene, 400, tex);
     this.columns = new ColumnPool(scene);
     this.muzzleEffects = new MuzzleEffects(scene);
     this.decals = new DecalPool(scene);
+    this.spray = new Spray(this.pool);
   }
 
   /** White columns of water thrown up by a shell that missed. */
@@ -778,7 +781,7 @@ export class FX {
   }
 
   /** Wake and funnel smoke, emitted a little at a time. */
-  ships(dt: number, list: Ship[], water: Water): void {
+  ships(dt: number, t: number, list: Ship[], water: Water, eye: { x: number; z: number }): void {
     this.wakeT += dt;
     const emit = this.wakeT > 0.05;
     if (emit) this.wakeT = 0;
@@ -786,47 +789,6 @@ export class FX {
       if (s.removed) continue;
       const spd = Math.abs(s.speed) / s.maxV;
       if (emit && s.alive && spd > 0.05) {
-        // stern wake: jittered in position, size and life so it never reads as a row of dots
-        const [wx, wz] = s.toWorld(rand(-1, 1) * s.spec.B * 0.55, -s.spec.L * 0.5 - rand(0, 12));
-        this.pool.spawn({
-          x: wx,
-          y: water.height(wx, wz, 0) + rand(0.2, 1.4),
-          z: wz,
-          vx: rand(-3, 3) - s.vx * 0.05,
-          vy: rand(0.2, 1.2),
-          vz: rand(-3, 3) - s.vz * 0.05,
-          max: rand(1.4, 3.4) * (0.5 + spd),
-          size: rand(2, 5) + spd * 4,
-          grow: rand(5, 11) + spd * 6,
-          grav: 0.2,
-          drag: 1.1,
-          r: 0.86,
-          g: 0.9,
-          b: 0.92,
-          a0: 0.3 * clamp(spd, 0, 1),
-        });
-        // bow spray, thrown up and outboard
-        if (spd > 0.35 && Math.random() < 0.55) {
-          const side = Math.random() < 0.5 ? 1 : -1;
-          const [bx, bz] = s.toWorld(side * s.spec.B * rand(0.25, 0.5), s.spec.L * rand(0.36, 0.5));
-          this.pool.spawn({
-            x: bx,
-            y: water.height(bx, bz, 0) + rand(0.5, 2),
-            z: bz,
-            vx: side * rand(3, 9) - s.vx * 0.05,
-            vy: rand(2, 6),
-            vz: rand(-3, 3),
-            max: rand(0.7, 1.6),
-            size: rand(2, 4) + spd * 3,
-            grow: rand(6, 14),
-            grav: -14,
-            drag: 1.2,
-            r: 0.93,
-            g: 0.96,
-            b: 0.98,
-            a0: 0.4 * clamp(spd, 0, 1),
-          });
-        }
         // funnel smoke, on a slower timer than the wake
         this.smokeEmit += dt;
         if (this.smokeEmit > 0.16) {
@@ -902,6 +864,8 @@ export class FX {
       }
     }
     this.fireCount = slots;
+    // after the fires: if the pool runs dry, the wake is what gets dropped, never the smoke
+    this.spray.update(dt, t, list, water, eye);
     this.decals.update();
   }
 
@@ -927,6 +891,7 @@ export class FX {
     this.smokeT.clear();
     this.fireT.clear();
     this.fireCount = 0;
+    this.spray.reset();
   }
 
   stats() {
@@ -934,6 +899,7 @@ export class FX {
       particles: this.pool.count,
       glow: this.glow.count,
       fires: this.fireCount,
+      spray: this.spray.count,
       decals: this.decals.count,
       columns: this.columns.count,
       shells: this.shells.points.geometry.drawRange.count,

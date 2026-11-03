@@ -827,7 +827,7 @@ function frame(now: number): void {
       }
     }
 
-    fx.ships(dt, world.ships, water);
+    fx.ships(dt, G.time, world.ships, water, camera.position);
     fx.update(dt, G.time, world.shells, world.torps);
   }
 
