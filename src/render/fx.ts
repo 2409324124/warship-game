@@ -3,11 +3,13 @@
 
 import * as THREE from 'three';
 import { clamp, rand, TAU } from '../sim/constants';
+import { deckY } from '../sim/hull.ts';
 import type { Ship } from '../sim/ship';
 import type { Shell } from '../sim/gunnery';
 import type { Torpedo } from '../sim/torpedo';
 import type { Water } from './water';
 import { MuzzleEffects } from './muzzle';
+import { DecalPool } from './decals.ts';
 
 function dotTexture(): THREE.Texture {
   const S = 64;
@@ -35,9 +37,12 @@ void main() {
   vAlpha = aAlpha;
   vCol = aCol;
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
-  // aSize is the sprite's pixel size at 420 m. Clamped, or a puff of funnel smoke ten metres from
-  // the camera becomes a screen-filling grey blob.
-  gl_PointSize = min(aSize * (420.0 / max(1.0, -mv.z)), 72.0);
+  // aSize is the sprite's pixel size at 420 m with the 55-degree chase lens. The projection term
+  // keeps sprites growing with the zoom: without it every puff stays pinned to its wide-angle
+  // pixel size while the ship under it swells, and nothing reads through the binoculars.
+  // Clamped, or a puff of funnel smoke ten metres from the camera fills the screen.
+  float zoom = projectionMatrix[1][1] * 0.5206;
+  gl_PointSize = min(aSize * (420.0 / max(1.0, -mv.z)) * zoom, 72.0);
   gl_Position = projectionMatrix * mv;
 }
 `;
@@ -71,6 +76,8 @@ interface Particle {
   g: number;
   b: number;
   a0: number;
+  /** Alpha falloff exponent: 2 is the old hard fade, 1 holds density (smoke). */
+  fade: number;
 }
 
 class Pool {
@@ -82,7 +89,7 @@ class Pool {
   private alpha: Float32Array;
   private n = 0;
 
-  constructor(scene: THREE.Scene, max: number, tex: THREE.Texture) {
+  constructor(scene: THREE.Scene, max: number, tex: THREE.Texture, additive = false) {
     this.pos = new Float32Array(max * 3);
     this.col = new Float32Array(max * 3);
     this.size = new Float32Array(max);
@@ -100,7 +107,7 @@ class Pool {
       uniforms: { uMap: { value: tex } },
       transparent: true,
       depthWrite: false,
-      blending: THREE.NormalBlending,
+      blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
     });
     this.points = new THREE.Points(g, m);
     this.points.frustumCulled = false;
@@ -123,6 +130,7 @@ class Pool {
         g: 1,
         b: 1,
         a0: 1,
+        fade: 2,
       });
     }
   }
@@ -153,6 +161,7 @@ class Pool {
     q.g = p.g ?? 1;
     q.b = p.b ?? 1;
     q.a0 = p.a0 ?? 1;
+    q.fade = p.fade ?? 2;
   }
 
   update(dt: number): void {
@@ -176,7 +185,9 @@ class Pool {
       p.y += p.vy * dt;
       p.z += p.vz * dt;
       const t = p.life / p.max;
-      const a = p.a0 * (1 - t) * (1 - t);
+      const u = 1 - t;
+      // exp 2 is the old (1-t)^2 curve; smoke asks for 1 so it stays thick for most of its life
+      const a = p.fade === 2 ? p.a0 * u * u : p.a0 * Math.pow(u, p.fade);
       const s = p.size + p.grow * t;
       const o = i * 3;
       this.pos[o] = p.x;
@@ -424,23 +435,37 @@ class TorpLayer {
 
 // ------------------------------------------------------------------ the lot
 
+/** Burning hulls are the loudest thing on screen, so they get their own fixed budget. */
+const FIRE_SLOTS = 8;
+/** Seconds between emissions per fire. 8 fires x 5.2/s x ~8.5 s life = ~350 live puffs. */
+const FIRE_TICK = 0.19;
+/** A steady wind so every column leans the same way instead of drifting at random. */
+const WIND_X = 5.5;
+const WIND_Z = -3.0;
+
 export class FX {
   private pool: Pool;
   private shells: ShellLayer;
   private torps: TorpLayer;
   private columns: ColumnPool;
   private muzzleEffects: MuzzleEffects;
+  private glow: Pool;
+  private decals: DecalPool;
   private wakeT = 0;
   private smokeEmit = 0;
   private smokeT = new Map<number, number>();
+  private fireT = new Map<number, number>();
+  private fireCount = 0;
 
   constructor(scene: THREE.Scene) {
     const tex = dotTexture();
-    this.pool = new Pool(scene, 3000, tex);
+    this.pool = new Pool(scene, 3600, tex);
+    this.glow = new Pool(scene, 320, tex, true);
     this.shells = new ShellLayer(scene, 600, tex);
     this.torps = new TorpLayer(scene, 400, tex);
     this.columns = new ColumnPool(scene);
     this.muzzleEffects = new MuzzleEffects(scene);
+    this.decals = new DecalPool(scene);
   }
 
   /** White columns of water thrown up by a shell that missed. */
@@ -565,9 +590,26 @@ export class FX {
     });
   }
 
-  /** A hit: orange flash, black smoke, and debris. */
-  hit(x: number, y: number, z: number, cal: number): void {
+  /** A hit: white-hot core, orange flash, sparks, black smoke, and a crater in the hull. */
+  hit(
+    x: number,
+    y: number,
+    z: number,
+    cal: number,
+    victim?: Ship | null,
+    lx?: number,
+    ly?: number,
+    lz?: number,
+  ): void {
     const k = clamp(cal / 406, 0.3, 1.2);
+    if (victim && lx !== undefined && ly !== undefined && lz !== undefined) {
+      this.decals.add(victim, lx, ly, lz, cal);
+    }
+    // the one-frame core: without it a hit reads as "a puff", not "a detonation"
+    this.glow.spawn({
+      x, y, z, max: rand(0.07, 0.13), size: 26 + k * 30, grow: 14, grav: 0, drag: 2,
+      r: 1, g: 0.94, b: 0.82, a0: 1,
+    });
     for (let i = 0; i < 12 + k * 20; i++) {
       const a = rand(0, TAU);
       this.pool.spawn({
@@ -588,23 +630,100 @@ export class FX {
         a0: 1,
       });
     }
-    for (let i = 0; i < 8 + k * 14; i++) {
+    // sparks: small, fast, and thrown out along the surface
+    for (let i = 0; i < 8 + k * 10; i++) {
+      const a = rand(0, TAU);
+      this.glow.spawn({
+        x, y, z,
+        vx: Math.cos(a) * rand(8, 34) * (0.5 + k),
+        vy: rand(6, 30) * (0.5 + k),
+        vz: Math.sin(a) * rand(8, 34) * (0.5 + k),
+        max: rand(0.25, 0.55),
+        size: rand(1.4, 3.2) * (0.7 + k * 0.5),
+        grow: -1,
+        grav: -18,
+        drag: 0.7,
+        r: 1,
+        g: rand(0.5, 0.75),
+        b: rand(0.2, 0.35),
+        a0: 0.95,
+      });
+    }
+    // the smoke that comes back out of the hole and hangs over the deck
+    for (let i = 0; i < 8 + k * 12; i++) {
       this.pool.spawn({
         x: x + rand(-2, 2),
         y: y + rand(-1, 3),
         z: z + rand(-2, 2),
-        vx: rand(-4, 4),
-        vy: rand(6, 18),
-        vz: rand(-4, 4),
-        max: rand(1.6, 3.4),
-        size: 8 + k * 14,
-        grow: 26 + k * 30,
-        grav: 1.2,
-        drag: 0.8,
-        r: 0.18,
-        g: 0.18,
-        b: 0.19,
-        a0: 0.7,
+        vx: rand(-4, 4) + WIND_X * 0.35,
+        vy: rand(6, 16),
+        vz: rand(-4, 4) + WIND_Z * 0.35,
+        max: rand(2.4, 4.2),
+        size: 8 + k * 12,
+        grow: 34 + k * 26,
+        grav: 1.6,
+        drag: 0.75,
+        r: 0.12,
+        g: 0.12,
+        b: 0.13,
+        a0: 0.72,
+        fade: 1.2,
+      });
+    }
+  }
+
+  /** One burning point on a hull: a rising core, a fat billow, and a flicker of flame. */
+  private emitFire(x: number, y: number, z: number): void {
+    this.pool.spawn({
+      x, y, z,
+      vx: WIND_X * 0.5 + rand(-1, 1),
+      vy: rand(14, 20),
+      vz: WIND_Z * 0.5 + rand(-1, 1),
+      max: rand(2.2, 3.2),
+      size: 10,
+      grow: 40,
+      grav: 3.5,
+      drag: 1.3,
+      r: 0.07,
+      g: 0.07,
+      b: 0.08,
+      a0: 0.72,
+      fade: 0.9,
+    });
+    this.pool.spawn({
+      x: x + rand(-2, 2),
+      y: y + rand(-1, 2),
+      z: z + rand(-2, 2),
+      vx: WIND_X + rand(-1.5, 1.5),
+      vy: rand(16, 24),
+      vz: WIND_Z + rand(-1.5, 1.5),
+      max: rand(7, 11),
+      size: 26,
+      grow: 110,
+      grav: 2.4,
+      drag: 0.35,
+      r: 0.12,
+      g: 0.105,
+      b: 0.095,
+      a0: 0.74,
+      fade: 0.85,
+    });
+    this.glow.spawn({
+      x, y: y + 1, z,
+      max: rand(0.5, 0.85), size: rand(24, 40), grow: 8, grav: 5, drag: 2,
+      r: 1, g: 0.55, b: 0.18, a0: 0.95,
+    });
+    this.glow.spawn({
+      x, y: y + 1.5, z,
+      max: rand(0.25, 0.45), size: rand(36, 58), grow: 14, grav: 5, drag: 3,
+      r: 1, g: 0.36, b: 0.09, a0: 0.75,
+    });
+    if (Math.random() < 0.5) {
+      this.glow.spawn({
+        x: x + rand(-2, 2), y: y + rand(0, 3), z: z + rand(-2, 2),
+        vx: rand(-3, 3), vy: rand(6, 14), vz: rand(-3, 3),
+        max: rand(0.6, 1.2), size: rand(1.6, 3.4), grav: -4, drag: 0.5,
+        r: 1, g: 0.62, b: 0.24, a0: 0.9,
       });
     }
   }
@@ -732,38 +851,63 @@ export class FX {
           });
         }
       }
-      // damage smoke and fire
+      // damage smoke: a ship that is hurt but not yet ablaze still leaves a trail
       const hurt = 1 - s.hp / s.maxHp;
-      if (s.alive && hurt > 0.25) {
+      if (s.alive && hurt > 0.25 && s.fires.length === 0) {
         this.smokeT.set(s.id, (this.smokeT.get(s.id) || 0) + dt);
-        if (this.smokeT.get(s.id)! > 0.12) {
+        if (this.smokeT.get(s.id)! > 0.2) {
           this.smokeT.set(s.id, 0);
-          const [sx, sz] = s.toWorld(rand(-0.3, 0.3) * s.spec.B, rand(-0.3, 0.3) * s.spec.L);
-          const burning = s.fires.length > 0;
+          const [sx, sz] = s.toWorld(rand(-0.25, 0.25) * s.spec.B, rand(-0.35, 0.35) * s.spec.L);
           this.pool.spawn({
             x: sx,
-            y: s.spec.F + 3,
+            y: s.bob + s.spec.F + 2,
             z: sz,
-            vx: rand(-2, 2),
-            vy: rand(4, 10),
-            vz: rand(-2, 2),
-            max: rand(2, 4),
-            size: 4,
-            grow: 12,
-            grav: 1.2,
-            drag: 0.8,
-            r: burning ? 0.5 : 0.2,
-            g: burning ? 0.28 : 0.2,
-            b: burning ? 0.2 : 0.21,
-            a0: 0.35 + hurt * 0.4,
+            vx: WIND_X * 0.6 + rand(-1.5, 1.5),
+            vy: rand(5, 9),
+            vz: WIND_Z * 0.6 + rand(-1.5, 1.5),
+            max: rand(5, 7),
+            size: 9,
+            grow: 44,
+            grav: 2,
+            drag: 0.7,
+            r: 0.16,
+            g: 0.155,
+            b: 0.15,
+            a0: 0.3,
+            fade: 1.1,
           });
         }
       }
     }
+
+    // Fires get a hard global budget: past eight burning points the far ones simply do not
+    // emit. Each emitter is staggered by a random phase so they never pulse in unison.
+    let slots = 0;
+    for (const s of list) {
+      if (slots >= FIRE_SLOTS) break;
+      if (!s.alive || s.removed) continue;
+      for (let i = 0; i < s.fires.length && slots < FIRE_SLOTS; i++) {
+        const f = s.fires[i];
+        const key = s.id * 4 + i;
+        let acc = this.fireT.get(key);
+        if (acc === undefined) acc = -rand(0, FIRE_TICK);
+        acc += dt;
+        if (acc >= FIRE_TICK) {
+          acc -= FIRE_TICK;
+          const [fx, fz] = s.toWorld(f.lx, f.lz);
+          this.emitFire(fx, s.bob + deckY(s.spec, f.lz) + 3, fz);
+        }
+        this.fireT.set(key, acc);
+        slots++;
+      }
+    }
+    this.fireCount = slots;
+    this.decals.update();
   }
 
   update(dt: number, t: number, shells: Shell[], torps: Torpedo[]): void {
     this.pool.update(dt);
+    this.glow.update(dt);
     this.muzzleEffects.update(dt);
     this.columns.update(dt);
     this.shells.update(shells);
@@ -773,17 +917,24 @@ export class FX {
   /** Clear all transient visuals and emit timers when restarting a battle. */
   reset(): void {
     this.pool.reset();
+    this.glow.reset();
+    this.decals.reset();
     this.muzzleEffects.reset();
     this.columns.reset();
     this.shells.points.geometry.setDrawRange(0, 0);
     this.torps.points.geometry.setDrawRange(0, 0);
     this.wakeT = this.smokeEmit = 0;
     this.smokeT.clear();
+    this.fireT.clear();
+    this.fireCount = 0;
   }
 
   stats() {
     return {
       particles: this.pool.count,
+      glow: this.glow.count,
+      fires: this.fireCount,
+      decals: this.decals.count,
       columns: this.columns.count,
       shells: this.shells.points.geometry.drawRange.count,
       torpedoWakePoints: this.torps.points.geometry.drawRange.count,

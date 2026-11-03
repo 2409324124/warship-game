@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { clamp, lerp } from './sim/constants';
 import { flightTime, hitChance, dispersionAt, solveShot } from './sim/ballistics';
 import { muzzleWorld } from './sim/gunnery';
-import { Campaign, LEVEL1, LEVEL1_JP, type CampaignLevel } from './sim/campaign';
+import { Campaign, OPERATION, DUEL, DUEL_JP, type CampaignLevel } from './sim/campaign';
 import { TargetLock, type LockSolution } from './sim/targetlock';
 import { playerFire, playerTorpedo, cmdDC, World, DIFF, type Difficulty, type SimEvent } from './sim/world';
 import { AI } from './sim/ai';
@@ -67,8 +67,7 @@ const G = {
   world: null as World | null,
   camp: null as Campaign | null,
   P: null as Ship | null,
-  level: LEVEL1 as CampaignLevel,
-  side: 'US' as 'US' | 'JP',
+  level: OPERATION as CampaignLevel,
   key: 'us_bb' as string,
   diff: 'captain' as Difficulty,
   weapon: 'guns' as 'guns' | 'torps',
@@ -183,11 +182,12 @@ function onEvent(e: SimEvent): void {
     }
     case 'hit': {
       const cal = e.cal as number;
-      fx.hit(e.x as number, e.y as number, e.z as number, cal);
+      const victim = world.byId(e.id as number);
+      fx.hit(e.x as number, e.y as number, e.z as number, cal, victim,
+        e.lx as number | undefined, e.ly as number | undefined, e.lz as number | undefined);
       sfx.hit(cal, dist(e.x as number, e.z as number) + 40);
       const rec = salvos.find((r) => r.salvo === e.salvo);
       if (rec) rec.hits++;
-      const victim = world.byId(e.id as number);
       if (victim && victim.isPlayer) shakeBy(clamp((e.dmg as number) / 2600, 0.1, 1), false);
       break;
     }
@@ -207,9 +207,37 @@ function onEvent(e: SimEvent): void {
       sfx.splash(250, dist(x, z) + 40);
       break;
     }
+    case 'airRaidWarn': {
+      hud.banner('雷达接触', e.msg as string);
+      sfx.alarm();
+      break;
+    }
     case 'airRaid': {
       hud.hint('敌机来袭');
-      sfx.alarm();
+      break;
+    }
+    case 'actStart': {
+      if (e.boss) {
+        hud.banner('金刚', '战列舰 · 金刚级');
+        sfx.alarm();
+      } else {
+        hud.banner(e.title as string, e.objective as string);
+      }
+      if (e.callout) hud.feed(e.callout as string, 'radio');
+      break;
+    }
+    case 'actClear': {
+      const left = e.left as number;
+      hud.feed(`<b>${e.title}</b> 完成 · ${left > 0 ? `${left} 艘残余敌舰脱离` : '海域已清空'}`, 'good');
+      break;
+    }
+    case 'repair': {
+      const hp = Math.round(e.hp as number);
+      const gain = e.dc as number;
+      const parts = [hp > 0 ? `耐久 +${hp}` : '舰体完好'];
+      parts.push(gain > 0 ? `损管 +${gain}` : `损管 ${e.dcLeft as number}/${G.P?.spec.dc ?? 2}`);
+      hud.feed(`损管抢修：${parts.join(' · ')}`, 'good');
+      hud.hint(`下一幕 ${Math.ceil(e.nextIn as number)} 秒后开始`);
       break;
     }
     case 'torpLaunch':
@@ -235,9 +263,6 @@ function onEvent(e: SimEvent): void {
     }
     case 'kill':
       hud.feed(`击沉 <b>${e.name}</b> · ${Math.round(e.tons as number).toLocaleString('zh-CN')} 吨`, 'good');
-      break;
-    case 'wave':
-      hud.banner(`第 ${(e.index as number) + 1} 波`, `${e.count} 艘敌舰进入海峡`);
       break;
     case 'hint':
       hud.hint(e.msg as string);
@@ -296,6 +321,7 @@ function startBattle(): void {
   G.camMode = 'chase';
   G.inspect = 0;
   fx.reset();
+  hud.reset();
   water.resetBlasts();
   for (const v of views.values()) v.dispose(scene);
   views.clear();
@@ -303,15 +329,17 @@ function startBattle(): void {
   salvos = [];
   lock.unlock();
   lockSol = null;
-  G.level = G.side === 'US' ? LEVEL1 : LEVEL1_JP;
-  G.world = new World({ diff: G.diff, onEvent, foe: G.side === 'US' ? 'JP' : 'US' });
   const spec = SPECS[G.key];
+  const team = spec?.nation ?? 'US';
+  const foe = team === 'US' ? 'JP' : 'US';
+  G.level = G.key === 'us_bb' ? OPERATION : team === 'US' ? DUEL : DUEL_JP;
+  G.world = new World({ diff: G.diff, onEvent, foe });
   const camp = new Campaign(
     G.world,
     G.level,
     G.key,
-    G.side === 'US' ? '华盛顿' : '雾岛',
-    G.side === 'US' ? 'BB-56' : '—',
+    team === 'US' ? '华盛顿' : '雾岛',
+    team === 'US' ? 'BB-56' : 'BB-31',
   );
   G.camp = camp;
   G.P = camp.player;
@@ -319,7 +347,7 @@ function startBattle(): void {
   // the other side gets a captain too
   for (const s of G.world.ships) if (!s.isPlayer && !s.ai) s.ai = new AI(G.world, s);
 
-  hud.hint('按 B 呼叫一波敌机演示防空');
+  hud.hint('第一幕开始 · X 锁定 · R 损管 · 向北推进');
   aim.yaw = G.P.heading;
   aim.range = clamp(9000, 800, spec ? G.P.gun.range : 22000);
   G.P.aimX=G.P.x+Math.sin(aim.yaw)*aim.range;
@@ -345,7 +373,11 @@ function finishBattle(win: boolean): void {
   cPressedAt = null;
   G.mode = 'end';
   G.endT = win ? 3.2 : 4.5;
-  hud.banner(win ? '海峡守住了' : '我方沉没', win ? '全部敌舰已击沉' : '战斗结束');
+  const op = G.camp?.level.id === 'steel-lane';
+  hud.banner(
+    win ? (op ? '金刚沉没' : '海峡守住了') : '作战失败',
+    win ? (op ? '作战成功' : '全部敌舰已击沉') : '华盛顿号沉没',
+  );
 }
 
 function showEnd(): void {
@@ -355,16 +387,27 @@ function showEnd(): void {
   hud.show(false);
   exitLock();
   const win = camp.win;
-  $('endEyebrow').textContent = win ? 'ACTION REPORT' : 'SUNK';
-  $('endTitle').textContent = win ? '铁底湾守住了' : '战舰沉没';
+  const op = camp.level.id === 'steel-lane';
+  const act = camp.act + 1;
+  $('endEyebrow').textContent = win ? (op ? 'OPERATION COMPLETE' : 'ACTION REPORT') : 'MISSION FAILED';
+  $('endTitle').textContent = win ? (op ? '金刚沉没' : '海峡守住了') : '战舰沉没';
   $('endLine').textContent = win
-    ? '三艘驱逐舰全部沉入海峡。天亮前把炮弹补满——日军下一波不会等太久。'
-    : '你的战列舰翻沉在铁底湾。这片海峡底下已经躺了太多船，再多一艘也不算稀奇。';
+    ? op
+      ? '金刚的舰桥沉进海峡北口。天亮前继续向北——但今晚这条航线，已经打开了。'
+      : '全部敌舰已沉入海峡。天亮前把炮弹补满——日军下一波不会等太久。'
+    : op
+      ? `华盛顿号在第 ${act} 幕沉没。海峡仍在日军手里。`
+      : '你的战列舰翻沉在铁底湾。这片海峡底下已经躺了太多船，再多一艘也不算稀奇。';
   const acc = P.stats.shots ? (P.stats.hits / P.stats.shots) * 100 : 0;
   const t = Math.floor(G.world?.time || 0);
+  const stars = camp.stars;
+  $('endStars').innerHTML =
+    '★'.repeat(stars) + `<span class="off">${'☆'.repeat(Math.max(0, 3 - stars))}</span>`;
   const rows: [string, string][] = [
     ['击沉', `${camp.kills.length} 艘`],
     ['击沉吨位', `${camp.tons.toLocaleString('zh-CN')} 吨`],
+    ['击落敌机', `${G.world?.planesDown ?? 0} 架`],
+    ['抵达', op ? `第 ${act} 幕 / 共 ${camp.actCount} 幕` : `第 ${act} 幕`],
     ['主炮发射', `${P.stats.shots} 发`],
     ['主炮命中', `${P.stats.hits} 发 (${acc.toFixed(1)}%)`],
     ['承受伤害', `${Math.round(P.stats.taken).toLocaleString('zh-CN')}`],
@@ -383,6 +426,8 @@ function showScreen(id: string | null): void {
 
 function toMenu(): void {
   cameraControls.reset();
+  G.key = 'us_bb';
+  G.level = OPERATION;
   G.mode = 'menu';
   exitLock();
   hud.show(false);
@@ -448,11 +493,6 @@ addEventListener('keydown', (e) => {
   if (e.code === 'KeyZ' && !e.repeat) toggleProjectileCamera();
   if (e.code === 'KeyL') G.showLead = !G.showLead;
   if (e.code === 'KeyX' && !e.repeat) toggleLock();
-  if (e.code === 'KeyB' && !e.repeat && G.world && G.P && G.P.alive) {
-    // Demo trigger: one torpedo-bomber wave on the player.
-    const foe = G.P.team === 'US' ? 'JP' : 'US';
-    spawnAirRaid(G.world, foe, G.P, 8, 0);
-  }
   if (e.code === 'Tab' && !e.repeat) {
     e.preventDefault();
     cycleLock();
@@ -677,13 +717,6 @@ function cycleProjectileCamera(): void {
 
 // ------------------------------------------------------------------ menu wiring
 
-for (const b of document.querySelectorAll<HTMLButtonElement>('#sideSeg button')) {
-  b.addEventListener('click', () => {
-    G.side = (b.dataset.s as 'US' | 'JP') || 'US';
-    G.key = G.side === 'US' ? 'us_bb' : 'jp_bb';
-    for (const o of document.querySelectorAll('#sideSeg button')) o.classList.toggle('on', o === b);
-  });
-}
 for (const b of document.querySelectorAll<HTMLButtonElement>('#diffSeg button')) {
   b.addEventListener('click', () => {
     G.diff = (b.dataset.d as Difficulty) || 'captain';
@@ -781,6 +814,17 @@ function frame(now: number): void {
         v.dispose(scene);
         views.delete(id);
       } else v.update(dt, G.time, water);
+    }
+
+    // Own hull: close the camera in and she turns into a ghost instead of filling the lower
+    // half of the screen. The near end of the hull is what matters, not her centre.
+    if (P && P.alive) {
+      const pv = views.get(P.id);
+      if (pv) {
+        const near = camera.position.distanceTo(pv.group.position) - P.spec.L * 0.45;
+        const want = clamp((near - 140) / 160, 0.22, 1);
+        pv.setOpacity(pv.opacity + (want - pv.opacity) * Math.min(1, dt * 6));
+      }
     }
 
     fx.ships(dt, world.ships, water);
@@ -1115,7 +1159,7 @@ function updateUI(dt: number, world: World, P: Ship): void {
 (window as unknown as { __debug: () => unknown }).__debug = () => ({
   mode: G.mode,
   time: +G.time.toFixed(1),
-  side: G.side,
+  side: G.P?.team ?? 'US',
   ship: G.key,
   player: G.P
     ? { name: G.P.name, hp: Math.round(G.P.hp), max: Math.round(G.P.maxHp), x: Math.round(G.P.x), z: Math.round(G.P.z) }
@@ -1152,12 +1196,25 @@ function updateUI(dt: number, world: World, P: Ship): void {
   }),
   kills: G.camp?.kills.length ?? 0,
   tons: G.camp?.tons ?? 0,
+  act: G.camp
+    ? {
+        index: G.camp.act,
+        phase: G.camp.phase,
+        title: G.camp.actDef?.title ?? '',
+        objective: G.camp.actDef?.objective ?? '',
+        killed: G.camp.actKilled,
+        total: G.camp.actTotal,
+        planesDown: G.world?.planesDown ?? 0,
+        stars: G.camp.stars,
+      }
+    : null,
   fps: Math.round(1 / Math.max(0.0001, lastDt)),
   render: { calls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
     geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures },
   effects: fx.stats(),
   audio: sfx.stats(),
   seaProjection: aimMarker.stats,
+  selfOpacity: G.P ? (views.get(G.P.id)?.opacity ?? 1) : 1,
   camera: { fov: +camera.fov.toFixed(2), x: camera.position.x, y: camera.position.y, z: camera.position.z,
     pitch:Math.asin(new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion).y) },
   cameraControl: { mode: cameraControls.mode, level: cameraControls.level, group: cameraControls.group,
@@ -1172,11 +1229,62 @@ let lastDt = 0.016;
 let aimMarkX = 0, aimMarkZ = 0;
 
 // a small console remote, handy for the smoke test and for tuning
-(window as unknown as { __cmd: Record<string, (...a: number[]) => void> }).__cmd = {
+(window as unknown as { __cmd: Record<string, (...a: any[]) => void> }).__cmd = {
   fire: () => {
     firePlayerGuns();
   },
-  /** Demo trigger for an air raid (also bound to V in play). */
+  /** Dev: jump to act 0/1/2 and inspect the models without playing the whole operation. */
+  jumpAct: (i: number) => {
+    G.camp?.jumpTo(i);
+    requestAimSync();
+  },
+  /** Dev: wipe the current act so the clear/repair/gap UI can be checked. */
+  clearAct: () => {
+    for (const x of G.camp?.actShips ?? []) {
+      if (!x.s.alive) continue;
+      x.s.alive = false;
+      x.s.remove();
+    }
+  },
+  /** Dev: start a single-ship duel for model screenshots (jp_bb, us_ca, ...). */
+  solo: (key: string) => {
+    G.key = key;
+    void loadModelManifest().then(startBattle);
+  },
+  win: () => G.camp?.finish(true),
+  lose: () => G.camp?.finish(false),
+  /** Dev: park a burning, shell-scarred enemy 1.2 km ahead for damage-fx screenshots. */
+  burn: (dist = 1200) => {
+    const P = G.P, w = G.world;
+    if (!w || !P || !P.alive) return;
+    let best: (typeof w.ships)[number] | null = null;
+    let bd = Infinity;
+    for (const s of w.ships) {
+      if (!s.alive || s.team === P.team) continue;
+      const d = Math.hypot(s.x - P.x, s.z - P.z);
+      if (d < bd) { bd = d; best = s; }
+    }
+    if (!best) return;
+    const a = P.heading;
+    best.x = P.x + Math.sin(a) * dist + Math.cos(a) * dist * 0.22;
+    best.z = P.z + Math.cos(a) * dist - Math.sin(a) * dist * 0.22;
+    best.hp = best.maxHp * 0.4;
+    best.startFire(best.spec.L * 0.12, P);
+    best.startFire(-best.spec.L * 0.22, P);
+    for (let i = 0; i < 9; i++) {
+      const lz = (Math.random() - 0.5) * best.spec.L * 0.7;
+      const lx = (Math.random() - 0.5) * best.spec.B;
+      const ly = Math.random() < 0.45 ? best.spec.F * 0.92 : Math.random() * best.spec.F * 0.8;
+      const [wx, wz] = best.toWorld(lx, lz);
+      fx.hit(wx, best.bob + ly, wz, 356, best, lx, ly, lz);
+    }
+    aim.yaw = Math.atan2(best.x - P.x, best.z - P.z);
+    aim.range = Math.hypot(best.x - P.x, best.z - P.z);
+    P.aimX = best.x;
+    P.aimZ = best.z;
+    requestAimSync();
+  },
+  /** Demo trigger for an air raid (QA only). */
   airRaid: () => {
     if (!G.world || !G.P || !G.P.alive) return;
     const foe = G.P.team === 'US' ? 'JP' : 'US';

@@ -346,7 +346,7 @@ export function updateShells(w: World, dt: number): void {
 
 export function shellHit(w: World, ship: Ship, s: Shell, x: number, y: number, z: number): void {
   const gun = s.gun;
-  const [, lz] = ship.toLocal(x, z);
+  const [lx, lz] = ship.toLocal(x, z);
   let dmg = gun.dmg * rand(0.85, 1.15);
   if (ship.spec.cls === 'BB') dmg *= 0.9;
   const dealt = ship.damage(dmg, s.owner, 'shell');
@@ -359,6 +359,10 @@ export function shellHit(w: World, ship: Ship, s: Shell, x: number, y: number, z
     x,
     y,
     z,
+    // hull-local strike point, so the renderer can stamp a crater exactly where it landed
+    lx,
+    ly: y - ship.bob,
+    lz,
     cal: gun.cal,
     sec: s.sec ? 1 : 0,
     salvo: s.salvo,

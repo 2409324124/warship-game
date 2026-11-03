@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>铁底湾 1942 · 战舰炮战</title>
+    <title>钢铁航线 1942 · 战舰炮战</title>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23081017'/%3E%3Cpath d='M4 20h24l-3 6H7z' fill='%23f0b54a'/%3E%3Crect x='14' y='8' width='4' height='12' fill='%23e8edf2'/%3E%3C/svg%3E"
@@ -18,7 +18,7 @@
 
       <div id="hud" hidden>
         <div class="hud-tl">
-          <div class="wave"><b id="hWave">第 1 波</b><span id="hWaveName">铁底湾 · 1942</span></div>
+          <div class="wave"><b id="hWave">第 1 幕 / 共 3 幕</b><span id="hWaveName">肃清前哨驱逐舰 · 0/3</span></div>
           <div class="counts"><span class="foe">敌舰 <b id="hFoe">0</b></span><span class="friend">我舰 <b id="hFriend">1</b></span></div>
         </div>
 
@@ -85,19 +85,22 @@
 
       <div id="home" class="screen">
         <div class="sheet wide">
-          <p class="eyebrow">所罗门群岛 · 瓜达尔卡纳尔 · 1942 年 11 月</p>
-          <h1 class="title">铁底湾<span class="yr">1942</span></h1>
-          <p class="en">IRONBOTTOM SOUND · NIGHT ACTION</p>
+          <p class="eyebrow">所罗门群岛 · 瓜达尔卡纳尔 · 1942 年 11 月 · 特别行动</p>
+          <h1 class="title">钢铁航线<span class="yr">1942</span></h1>
+          <p class="en">STEEL SEA LANE · IRONBOTTOM SOUND</p>
           <p class="brief" id="homeBrief">
-            三艘日本驱逐舰借着夜色从萨沃岛西侧南下。你指挥一艘美军战列舰横在海峡里：主炮十公里外的落弹要飞十一秒，
-            副炮会自己找目标开火。别让她们进到鱼雷射程。
+            你指挥美军战列舰“华盛顿”号，沿铁底湾向北突入。三幕作战：先撕开驱逐舰前哨，
+            再打掉拦路的高雄级重巡，最后在海峡北口迎战金刚。两波敌机会在你最忙的时候扑上来。
           </p>
+          <ul class="mission">
+            <li><b>第一幕 · 夜战前哨</b><span>三艘吹雪级驱逐舰</span></li>
+            <li><b>第二幕 · 重巡拦路</b><span>高雄级重巡 · 第一波空袭</span></li>
+            <li><b>第三幕 · 海峡北口</b><span>金刚级战列舰 · 第二波空袭</span></li>
+          </ul>
+          <p class="best">评价：击沉金刚 · 击落 8 架敌机 · 结束时耐久 ≥ 50%</p>
+          <p class="best">你指挥：华盛顿号 · 北卡罗来纳级战列舰 · 美军</p>
 
           <div class="pick-row">
-            <div class="side-seg" id="sideSeg">
-              <button data-s="US" class="on" type="button">美军<small>北卡罗来纳级 战列舰</small></button>
-              <button data-s="JP" type="button">日军<small>金刚级 战列舰</small></button>
-            </div>
             <div class="diff-seg" id="diffSeg">
               <button data-d="cadet" type="button">见习</button>
               <button data-d="captain" class="on" type="button">舰长</button>
@@ -111,7 +114,7 @@
             <button id="soundBtn" class="ghost" type="button">声音：开</button>
             <button id="debugBtn" class="ghost" type="button">弹道面板</button>
           </div>
-          <p class="best" id="homeBest"></p>
+          <p class="best" id="homeBest">难度：舰长 · 敌舰命中误差 ×1 · 我舰受伤 ×1</p>
           <p class="best"><a href="/audio/ATTRIBUTION.md" target="_blank" rel="noopener">炮声素材署名 · CC BY 3.0</a></p>
         </div>
       </div>
@@ -119,7 +122,7 @@
       <div id="pause" class="screen dim" hidden>
         <div class="sheet">
           <p class="eyebrow">战斗暂停</p>
-          <h2>海峡里还有敌舰</h2>
+          <h2>作战尚未结束</h2>
           <dl class="keys">
             <div><dt>W / S</dt><dd>车钟加减</dd></div>
             <div><dt>A / D</dt><dd>转舵</dd></div>
@@ -150,6 +153,7 @@
         <div class="sheet">
           <p class="eyebrow" id="endEyebrow"></p>
           <h2 id="endTitle"></h2>
+          <p id="endStars" class="stars"></p>
           <p id="endLine"></p>
           <dl class="stats" id="endStats"></dl>
           <div class="btns">
@@ -170,6 +174,10 @@
           <p class="brief">
             副炮由舰上自己指挥：只要敌舰进入五千米，十座 5 英寸炮会自己选目标、算提前量并开火，你不用管它们。
             主炮十公里落弹十一秒，所以打驱逐舰要算她在这十一秒里跑去的五百米。
+          </p>
+          <p class="brief">
+            行动分三幕：驱逐舰前哨、重巡拦截、金刚。每幕清空后损管队会抢修 25% 耐久并补充一次损管，
+            然后进入下一幕。两波空袭按幕自动触发，雷达预警后会有敌机从低空进入。
           </p>
           <div class="btns"><button class="primary" id="guideClose" type="button">关闭</button></div>
         </div>

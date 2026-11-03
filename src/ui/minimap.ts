@@ -6,7 +6,7 @@ import type { Ship } from '../sim/ship';
 import type { World } from '../sim/world';
 import type { Torpedo } from '../sim/torpedo';
 
-const MM = 11000;
+const MM = 16000;
 
 export class Minimap {
   private cv: HTMLCanvasElement;

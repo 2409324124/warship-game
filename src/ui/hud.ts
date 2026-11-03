@@ -54,6 +54,15 @@ export class Hud {
     this.el.root.hidden = !v;
   }
 
+  /** Wipe the previous battle's radio traffic and banners before a new sortie. */
+  reset(): void {
+    this.el.feed.innerHTML = '';
+    this.el.banner.hidden = true;
+    this.el.hint.classList.remove('on');
+    this.bannerT = 0;
+    this.hintT = 0;
+  }
+
   setLockHint(v: boolean): void {
     this.el.lockHint.hidden = !v;
   }
@@ -97,9 +106,16 @@ export class Hud {
     this.el.foe.textContent = String(foes);
     this.el.friend.textContent = String(friends);
     if (camp) {
+      const A = camp.actDef;
       this.el.tons.textContent = camp.tons.toLocaleString('zh-CN');
-      this.el.wave.textContent = `第 ${Math.min(camp.spawned, camp.level.waves.length)} 波 / 共 ${camp.level.waves.length} 波`;
-      this.el.waveName.textContent = camp.level.subtitle;
+      this.el.wave.textContent = `第 ${camp.act + 1} 幕 / 共 ${camp.actCount} 幕`;
+      this.el.waveName.textContent =
+        camp.phase === 'gap'
+          ? `损管抢修 · 下一幕 ${Math.ceil(camp.gap)}s`
+          : A
+            ? `${A.objective} · ${camp.actKilled}/${camp.actTotal}`
+            : '—';
+      this.el.wave.classList.toggle('boss', !!A?.boss && camp.phase !== 'gap');
     }
     const t = Math.floor(world.time);
     this.el.clock.textContent = `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;

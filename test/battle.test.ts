@@ -6,7 +6,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { World } from '../src/sim/world.ts';
-import { Campaign, LEVEL1 } from '../src/sim/campaign.ts';
+import { Campaign, DUEL } from '../src/sim/campaign.ts';
 import { AI } from '../src/sim/ai.ts';
 import { playerFire } from '../src/sim/world.ts';
 import { leadPoint, Ship } from '../src/sim/ship.ts';
@@ -27,7 +27,7 @@ interface Run {
 /** Play one battle head-lessly: the player lays her guns on the nearest enemy and fires when loaded. */
 function runBattle(seconds: number, diff: 'cadet' | 'captain' | 'admiral' = 'captain'): Run {
   const world = new World({ diff, foe: 'JP' });
-  const camp = new Campaign(world, LEVEL1, 'us_bb', '华盛顿', 'BB-56');
+  const camp = new Campaign(world, DUEL, 'us_bb', '华盛顿', 'BB-56');
   camp.begin();
   for (const s of world.ships) if (!s.isPlayer && !s.ai) s.ai = new AI(world, s);
   const P = camp.player;
@@ -115,7 +115,7 @@ test('a well-handled battleship sinks at least one destroyer', () => {
 
 test('flight time is the promise: 10 km in 11 s', () => {
   const w = new World({});
-  const camp = new Campaign(w, LEVEL1, 'us_bb', 'X', 'BB-56');
+  const camp = new Campaign(w, DUEL, 'us_bb', 'X', 'BB-56');
   const T = flightTime(camp.player.gun, 10000);
   assert.ok(Math.abs(T - 11) < 0.05, `${T}`);
 });

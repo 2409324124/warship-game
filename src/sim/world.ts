@@ -43,6 +43,8 @@ export class World {
   planes: import('./aircraft.ts').Plane[] = [];
 
   time = 0;
+  /** Enemy aircraft shot down in this battle. */
+  planesDown = 0;
   seq = 0;
   sseq = 0;
   tseq = 0;

@@ -69,6 +69,7 @@ export function killPlane(w: World, p: Plane): void {
   p.state = "falling";
   p.st = 0;
   p.vy = Math.min(p.vy, -6);
+  if (p.team === w.foe) w.planesDown++;
   w.emit('planeDown', { id: p.id, x: p.x, y: p.y, z: p.z, team: p.team });
 }
 

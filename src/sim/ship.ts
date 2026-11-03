@@ -109,6 +109,9 @@ export class Ship {
   sinkRoll: number;
   sinkPitch: number;
   bob = 0;
+  /** Written by the render layer (ShipView) so pooled decals can follow the hull. Never read here. */
+  pitch = 0;
+  roll = 0;
 
   stats = { shots: 0, hits: 0, torps: 0, torpHits: 0, dealt: 0, taken: 0 };
 

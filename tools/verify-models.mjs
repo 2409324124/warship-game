@@ -238,10 +238,10 @@ try {
   await page.evaluate(()=>window.__cmd.inspect(3));await wait(1800);
   screenshots.push(resolve(OUT,'verify-washington-bow-rails.png'));
   await page.screenshot({path:screenshots.at(-1)});
-  // Exercise the actual Japanese campaign as well, not only the US/player hull.
+  // Exercise the Japanese hull as well, not only the US/player hull. The story is US-only,
+  // so this uses the dev solo hook rather than a menu faction switch.
   await page.reload({waitUntil:'networkidle2'});
-  await page.click('#sideSeg button[data-s="JP"]');
-  await page.click('#startBtn');
+  await page.evaluate(()=>window.__cmd.solo('jp_bb'));
   await page.waitForFunction(()=>window.__debug?.().mode==='play' &&
     ['ships/jp_bb_hull','ships/jp_bb_super','guns/jp14d','guns/jp6c'].every((name)=>window.__debug().models.loaded.includes(name)));
   await page.evaluate(()=>window.__cmd.inspect(2));await wait(2200);

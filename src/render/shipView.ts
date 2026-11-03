@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { clamp, sstep } from '../sim/constants';
 import { clampElevation } from '../sim/ballistics';
 import type { Ship } from '../sim/ship';
-import { shipGeometry, shipMaterials, buildRails, type TurretGeo } from './shipModel';
+import { shipGeometry, shipMaterials, buildRails, type TurretGeo, type ShipMaterials } from './shipModel';
 // Loaded on demand: until a .glb exists there is nothing to fetch, and GLTFLoader is a big module
 // that has no business sitting in the base bundle.
 import { hasModel } from './models';
@@ -19,6 +19,24 @@ function assets(): Promise<Assets> {
 }
 import type { Water } from './water';
 
+// The player's hull is faded out when the camera closes on it, so it needs materials of its own:
+// shipMaterials() hands out one shared set per class, and fading those would fade every enemy of
+// the same class too.
+const ownMats = new Map<string, ShipMaterials>();
+function ownMaterials(spec: Ship['spec']): ShipMaterials {
+  const hit = ownMats.get(spec.key);
+  if (hit) return hit;
+  const b = shipMaterials(spec);
+  const m: ShipMaterials = {
+    hull: b.hull.clone(),
+    deck: b.deck.clone(),
+    struct: b.struct.clone(),
+    dark: b.dark.clone(),
+  };
+  ownMats.set(spec.key, m);
+  return m;
+}
+
 export class ShipView {
   readonly ship: Ship;
   readonly group = new THREE.Group();
@@ -31,12 +49,14 @@ export class ShipView {
   private rails: THREE.Mesh | null = null;
   private customFoam: THREE.BufferGeometry | null = null;
   private disposed = false;
+  private fade = 1;
+  private fadeMats: THREE.Material[] | null = null;
 
   constructor(scene: THREE.Scene, ship: Ship) {
     this.ship = ship;
     const spec = ship.spec;
     const g = shipGeometry(spec);
-    const m = shipMaterials(spec);
+    const m = ship.isPlayer ? ownMaterials(spec) : shipMaterials(spec);
     this.group.rotation.order = 'YXZ';
 
     // When a Blender export covers a layer, the procedural layer is never built: it would
@@ -177,14 +197,17 @@ export class ShipView {
       pitch += s.sinkPitch * e;
       this.group.position.set(s.x, heave - e * (spec.D + spec.F + 6), s.z);
       this.foam.visible = s.sinkT < 6;
-      (this.foam.material as THREE.MeshBasicMaterial).opacity = 0.12 * (1 - e);
+      (this.foam.material as THREE.MeshBasicMaterial).opacity = 0.12 * (1 - e) * this.fade;
     } else {
       this.group.position.set(s.x, heave, s.z);
       this.foam.visible = true;
       const spd = clamp(Math.abs(s.speed) / s.maxV, 0, 1);
-      (this.foam.material as THREE.MeshBasicMaterial).opacity = 0.05 + 0.16 * spd;
+      (this.foam.material as THREE.MeshBasicMaterial).opacity = (0.05 + 0.16 * spd) * this.fade;
     }
 
+    // the pooled hull decals rebuild their matrices from these, so they list and roll with her
+    s.pitch = pitch;
+    s.roll = roll;
     this.group.rotation.set(pitch, s.heading, roll);
 
     for (let i = 0; i < this.turrets.length; i++) {
@@ -210,6 +233,33 @@ export class ShipView {
     const direction = new THREE.Vector3(0, 0, 1).transformDirection(entry.barrel.matrixWorld);
     return { x: p.x, y: p.y, z: p.z, bearing: Math.atan2(direction.x, direction.z),
       elevation: Math.atan2(direction.y, Math.hypot(direction.x, direction.z)) };
+  }
+
+  /** 0 = ghost, 1 = solid. Materials are switched to the transparent pass once, then only their
+   *  opacity moves, so no shader is ever recompiled mid-battle. */
+  get opacity(): number {
+    return this.fade;
+  }
+
+  setOpacity(k: number): void {
+    if (Math.abs(k - this.fade) < 0.02) return;
+    this.fade = k;
+    if (!this.fadeMats) {
+      const list: THREE.Material[] = [];
+      this.group.traverse((o) => {
+        const mesh = o as THREE.Mesh;
+        if (!mesh.isMesh || mesh.name.startsWith('foam:')) return;
+        const mm = mesh.material as THREE.Material | THREE.Material[] | undefined;
+        if (Array.isArray(mm)) list.push(...mm);
+        else if (mm) list.push(mm);
+      });
+      for (const mm of list) {
+        mm.transparent = true;
+        mm.needsUpdate = true;
+      }
+      this.fadeMats = list;
+    }
+    for (const mm of this.fadeMats) mm.opacity = k;
   }
 
   dispose(scene: THREE.Scene): void {

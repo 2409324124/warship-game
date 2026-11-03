@@ -10,7 +10,7 @@ export const DEG = Math.PI / 180;
 export const TIME_COMPRESS = 2.5;
 export const KN = 0.5144 * TIME_COMPRESS; // knots -> game m/s
 
-export const MAP_R = 10000; // the ship is pushed back inside this radius
+export const MAP_R = 16000; // the ship is pushed back inside this radius
 
 export const THROTTLE = [-0.5, -0.25, 0, 0.25, 0.5, 0.75, 1];
 
