@@ -111,6 +111,39 @@ node tools/balance.ts   # 无头跑夜战基线与三幕行动，打印每幕时
 - 海面与炮口焰的片元末尾手动接 `#include <tonemapping_fragment>` / `<colorspace_fragment>`，
   和 three 的 ACESFilmic 对齐，自定义 shader 不会和船体材质出现两种色调。
 
+## 粒子与后处理
+
+**所有烟、火、水花都是点精灵，两个池子装完**
+
+- 一个池 = 一个 `THREE.Points` + 4 条动态属性（位置 / 颜色 / 尺寸 / 透明度），`drawRange` 只画活着的一段：
+  主池 4096（浓烟、水花、尾流）、附加层 320（`AdditiveBlending` 的火光）；弹丸、鱼雷各再一层点精灵。
+  整场战斗的烟与浪花合计 2 次 draw call，加弹丸鱼雷也不到一只手的数量。
+- 容量固定、对象预分配；粒子死亡用 **swap-remove**（末尾元素换到空位再 `n--`），没有 `splice`、没有 GC。
+- 积分是解析的：`k = exp(-drag·dt)` 一次衰减水平速度，`vy` 另外叠 `grav·dt`；
+  尺寸 `size + grow·t`，透明度 `a0·(1-t)^fade`。`fade=2` 是硬淡出，烟雾传 `1` 才保持厚度。
+- **不排序**：`depthWrite=false`，火光单独一层加法混合，叠在烟上不依赖绘制顺序。
+
+**炮口焰是模拟量，不是贴图动画**
+
+- `render/muzzleModel.ts` 只算数和时间，不碰 renderer / DOM：按口径 76–510 mm 插值烟量、寿命、膨胀、速度、暖色度，
+  于是 16 寸 10 s 的浓烟团和 5 寸 2.2 s 的轻烟是同一个函数的两端，不是两套资产。
+- 池容量 512 烟 + 128 焰；焰的寿命只有 0.09–0.145 s，所以它是「闪」不是「球」。
+
+**弹坑是贴在船壳上的实例化四边形**
+
+- 命中点先换算到舰体局部坐标：甲板命中平铺（法线朝上），舷侧命中沿半宽往外推一点，保证永远贴在钢板上
+  而不是陷进去（`craterPlacement()`）。
+- 全场 96 个弹坑共用一个 `InstancedMesh` + 一张纹理，环形复用；每帧只更新实例矩阵。
+
+**后处理：一个全屏 pass 都没有**
+
+- 只有一次 forward 渲染、一个画布帧缓冲：所谓「泛光」是那层加法混合的点精灵，不是 bloom；没有 composer，也没有 render target。
+- 色调映射在渲染器上：ACESFilmic + exposure 1.05 + sRGB 输出，自写 shader 手动接 `tonemapping_fragment` / `colorspace_fragment` 对齐。
+- 雾是逐 shader 算的：海面用偏蓝的海雾（与灰天空雾按 0.55 混）且坡度略陡，天空完全不吃雾——
+  所以远处海平线有冷暖断差，而不是糊成一片灰。
+- 暗角交给合成器：`#vignette` 是 CSS 的 `radial-gradient`（中心 45% 透明 → 边缘 0.55 黑），一个 WebGL 像素都不改。
+- HUD、准星、落点标记画在独立的 2D canvas（`#overlay`）上，每帧 world→screen 投影后直接 2D 绘制，不回读帧缓冲。
+
 ## 操作
 
 | 键 | 作用 |
