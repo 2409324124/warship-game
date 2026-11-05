@@ -7,6 +7,12 @@ three.js 渲染、程序化生成的舰船模型，没有任何外部美术资�
 **驱逐舰前哨 → 高雄级重巡拦截 → 金刚级战列舰**。两波脚本空袭会在中途进入，
 幕间损管队抢修 25% 耐久。
 
+## 画面
+
+![追尾视角：28 节全速，舰艏破浪与身后的白色尾流](docs/screenshots/chase-wake.jpg)
+
+![四分之三视角：主炮指向燃烧的驱逐舰，舰艏白水与尾流同时可见](docs/screenshots/broadside.jpg)
+
 ## 直接玩
 
 <https://2409324124.github.io/warship-game/>
