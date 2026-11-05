@@ -21,7 +21,7 @@ function getLoader() {
 const cache = new Map<string, THREE.Object3D>();
 const failed = new Set<string>();
 
-/** `name` is a path under /models without the .glb, e.g. "props/us_bb_floatplane". */
+/** `name` is a path under ./models without the .glb, e.g. "props/us_bb_floatplane". */
 export async function loadModel(name: string): Promise<THREE.Object3D | null> {
   if (failed.has(name)) return null;
   if (!hasModel(name)) return null;
@@ -30,7 +30,7 @@ export async function loadModel(name: string): Promise<THREE.Object3D | null> {
   const loader = await getLoader();
   return new Promise((resolve) => {
     loader.load(
-      `/models/${name}.glb`,
+      `./models/${name}.glb`,
       (gltf) => {
         const root = gltf.scene;
         root.traverse((o) => {
@@ -137,7 +137,7 @@ export async function overrideTurret(
 }
 
 export interface PropPlacement {
-  /** Path under /models, without the .glb. */
+  /** Path under ./models, without the .glb. */
   model: string;
   /** Hull-local metres: +Z toward the bow, +X to port (west). */
   z: number;

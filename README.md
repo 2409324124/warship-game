@@ -7,7 +7,18 @@ three.js 渲染、程序化生成的舰船模型，没有任何外部美术资�
 **驱逐舰前哨 → 高雄级重巡拦截 → 金刚级战列舰**。两波脚本空袭会在中途进入，
 幕间损管队抢修 25% 耐久。
 
-## 跑起来
+## 直接玩
+
+<https://2409324124.github.io/warship-game/>
+
+推送到 master 后由 `.github/workflows/deploy.yml` 自动构建并发布到 GitHub Pages，
+打开链接就能玩，不需要任何本地环境。纯静态站点：没有后端，唯一的外部请求是
+`./models/manifest.json`（舰船 GLB），音频全部由 WebAudio 现场合成。
+构建用相对路径（`base: './'`），所以挂在任何子路径下都能跑。
+
+## 本地跑
+
+需要 Node 22.18+（`npm test` 直接用 `node --test` 跑 `.ts`）。
 
 ```bash
 npm install

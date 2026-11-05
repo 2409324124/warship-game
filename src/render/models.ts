@@ -13,7 +13,7 @@ let pending: Promise<void> | null = null;
 
 export function loadModelManifest(): Promise<void> {
   if (!pending) {
-    pending = fetch('/models/manifest.json')
+    pending = fetch('./models/manifest.json')
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => {
         const list: string[] = Array.isArray(j?.models) ? j.models : [];
