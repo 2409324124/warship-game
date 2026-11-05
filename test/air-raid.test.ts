@@ -4,6 +4,21 @@ import { World } from '../src/sim/world.ts';
 import { Ship } from '../src/sim/ship.ts';
 import { spawnAirRaid } from '../src/sim/aircraft.ts';
 
+/** The sim draws from Math.random directly; pin it for the scenarios whose outcome is stochastic. */
+function seeded(seed: number, body: () => void): void {
+  const real = Math.random;
+  let s = seed >>> 0;
+  Math.random = () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+  try {
+    body();
+  } finally {
+    Math.random = real;
+  }
+}
+
 function raid(diff = 'captain') {
   const events: string[] = [];
   const w = new World({ diff, onEvent: (e) => events.push(e.k) });
@@ -13,7 +28,7 @@ function raid(diff = 'captain') {
   return { w, s, planes, events };
 }
 
-test('torpedo raids attack: drops happen and the ship takes damage', () => {
+test('torpedo raids attack: drops happen and the ship takes damage', () => seeded(0x5eed, () => {
   const { w, s, events } = raid();
   let dropped = false;
   // Up to three waves: attack geometry is stochastic (AA kills some planes), so one
@@ -33,7 +48,7 @@ test('torpedo raids attack: drops happen and the ship takes damage', () => {
   assert.ok(dropped, 'a torpedo was dropped');
   assert.ok(events.includes('airRaid'));
   assert.ok(s.hp < s.maxHp, 'air-dropped torpedo damages the ship');
-});
+}));
 
 test('AA engages: flak bursts fire and planes take damage', () => {
   const { w, planes, events } = raid();
